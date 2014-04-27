@@ -33,7 +33,7 @@ function getRowStyle($current_product) {
 ?>
 
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
     <meta charset=utf-8>
     <title>Web Status</title>
@@ -82,7 +82,7 @@ function getRowStyle($current_product) {
             $available_locales[$locale_code] = $locale_code;
         }
         $available_products = array();
-        $available_products['all'] = ' All Products';
+        $available_products['all'] = ' all products';
         foreach ($available_locales as $locale_code) {
             foreach (array_keys($json_array[$locale_code]) as $product_code) {
                 if (! in_array($product_code, $available_products)) {
@@ -101,8 +101,43 @@ function getRowStyle($current_product) {
         echo '<!-- Using cached file: ' . date ('Y-m-d H:i', filemtime($file_cache)) . "-->\n";
     }
 
-    $requested_locale = !empty($_REQUEST['locale']) ? $_REQUEST['locale'] : 'en-US';
+    if (empty($_REQUEST['locale'])) {
+        // Locale was not specified, try to use locale from HTTP header
+        $accept_locales = [];
+        // Source: http://www.thefutureoftheweb.com/blog/use-accept-language-header
+        if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+            // break up string into pieces (languages and q factors)
+            preg_match_all('/([a-z]{1,8}(-[a-z]{1,8})?)\s*(;\s*q\s*=\s*(1|0\.[0-9]+))?/i',
+                           $_SERVER['HTTP_ACCEPT_LANGUAGE'],
+                           $lang_parse);
+            if (count($lang_parse[1])) {
+                // create a list like "en" => 0.8
+                $accept_locales = array_combine($lang_parse[1], $lang_parse[4]);
+                // set default to 1 for any without q factor
+                foreach ($accept_locales as $accept_locale => $val) {
+                    if ($val === '') $accept_locales[$accept_locale] = 1;
+                }
+                // sort list based on value
+                arsort($accept_locale, SORT_NUMERIC);
+            }
+        }
+        // Do I have any of these locales
+        $intersection = array_values(array_intersect(array_keys($accept_locales), $available_locales));
+        if (! isset($intersection[0])) {
+            // This locale is not available, fall back to en-US
+            $requested_locale = 'en-US';
+        } else {
+            $requested_locale = $intersection[0];
+        }
+    } else {
+        $requested_locale = $_REQUEST['locale'];
+    }
+
     $requested_product = !empty($_REQUEST['product']) ? $_REQUEST['product'] : 'all';
+
+    if ($requested_product != 'all') {
+        $requested_locale = 'all locales';
+    }
 
     echo '<h1>Current locale: ' . $requested_locale . "</h1>\n";
     echo '<div class="list">
