@@ -258,6 +258,16 @@ def main():
         'locale_folder': 'locale',
         'excluded_folders': []
     }
+    products['zippy'] = {
+        'repository_name': 'yogafire',
+        'product_name': 'yogafire',
+        'displayed_name': 'Marketplace Light',
+        'repository_type': 'git',
+        'repository_url': 'https://github.com/mozilla/yogafire',
+        'po_file': 'LC_MESSAGES/messages.po',
+        'locale_folder': 'locale',
+        'excluded_folders': []
+    }
     # Check if repositories exist and pull, if not clone
     for key,product in products.iteritems():
         if os.path.isdir(path + '/' + product['repository_name']):
