@@ -39,9 +39,8 @@ function getRowStyle($current_product) {
     <title>Web Status</title>
     <style type="text/css">
         body {background-color: #FFF; font-family: Arial, Verdana; font-size: 14px; padding: 10px 30px;}
-        p {margin-top: 2px;}
         div.list {background-color: #FAFAFA; padding: 6px; border: 1px solid #555; border-radius: 8px; line-height: 1.7em; font-size: 16px; width: 800px;}
-        table {padding: 0; margin: 0; border-collapse: collapse; color: #333; background: #F3F5F7; margin-top: 20px;}
+        table {padding: 0; margin: 0 0 20px; border-collapse: collapse; color: #333; background: #F3F5F7; margin-top: 20px;}
         table a {color: #3A4856; text-decoration: none; border-bottom: 1px solid #DDD;}
         table a:visited {color: #777;}
         table a:hover {color: #000;}
@@ -60,7 +59,7 @@ function getRowStyle($current_product) {
         table tbody tr.fixed {background: #A5FAB0;}
         table tbody td.number {text-align: right;}
         table tbody tr.error {background-color: #FF5252}
-        p#update {margin: 20px;}
+        p {margin: 5px 20px;}
     </style>
 </head>
 
@@ -118,7 +117,7 @@ function getRowStyle($current_product) {
                     if ($val === '') $accept_locales[$accept_locale] = 1;
                 }
                 // sort list based on value
-                arsort($accept_locale, SORT_NUMERIC);
+                arsort($accept_locales, SORT_NUMERIC);
             }
         }
         // Do I have any of these locales
@@ -196,6 +195,9 @@ function getRowStyle($current_product) {
     <?php
     } else {
         // Display all locales for one product
+        $completed_locales = 0;
+        $total_locales = 0;
+
     ?>
         <h2><?php echo $available_products[$requested_product]; ?></h2>
         <table>
@@ -215,6 +217,11 @@ function getRowStyle($current_product) {
         foreach ($available_locales as $locale_code) {
             if (isset($json_array[$locale_code][$requested_product])) {
                 $current_product = $json_array[$locale_code][$requested_product];
+                if ($current_product['percentage'] == 100) {
+                    $completed_locales++;
+                }
+                $total_locales++;
+
                 $row_style = getRowStyle($current_product);
                 echo "<tr class='{$row_style['class']}' style='{$row_style['style']}'>\n";
                 echo '<th>' . $locale_code . "</th>\n";
@@ -231,11 +238,12 @@ function getRowStyle($current_product) {
             </tbody>
         </table>
     <?php
+        echo "<p>Complete locales: {$completed_locales} (total {$total_locales}).</p>";
     }
     ?>
 
 <?php
-    echo '<p id="update">Last update: ' . date ("Y-m-d H:i", filemtime($file_name)) . ' CET</p>';
+    echo '<p>Last update: ' . date ("Y-m-d H:i", filemtime($file_name)) . ' CET</p>';
 ?>
 </body>
 </html>
