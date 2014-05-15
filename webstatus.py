@@ -4,7 +4,7 @@ import json
 import os
 import re
 import subprocess
-from time import localtime, strftime
+from time import strftime, localtime
 
 def main():
 
@@ -406,6 +406,11 @@ def main():
                 json_data[pretty_locale][product['product_name']] = {}
                 json_data[pretty_locale][product['product_name']] = status_record
 
+
+    # Record some metadata
+    json_data["metadata"] = {
+        'creation_date': strftime("%Y-%m-%d %H:%M", localtime())
+    }
 
     # Write back updated json data
     json_file = open(json_filename, 'w')

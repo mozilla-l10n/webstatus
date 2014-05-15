@@ -80,6 +80,9 @@ function getRowStyle($current_product) {
         foreach (array_keys($json_array) as $locale_code) {
             $available_locales[$locale_code] = $locale_code;
         }
+        // Ignore metadata
+        unset($available_locales['metadata']);
+
         $available_products = array();
         $available_products['all'] = ' all products';
         foreach ($available_locales as $locale_code) {
@@ -243,7 +246,7 @@ function getRowStyle($current_product) {
     ?>
 
 <?php
-    echo '<p>Last update: ' . date ("Y-m-d H:i", filemtime($file_name)) . ' CET</p>';
+    echo '<p>Last update: ' . $json_array['metadata']['creation_date'] . ' CET</p>';
 ?>
 </body>
 </html>
