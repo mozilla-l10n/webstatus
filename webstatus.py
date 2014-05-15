@@ -409,7 +409,7 @@ def main():
 
     # Record some metadata
     json_data["metadata"] = {
-        'creation_date': strftime("%Y-%m-%d %H:%M", localtime())
+        'creation_date': strftime("%Y-%m-%d %H:%M %Z", localtime())
     }
 
     # Write back updated json data

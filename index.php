@@ -246,7 +246,7 @@ function getRowStyle($current_product) {
     ?>
 
 <?php
-    echo '<p>Last update: ' . $json_array['metadata']['creation_date'] . ' CET</p>';
+    echo '<p>Last update: ' . $json_array['metadata']['creation_date'] . '</p>';
 ?>
 </body>
 </html>
