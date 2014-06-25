@@ -208,6 +208,16 @@ def main():
         'locale_folder': 'locale',
         'excluded_folders': []
     }
+    products['spartacus'] = {
+        'repository_name': 'spartacus',
+        'product_name': 'spartacus',
+        'displayed_name': 'Marketplace Payments Front End',
+        'repository_type': 'git',
+        'repository_url': 'https://github.com/mozilla/spartacus',
+        'po_file': 'LC_MESSAGES/messages.po',
+        'locale_folder': 'locale',
+        'excluded_folders': []
+    }
     products['stats'] = {
         'repository_name': 'marketplace-stats',
         'product_name': 'marketplace-stats',

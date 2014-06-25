@@ -8,6 +8,7 @@ $json_array = (array) json_decode(file_get_contents($json_filename), true);
 $products = [
     'fireplace'         => '',
     'webpay'            => '',
+    'spartacus'         => '',
     'zippy'             => '',
     'zamboni'           => '',
     'marketplace-stats' => '',
