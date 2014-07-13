@@ -275,35 +275,47 @@ def main():
             print 'Updating repository: ' + product['displayed_name']
             if (product['repository_type'] == 'git'):
                 # git repository
-                cmd_status = subprocess.check_output(
-                    'git pull',
-                    stderr = subprocess.STDOUT,
-                    shell = True)
-                print cmd_status
+                try:
+                    cmd_status = subprocess.check_output(
+                        'git pull',
+                        stderr = subprocess.STDOUT,
+                        shell = True)
+                    print cmd_status
+                except Exception as e:
+                    print e
             else:
                 # svn repository
-                cmd_status = subprocess.check_output(
-                    'svn up',
-                    stderr = subprocess.STDOUT,
-                    shell = True)
-                print cmd_status
+                try:
+                    cmd_status = subprocess.check_output(
+                        'svn up',
+                        stderr = subprocess.STDOUT,
+                        shell = True)
+                    print cmd_status
+                except Exception as e:
+                    print e
         else:
             os.chdir(path)
             print 'Cloning repository: ' + product['repository_url']
             if (product['repository_type'] == 'git'):
                 # git repository
-                cmd_status = subprocess.check_output(
-                    'git clone ' + product['repository_url'],
-                    stderr = subprocess.STDOUT,
-                    shell = True)
-                print cmd_status
+                try:
+                    cmd_status = subprocess.check_output(
+                        'git clone ' + product['repository_url'],
+                        stderr = subprocess.STDOUT,
+                        shell = True)
+                    print cmd_status
+                except Exception as e:
+                    print e
             else:
                 # svn repository
-                cmd_status = subprocess.check_output(
-                    'svn co ' + product['repository_url'] + ' ' + product['product_name'],
-                    stderr = subprocess.STDOUT,
-                    shell = True)
-                print cmd_status
+                try:
+                    cmd_status = subprocess.check_output(
+                        'svn co ' + product['repository_url'] + ' ' + product['product_name'],
+                        stderr = subprocess.STDOUT,
+                        shell = True)
+                    print cmd_status
+                except Exception as e:
+                    print e
 
     for key,product in products.iteritems():
         product_folder = os.path.join(path, product['repository_name'], product['locale_folder'])
