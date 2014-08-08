@@ -7,8 +7,8 @@ $json_array = (array) json_decode(file_get_contents($json_filename), true);
 
 $products = [
     'fireplace'         => '',
-    'webpay'            => '',
     'spartacus'         => '',
+    'webpay'            => '',
     'zippy'             => '',
     'zamboni'           => '',
     'marketplace-stats' => '',
@@ -16,11 +16,12 @@ $products = [
     'rocketfuel'        => '',
 ];
 
-$excluded_locales = ['an', 'br', 'db-LB', 'dsb', 'en', 'en-GB', 'en-ZA', 'es-AR',
-                    'es-CL', 'es-ES', 'es-MX', 'fy', 'ga', 'gu-IN', 'hsb',
-                    'hy-AM', 'is', 'ja-JP-mac', 'kk', 'lv', 'mai',
-                    'mr', 'nb', 'nn-NO', 'pa-IN', 'pt', 'rm', 'son',
-                    'sr-LATN', 'sv', 'sw', 'xh', 'zu', 'metadata'];
+$excluded_locales = ['an', 'br', 'db-LB', 'dsb', 'en', 'en-GB', 'en-US',
+                     'en-ZA', 'es-AR', 'es-CL', 'es-ES', 'es-MX', 'fy',
+                     'ga', 'gu-IN', 'hsb', 'hy-AM', 'is', 'ja-JP-mac',
+                     'kk', 'lv', 'mai', 'mr', 'nb', 'nn-NO', 'pa-IN',
+                     'pt', 'rm', 'son', 'sr-LATN', 'sv', 'sw', 'xh',
+                     'zu', 'metadata'];
 
 // Extract locales
 $locales = [];
