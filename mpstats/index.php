@@ -6,6 +6,7 @@ $json_filename = '/home/flod/public_html/webstatus/webstatus.json';
 $json_array = (array) json_decode(file_get_contents($json_filename), true);
 
 $products = [
+    'discoplace'        => '',
     'fireplace'         => '',
     'spartacus'         => '',
     'webpay'            => '',

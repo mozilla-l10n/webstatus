@@ -59,6 +59,16 @@
         "locale_folder": "locale",
         "excluded_folders": []
     },
+    "discoplace": {
+        "repository_name": "discoplace",
+        "product_name": "discoplace",
+        "displayed_name": "about:apps",
+        "repository_type": "git",
+        "repository_url": "https://github.com/mozilla/discoplace",
+        "po_file": "LC_MESSAGES/messages.po",
+        "locale_folder": "locale",
+        "excluded_folders": []
+    },
     "firefoxflicks": {
         "repository_name": "firefoxflicks",
         "product_name": "firefoxflicks",
@@ -192,7 +202,7 @@
     "spartacus": {
         "repository_name": "spartacus",
         "product_name": "spartacus",
-        "displayed_name": "Marketplace Payments Front End",
+        "displayed_name": "Payments Front End",
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla/spartacus",
         "po_file": "LC_MESSAGES/messages.po",
