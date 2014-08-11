@@ -4,6 +4,7 @@ import json
 import os
 import re
 import subprocess
+import sys
 from time import strftime, localtime
 
 def main():
@@ -16,7 +17,7 @@ def main():
     ignored_folders = ['dbg', 'templates', '.svn', '.git']
 
     # Read products from external Json file
-    sources_file = open('sources.json')
+    sources_file = open(os.path.join(sys.path[0], 'sources.json'))
     products = json.load(sources_file)
 
     # Check if repositories exist and pull, if not clone
