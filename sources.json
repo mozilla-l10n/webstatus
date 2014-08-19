@@ -199,6 +199,16 @@
         "locale_folder": "locale",
         "excluded_folders": []
     },
+    "socialapi-directory": {
+        "repository_name": "socialapi-directory",
+        "product_name": "socialapi-directory",
+        "displayed_name": "Social API Directory",
+        "repository_type": "git",
+        "repository_url": "https://github.com/mixedpuppy/socialapi-directory",
+        "po_file": "LC_MESSAGES/messages.po",
+        "locale_folder": "translations",
+        "excluded_folders": []
+    },
     "spartacus": {
         "repository_name": "spartacus",
         "product_name": "spartacus",
