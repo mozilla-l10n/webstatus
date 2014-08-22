@@ -29,7 +29,6 @@ function getRowStyle($current_product) {
     ];
 }
 
-
 ?>
 
 <!DOCTYPE html>
@@ -73,17 +72,18 @@ function getRowStyle($current_product) {
     // Read the json file
     $json_array = (array) json_decode(file_get_contents($file_name), true);
 
-    // Check how old the cache file is
+    // Check how old the cache file are for products and locales
     if ((! file_exists($file_cache)) || (time() - filemtime($file_cache) >= 60*60)) {
         // File is older than 1 hour or doesn't exist, regenerate arrays and save it
-        $available_locales = array();
+        $available_locales = [];
+        $ignored_locales = ['ja-JP-mac', 'metadata', 'zh-Hant-TW'];
         foreach (array_keys($json_array) as $locale_code) {
-            $available_locales[$locale_code] = $locale_code;
+            if (! in_array($locale_code, $ignored_locales)) {
+                $available_locales[$locale_code] = $locale_code;    
+            }            
         }
-        // Ignore metadata
-        unset($available_locales['metadata']);
 
-        $available_products = array();
+        $available_products = [];
         $available_products['all'] = ' all products';
         foreach ($available_locales as $locale_code) {
             foreach (array_keys($json_array[$locale_code]) as $product_code) {
@@ -108,18 +108,20 @@ function getRowStyle($current_product) {
         $accept_locales = [];
         // Source: http://www.thefutureoftheweb.com/blog/use-accept-language-header
         if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
-            // break up string into pieces (languages and q factors)
+            // Break up string into pieces (languages and q factors)
             preg_match_all('/([a-z]{1,8}(-[a-z]{1,8})?)\s*(;\s*q\s*=\s*(1|0\.[0-9]+))?/i',
                            $_SERVER['HTTP_ACCEPT_LANGUAGE'],
                            $lang_parse);
             if (count($lang_parse[1])) {
-                // create a list like "en" => 0.8
+                // Create a list like "en" => 0.8
                 $accept_locales = array_combine($lang_parse[1], $lang_parse[4]);
-                // set default to 1 for any without q factor
+                // Set default to 1 for any without q factor
                 foreach ($accept_locales as $accept_locale => $val) {
-                    if ($val === '') $accept_locales[$accept_locale] = 1;
+                    if ($val === '') {
+                        $accept_locales[$accept_locale] = 1;
+                    }
                 }
-                // sort list based on value
+                // Sort list based on value
                 arsort($accept_locales, SORT_NUMERIC);
             }
         }
@@ -227,14 +229,14 @@ function getRowStyle($current_product) {
 
                 $row_style = getRowStyle($current_product);
                 echo "<tr class='{$row_style['class']}' style='{$row_style['style']}'>\n";
-                echo '<th>' . $locale_code . "</th>\n";
-                echo '      <td class="number">' . $current_product['percentage'] . '</td>';
-                echo '      <td class="number">' . $current_product['translated'] . '</td>';
-                echo '      <td class="number">' . $current_product['untranslated'] . '</td>';
-                echo '      <td class="number">' . $current_product['fuzzy'] . '</td>';
-                echo '      <td class="number">' . $current_product['total'] . '</td>';
-                echo '      <td>' . $current_product['error_message'] . '</td>';
-                echo '</tr>';
+                echo "<th>{$locale_code}</th>\n";
+                echo "      <td class='number'>{$current_product['percentage']}</td>";
+                echo "      <td class='number'>{$current_product['translated']}</td>";
+                echo "      <td class='number'>{$current_product['untranslated']}</td>";
+                echo "      <td class='number'>{$current_product['fuzzy']}</td>";
+                echo "      <td class='number'>{$current_product['total']}</td>";
+                echo "      <td>{$current_product['error_message']}</td>";
+                echo "</tr>\n";
             }
         }
         ?>
@@ -246,7 +248,7 @@ function getRowStyle($current_product) {
     ?>
 
 <?php
-    echo '<p>Last update: ' . $json_array['metadata']['creation_date'] . '</p>';
+    echo "<p>Last update: {$json_array['metadata']['creation_date']}</p>";
 ?>
 </body>
 </html>

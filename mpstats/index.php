@@ -22,7 +22,7 @@ $excluded_locales = ['an', 'br', 'db-LB', 'dsb', 'en', 'en-GB', 'en-US',
                      'ga', 'gu-IN', 'hsb', 'hy-AM', 'is', 'ja-JP-mac',
                      'kk', 'lv', 'mai', 'mr', 'nb', 'nn-NO', 'pa-IN',
                      'pt', 'rm', 'son', 'sr-LATN', 'sv', 'sw', 'xh',
-                     'zu', 'metadata'];
+                     'zh-Hant-TW', 'zu', 'metadata'];
 
 // Extract locales
 $locales = [];
