@@ -36,51 +36,28 @@ function getRowStyle($current_product) {
 <head>
     <meta charset=utf-8>
     <title>Web Status</title>
-    <style type="text/css">
-        body {background-color: #FFF; font-family: Arial, Verdana; font-size: 14px; padding: 10px 30px;}
-        div.list {background-color: #FAFAFA; padding: 6px; border: 1px solid #555; border-radius: 8px; line-height: 1.7em; font-size: 16px; width: 800px;}
-        table {padding: 0; margin: 0 0 20px; border-collapse: collapse; color: #333; background: #F3F5F7; margin-top: 20px;}
-        table a {color: #3A4856; text-decoration: none; border-bottom: 1px solid #DDD;}
-        table a:visited {color: #777;}
-        table a:hover {color: #000;}
-        table thead th {background: #EAECEE; padding: 15px 10px; color: #000; text-align: center; font-weight: bold; vertical-align: top;}
-        table tr th {background: #EAECEE;}
-        table td.firstsection {padding-left: 40px; border-left: 1px solid #DDD;}
-        table td.lastsection {padding-right: 40px; border-right: 1px solid #DDD;}
-        table .lastsection:last-child {border-right: 0};
-        table tbody, table thead {border-left: 1px solid #DDD; border-right: 1px solid #DDD;}
-        table tbody {border-bottom: 1px solid #DDD;}
-        table tbody td, table tbody th {padding: 5px 20px; text-align: left;}
-        table tbody td {border-bottom: 1px solid #DDD}
-        table tbody tr {background: #F5F5F5;}
-        table tbody tr.odd {background: #F0F2F4;}
-        table tbody tr:hover {background: #EAECEE; color: #111;}
-        table tbody tr.fixed {background: #A5FAB0;}
-        table tbody td.number {text-align: right;}
-        table tbody tr.error {background-color: #FF5252}
-        p {margin: 5px 20px;}
-    </style>
+    <link rel="stylesheet" href="css/webstatus.css" type="text/css" media="all" />
 </head>
 
 <body>
 
 <?php
     date_default_timezone_set('Europe/Rome');
-    $file_name = 'webstatus.json';
-    $file_cache = 'details.inc';
+    $file_name = '../webstatus.json';
+    $file_cache = 'cache/details.inc';
 
     // Read the json file
     $json_array = (array) json_decode(file_get_contents($file_name), true);
 
-    // Check how old the cache file are for products and locales
+    // Check how old the cache files are for products and locales
     if ((! file_exists($file_cache)) || (time() - filemtime($file_cache) >= 60*60)) {
         // File is older than 1 hour or doesn't exist, regenerate arrays and save it
         $available_locales = [];
         $ignored_locales = ['ja-JP-mac', 'metadata', 'zh-Hant-TW'];
         foreach (array_keys($json_array) as $locale_code) {
             if (! in_array($locale_code, $ignored_locales)) {
-                $available_locales[$locale_code] = $locale_code;    
-            }            
+                $available_locales[$locale_code] = $locale_code;
+            }
         }
 
         $available_products = [];

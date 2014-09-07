@@ -1,0 +1,13 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Redirect CSS files
+    RewriteCond %{REQUEST_URI} \.css$
+    RewriteRule css/(.*).css web/css/$1.css [L]
+
+    # Redirect mpstats
+    RewriteRule mpstats web/mpstats.php [L]
+
+    RewriteCond %{REQUEST_URI} !\.json$
+    RewriteRule (.*)  web/webstatus.php [QSA]
+</IfModule>

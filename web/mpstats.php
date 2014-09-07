@@ -2,7 +2,7 @@
 
 date_default_timezone_set('Europe/Rome');
 
-$json_filename = '/home/flod/public_html/webstatus/webstatus.json';
+$json_filename = '../webstatus.json';
 $json_array = (array) json_decode(file_get_contents($json_filename), true);
 
 $products = [
@@ -65,7 +65,7 @@ function getRowStyle($current_product) {
 <head>
     <meta charset=utf-8>
     <title>Marketplace Status</title>
-    <link rel="stylesheet" href="style.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="css/mpstats.css" type="text/css" media="all" />
 </head>
 
 <body>
