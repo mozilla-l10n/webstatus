@@ -3,8 +3,8 @@ Web Status
 
 Python script and PHP Web views used to analyze Web projects based on Gettext (.po) files.
 * ```script/webstatus.py``` generates a JSON file for all listed projects.
-* ```web/webstatus.php``` is used to display the content of the JSON file, per project or per locale.
-* ```web/mpstats.php``` is used to display projects related to Marketplace for all locales in a single page.
+* ```index.php``` is used to display the content of the JSON file, per project or per locale.
+* ```mpstats/index.php``` is used to display projects related to Marketplace for all locales in a single page.
 
 Prerequisites:
 * Copy ```config/config.ini-dist``` as ```config/config.ini```, adapting the path to your system. This is the path used to store all local clones (currently about 1 GB of space required).

@@ -43,7 +43,7 @@ function getRowStyle($current_product) {
 
 <?php
     date_default_timezone_set('Europe/Rome');
-    $file_name = '../webstatus.json';
+    $file_name = 'webstatus.json';
     $file_cache = 'cache/details.inc';
 
     // Read the json file

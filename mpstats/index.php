@@ -65,7 +65,7 @@ function getRowStyle($current_product) {
 <head>
     <meta charset=utf-8>
     <title>Marketplace Status</title>
-    <link rel="stylesheet" href="css/mpstats.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="../css/mpstats.css" type="text/css" media="all" />
 </head>
 
 <body>
@@ -107,7 +107,7 @@ function getRowStyle($current_product) {
     }
     $content .= "   </tbody>\n";
     $content .= " </table>\n";
-    $content .= "<p id='update'>Last update: " . date ("Y-m-d H:i", filemtime($json_filename)) . " CET</p>\n";
+    $content .= "<p id='update'>Last update: {$json_array['metadata']['creation_date']}</p>";
     echo $content;
 ?>
 </body>
