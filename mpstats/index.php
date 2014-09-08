@@ -82,7 +82,7 @@ function getRowStyle($current_product) {
     $content .= "       <th>Locale</th>\n";
     for ($i=0; $i < count($products); $i++) {
         $content .= "       <th class='firstsection'>trans.</th>\n";
-        $content .= "       <th>untrans.</th>\n";
+        $content .= "       <th>untr.</th>\n";
         $content .= "       <th class='lastsection'>%</th>\n";
     }
     $content .= "     </tr>\n";

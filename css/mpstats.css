@@ -54,11 +54,12 @@ table tr th {
 }
 
 table .firstsection {
-    padding-left: 20px;
+    padding-left: 10px;
     border-left: 1px solid #fff;
 }
 
 table .lastsection {
+    padding-right: 10px;
     border-right: 1px solid #fff;
 }
 
@@ -76,10 +77,11 @@ table tbody {
     border-bottom: 1px solid #fff;
 }
 
-table tbody td, table tbody th {
+table tbody td,
+table tbody th {
     padding: 5px;
     text-align: right;
-    min-width: 25px;
+    min-width: 30px;
 }
 
 table tbody td {
