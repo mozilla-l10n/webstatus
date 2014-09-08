@@ -9,7 +9,7 @@ p {
     margin-top: 2px;
 }
 
-#update {
+.lastupdate {
     margin-top: 10px;
 }
 
@@ -59,7 +59,6 @@ table .firstsection {
 }
 
 table .lastsection {
-    padding: 0 10px;
     border-right: 1px solid #fff;
 }
 

@@ -107,7 +107,7 @@ function getRowStyle($current_product) {
     }
     $content .= "   </tbody>\n";
     $content .= " </table>\n";
-    $content .= "<p id='update'>Last update: {$json_array['metadata']['creation_date']}</p>";
+    $content .= "<p class='lastupdate'>Last update: {$json_array['metadata']['creation_date']}</p>";
     echo $content;
 ?>
 </body>
