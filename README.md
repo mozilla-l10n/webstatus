@@ -1,11 +1,27 @@
 Web Status
 =========
 
-This script is used to generate a Json file with the status of external Web projects based on gettext.
-* webstatus.py generates the actual Json file.
-* index.php can be used to view the content of the Json file (per project or per locale).
+Python script and PHP Web views used to analyze Web projects based on Gettext (.po) files.
+* ```script/webstatus.py``` generates a JSON file for all listed projects.
+* ```web/webstatus.php``` is used to display the content of the JSON file, per project or per locale.
+* ```web/mpstats.php``` is used to display projects related to Marketplace for all locales in a single page.
 
-There's a running instance of both available at http://l10n.mozilla-community.org/~flod/webstatus/ (updated twice a day).
+Prerequisites:
+* Copy ```config/config.ini-dist``` as ```config/config.ini```, adapting the path to your system. This is the path used to store all local clones (currently about 1 GB of space required).
+* You need ```git```, ```svn``` and ```msgfmt```(included in package *gettext*) on your system.
+
+## Available URLS
+```
+/
+```
+Main Web Status view.
+
+```
+/mpstats
+```
+Marketplace Stats view.
+
+See a running instance at http://l10n.mozilla-community.org/~flod/webstatus/
 
 ## Structure of the Json file
 
