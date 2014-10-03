@@ -239,6 +239,26 @@
         "locale_folder": "",
         "excluded_folders": ["compendia", "xx_testing"]
     },
+    "sumo-js": {
+        "repository_name": "sumo-js",
+        "product_name": "sumo-js",
+        "displayed_name": "SUMO (js)",
+        "repository_type": "svn",
+        "repository_url": "http://svn.mozilla.org/projects/sumo/locales",
+        "po_file": "LC_MESSAGES/javascript.po",
+        "locale_folder": "",
+        "excluded_folders": ["compendia", "xx_testing"]
+    },
+    "sumo-yaocho": {
+        "repository_name": "sumo-yaocho",
+        "product_name": "sumo-yaocho",
+        "displayed_name": "SUMO (yaocho)",
+        "repository_type": "svn",
+        "repository_url": "http://svn.mozilla.org/projects/sumo/locales",
+        "po_file": "LC_MESSAGES/yaocho.po",
+        "locale_folder": "",
+        "excluded_folders": ["compendia", "xx_testing"]
+    },
     "webpay": {
         "repository_name": "webpay",
         "product_name": "webpay",
