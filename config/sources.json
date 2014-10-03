@@ -229,6 +229,16 @@
         "locale_folder": "locale",
         "excluded_folders": []
     },
+    "sumo": {
+        "repository_name": "sumo",
+        "product_name": "sumo",
+        "displayed_name": "SUMO",
+        "repository_type": "svn",
+        "repository_url": "http://svn.mozilla.org/projects/sumo/locales",
+        "po_file": "LC_MESSAGES/messages.po",
+        "locale_folder": "",
+        "excluded_folders": ["compendia", "xx_testing"]
+    },
     "webpay": {
         "repository_name": "webpay",
         "product_name": "webpay",
