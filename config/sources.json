@@ -189,16 +189,6 @@
         "locale_folder": "locale",
         "excluded_folders": []
     },
-    "rocketfuel": {
-        "repository_name": "rocketfuel",
-        "product_name": "rocketfuel",
-        "displayed_name": "RocketFuel",
-        "repository_type": "git",
-        "repository_url": "https://github.com/mozilla/rocketfuel",
-        "po_file": "LC_MESSAGES/messages.po",
-        "locale_folder": "locale",
-        "excluded_folders": []
-    },
     "socialapi-directory": {
         "repository_name": "socialapi-directory",
         "product_name": "socialapi-directory",
@@ -258,16 +248,6 @@
         "po_file": "LC_MESSAGES/yaocho.po",
         "locale_folder": "",
         "excluded_folders": ["compendia", "xx_testing"]
-    },
-    "webpay": {
-        "repository_name": "webpay",
-        "product_name": "webpay",
-        "displayed_name": "WebPay",
-        "repository_type": "git",
-        "repository_url": "https://github.com/mozilla/webpay",
-        "po_file": "LC_MESSAGES/messages.po",
-        "locale_folder": "locale",
-        "excluded_folders": []
     },
     "zamboni": {
         "repository_name": "zamboni",
