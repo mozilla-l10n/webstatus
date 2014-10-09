@@ -9,12 +9,10 @@ $products = [
     'discoplace'        => '',
     'fireplace'         => '',
     'spartacus'         => '',
-    'webpay'            => '',
     'zippy'             => '',
     'zamboni'           => '',
     'marketplace-stats' => '',
     'commbadge'         => '',
-    'rocketfuel'        => '',
 ];
 
 $excluded_locales = ['an', 'br', 'db-LB', 'dsb', 'en', 'en-GB', 'en-US',
