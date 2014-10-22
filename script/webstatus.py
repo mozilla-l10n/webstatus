@@ -128,7 +128,7 @@ def main():
             os.chdir(storage_path)
             clone_repo(product)
 
-    ignored_folders = ['dbg', 'templates', '.svn', '.g(config_file)it']
+    ignored_folders = ['dbg', 'db_LB', 'templates', '.svn', '.g(config_file)it']
     for key,product in products.iteritems():
         product_folder = os.path.join(
                             storage_path,
@@ -177,26 +177,32 @@ def main():
                 error_message = 'File does not exist.\n'
 
             if not error_status:
-                po_stats_cmd = os.path.join(webstatus_path, 'script', 'postats.sh')
-                string_stats_json = subprocess.check_output(
-                        [po_stats_cmd, file_path],
-                        stderr = subprocess.STDOUT,
-                        shell = False)
+                try:
+                    po_stats_cmd = os.path.join(webstatus_path, 'script', 'postats.sh')
+                    string_stats_json = subprocess.check_output(
+                            [po_stats_cmd, file_path],
+                            stderr = subprocess.STDOUT,
+                            shell = False)
 
-                string_stats = json.load(StringIO(string_stats_json))
-                string_translated = string_stats['translated']
-                string_untranslated = string_stats['untranslated']
-                string_fuzzy = string_stats['fuzzy']
+                    string_stats = json.load(StringIO(string_stats_json))
+                    string_translated = string_stats['translated']
+                    string_untranslated = string_stats['untranslated']
+                    string_fuzzy = string_stats['fuzzy']
 
-                string_total = string_translated + string_untranslated + string_fuzzy
-                if (string_untranslated == 0) & (string_fuzzy == 0):
-                    # No untranslated or fuzzy strings, locale is complete
-                    complete = True
-                    percentage = 100
-                else:
-                    # Need to calculate the level of completeness
+                    string_total = string_translated + string_untranslated + string_fuzzy
+                    if (string_untranslated == 0) & (string_fuzzy == 0):
+                        # No untranslated or fuzzy strings, locale is complete
+                        complete = True
+                        percentage = 100
+                    else:
+                        # Need to calculate the level of completeness
+                        complete = False
+                        percentage = round((float(string_translated)/string_total) * 100, 1)
+                except Exception as e:
+                    error_status = True
+                    string_total = 0
                     complete = False
-                    percentage = round((float(string_translated)/string_total) * 100, 1)
+                    error_message = 'Error extracting stats with msgattrib'
 
             status_record = {
                 'name': product['displayed_name'],
