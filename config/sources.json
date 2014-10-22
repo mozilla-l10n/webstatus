@@ -77,7 +77,7 @@
         "repository_url": "https://github.com/mozilla-services/FindMyDevice-l10n",
         "po_file": "LC_MESSAGES/client.po",
         "locale_folder": "locale",
-        "excluded_folders": ["db-LB"]
+        "excluded_folders": []
     },
     "findmydevice-server": {
         "repository_name": "FindMyDevice-l10n",
@@ -87,7 +87,7 @@
         "repository_url": "https://github.com/mozilla-services/FindMyDevice-l10n",
         "po_file": "LC_MESSAGES/server.po",
         "locale_folder": "locale",
-        "excluded_folders": ["db-LB"]
+        "excluded_folders": []
     },
     "firefoxflicks": {
         "repository_name": "firefoxflicks",
