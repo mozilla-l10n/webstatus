@@ -69,6 +69,26 @@
         "locale_folder": "locale",
         "excluded_folders": []
     },
+    "findmydevice-client": {
+        "repository_name": "FindMyDevice-l10n",
+        "product_name": "findmydevice-client",
+        "displayed_name": "Find My Device (client)",
+        "repository_type": "git",
+        "repository_url": "https://github.com/mozilla-services/FindMyDevice-l10n",
+        "po_file": "LC_MESSAGES/client.po",
+        "locale_folder": "locale",
+        "excluded_folders": ["db-LB"]
+    },
+    "findmydevice-server": {
+        "repository_name": "FindMyDevice-l10n",
+        "product_name": "findmydevice-server",
+        "displayed_name": "Find My Device (server)",
+        "repository_type": "git",
+        "repository_url": "https://github.com/mozilla-services/FindMyDevice-l10n",
+        "po_file": "LC_MESSAGES/server.po",
+        "locale_folder": "locale",
+        "excluded_folders": ["db-LB"]
+    },
     "firefoxflicks": {
         "repository_name": "firefoxflicks",
         "product_name": "firefoxflicks",
