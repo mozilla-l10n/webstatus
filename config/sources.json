@@ -129,16 +129,6 @@
         "locale_folder": "locale",
         "excluded_folders": ["linux", "osx", "win32"]
     },
-    "glow": {
-        "repository_name": "glow",
-        "product_name": "glow",
-        "displayed_name": "Glow",
-        "repository_type": "svn",
-        "repository_url": "http://svn.mozilla.org/projects/l10n-misc/trunk/glow2014/",
-        "po_file": "LC_MESSAGES/django.po",
-        "locale_folder": "locale",
-        "excluded_folders": []
-    },
     "input": {
         "repository_name": "input",
         "product_name": "input",
