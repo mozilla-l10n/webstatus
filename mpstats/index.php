@@ -38,7 +38,6 @@ foreach ($json_array['en-US'] as $code => $product) {
         $products[$code] = $product['name'];
     }
 }
-// asort($products);
 
 function getRowStyle($current_product) {
     $perc = $current_product['percentage'];
@@ -58,6 +57,8 @@ function getRowStyle($current_product) {
     $stylerow = "style='{$stylerow}'";
     return $stylerow;
 }
+
+$columns_number = 1 + 3 * count($products);
 ?>
 
 <!DOCTYPE html>
@@ -66,6 +67,36 @@ function getRowStyle($current_product) {
     <meta charset=utf-8>
     <title>Marketplace Status</title>
     <link rel="stylesheet" href="../css/mpstats.css" type="text/css" media="all" />
+    <script src="../js/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            // Associate click handlers to anchors
+            $('.locale_anchor').click(function (e) {
+                e.preventDefault;
+                // Remove other selected rows and spacers
+                $('tr').removeClass('selected');
+                $('.spacer').remove();
+
+                // Add empty row before and after this element
+                var row = '#row_' + e.target.id;
+                $(row).before('<tr class="spacer top" colspan="<?php echo $columns_number;?>">&nbsp;</tr>');
+                $(row).after('<tr class="spacer bottom" colspan="<?php echo $columns_number;?>">&nbsp;</tr>');
+                // Add selected class to this row
+                $(row).addClass('selected');
+                // Scroll slight above the anchor
+                var y = $(window).scrollTop();
+                $("html, body").animate(
+                    {
+                        scrollTop: y - 150
+                    }, 500);
+            });
+
+            var anchor = location.hash.substring(1);
+            if (anchor !== '') {
+                $('#' + anchor).click();
+            }
+        });
+    </script>
 </head>
 
 <body>
@@ -89,8 +120,8 @@ function getRowStyle($current_product) {
     $content .= "   </thead>\n";
     $content .= "   <tbody>\n";
     foreach ($locales as $locale) {
-        $content .= "     <tr>\n";
-        $content .= "       <th class='rowheader'><span>{$locale}</span></th>\n";
+        $content .= "     <tr id='row_{$locale}'>\n";
+        $content .= "       <th class='rowheader'><a href='#{$locale}' id='{$locale}' class='locale_anchor'>{$locale}</a></th>\n";
         foreach ($products as $code => $name) {
             if (array_key_exists($code, $json_array[$locale])) {
                 $current_product = $json_array[$locale][$code];

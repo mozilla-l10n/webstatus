@@ -25,11 +25,7 @@ table {
 table a {
     color: #3a4856;
     text-decoration: none;
-    border-bottom: 1px solid #fff;
-}
-
-table a:visited {
-    color: #777;
+    border-bottom: 1px dotted #999;
 }
 
 table a:hover {
@@ -49,8 +45,22 @@ table tr th {
     background: #eaecee;
 }
 
-.rowheader span {
-    padding-right: 5px;
+table .selected {
+    box-shadow: 3px 4px 5px #999;
+}
+
+table .spacer.top {
+    height: 6px;
+    background-color: #fff;
+}
+
+table .spacer.bottom {
+    height: 9px;
+    background-color: #fff;
+}
+
+.rowheader a {
+    margin-right: 5px;
 }
 
 table .firstsection {
@@ -73,10 +83,6 @@ table thead {
     border-right: 1px solid #fff;
 }
 
-table tbody {
-    border-bottom: 1px solid #fff;
-}
-
 table tbody td,
 table tbody th {
     padding: 5px;
@@ -84,12 +90,9 @@ table tbody th {
     min-width: 30px;
 }
 
-table tbody td {
-border-bottom: 1px solid #FFF;
-}
-
 table tbody tr {
     background: #f5f5f5;
+    border-bottom: 1px solid #FFF;
 }
 
 table tbody .odd {
