@@ -10,6 +10,7 @@ p {
 }
 
 .list {
+    box-sizing: border-box;
     background-color: #fafafa;
     padding: 6px;
     border: 1px solid #555;
