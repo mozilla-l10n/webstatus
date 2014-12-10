@@ -59,16 +59,6 @@
         "locale_folder": "locale",
         "excluded_folders": []
     },
-    "discoplace": {
-        "repository_name": "discoplace",
-        "product_name": "discoplace",
-        "displayed_name": "About:apps",
-        "repository_type": "git",
-        "repository_url": "https://github.com/mozilla/discoplace",
-        "po_file": "LC_MESSAGES/messages.po",
-        "locale_folder": "locale",
-        "excluded_folders": []
-    },
     "findmydevice-client": {
         "repository_name": "FindMyDevice-l10n",
         "product_name": "findmydevice-client",
