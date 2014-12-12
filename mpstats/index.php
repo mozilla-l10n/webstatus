@@ -19,7 +19,7 @@ $excluded_locales = ['an', 'ak', 'az', 'br', 'db-LB', 'dsb', 'en', 'en-GB',
                      'fur', 'fy', 'ga', 'gu-IN', 'hsb', 'hy-AM', 'is',
                      'ja-JP-mac', 'kk', 'lv', 'mai', 'mr', 'nb', 'nn-NO',
                      'no', 'oc', 'pa-IN', 'pt', 'rm', 'rw', 'sah', 'son',
-                     'sr-CYRL', 'sr-LATN', 'sv', 'sw', 'ta-LK',
+                     'sr-Cyrl', 'sr-CYRL', 'sr-LATN', 'sv', 'sw', 'ta-LK',
                      'zh-Hant-TW', 'metadata'];
 
 // Extract locales
