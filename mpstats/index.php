@@ -14,13 +14,14 @@ $products = [
     'commbadge'         => '',
 ];
 
-$excluded_locales = ['an', 'ak', 'az', 'br', 'db-LB', 'en', 'en-GB',
-                     'en-US', 'en-ZA', 'es-AR', 'es-CL', 'es-ES', 'es-MX',
-                     'fur', 'fy', 'ga', 'gu-IN', 'hy-AM', 'is',
-                     'ja-JP-mac', 'kk', 'lv', 'mai', 'mr', 'nb', 'nn-NO',
-                     'no', 'oc', 'pa-IN', 'pt', 'rm', 'rw', 'sah', 'son',
-                     'sr-Cyrl', 'sr-CYRL', 'sr-LATN', 'sv', 'sw', 'ta-LK',
-                     'zh-Hant-TW', 'metadata'];
+$excluded_locales = [
+    'ak', 'an', 'az', 'br', 'db-LB', 'en', 'en-GB', 'en-US', 'en-ZA',
+    'es-AR', 'es-CL', 'es-ES', 'es-MX', 'fur', 'fy', 'ga', 'gu-IN',
+    'hy-AM', 'is', 'ja-JP-mac', 'kk', 'lv', 'mai', 'metadata',
+    'mr', 'nb', 'nn-NO', 'no', 'oc', 'pa-IN', 'pt', 'rm', 'rw',
+    'sah', 'son', 'sr-Cyrl', 'sr-CYRL', 'sr-LATN', 'sv', 'ta-LK',
+    'zh-Hant-TW'
+];
 
 // Extract locales
 $locales = [];
