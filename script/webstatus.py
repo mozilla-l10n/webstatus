@@ -23,7 +23,8 @@ def check_environment(main_path, settings):
             parser.readfp(open(config_file))
             settings['storage_path'] = parser.get('config', 'storage_path')
             if not os.path.isdir(settings['storage_path']):
-                print 'Folder specified in config.ini is missing (%s).' % settings['storage_path']
+                print 'Folder specified in config.ini is missing (%s).' \
+                        % settings['storage_path']
                 print 'Script will try to create it.'
                 try:
                     os.makedirs(settings['storage_path'])
@@ -105,7 +106,7 @@ def clone_repo(product):
 def main():
     # Check environment
     settings = {}
-    webstatus_path = os.path.join(sys.path[0], os.pardir)
+    webstatus_path = os.path.abspath(os.path.join(sys.path[0], os.pardir))
     check_environment(webstatus_path, settings)
 
     storage_path = settings['storage_path']
@@ -150,27 +151,38 @@ def main():
             error_message = ''
 
             # Initialize string counts
+            string_fuzzy = 0
+            string_identical = 0
+            string_missing = 0
             string_translated = 0
             string_untranslated = 0
-            string_fuzzy = 0
+            percentage = 0
 
             pretty_locale = locale.replace('_', '-')
             print 'Locale: %s' % pretty_locale
 
-            file_path = os.path.join(locale_folder, product['po_file'])
+            if 'source_type' in product:
+                source_type = product['source_type']
+            else:
+                source_type = 'gettext'
+
+            file_path = os.path.join(locale_folder, product['source_file'])
             if os.path.isfile(file_path):
-                try:
-                    translation_status = subprocess.check_output(
-                        ['msgfmt', '--statistics', file_path, '-o', os.devnull],
-                        stderr = subprocess.STDOUT,
-                        shell = False)
-                    print translation_status
-                except:
-                    print 'Error running msgfmt on %s\n' % locale
-                    error_status = True
-                    string_total = 0
-                    complete = False
-                    error_message = 'Error extracting data with msgfmt --statistics'
+                # Gettext files: check if msgfmt returns errors
+                if source_type == 'gettext':
+                    try:
+                        translation_status = subprocess.check_output(
+                            ['msgfmt', '--statistics', file_path,
+                             '-o', os.devnull],
+                            stderr = subprocess.STDOUT,
+                            shell = False)
+                        print translation_status
+                    except:
+                        print 'Error running msgfmt on %s\n' % locale
+                        error_status = True
+                        string_total = 0
+                        complete = False
+                        error_message = 'Error extracting data with msgfmt --statistics'
             else:
                 print 'File does not exist'
                 error_status = True
@@ -178,20 +190,45 @@ def main():
 
             if not error_status:
                 try:
-                    po_stats_cmd = os.path.join(webstatus_path, 'script', 'postats.sh')
-                    string_stats_json = subprocess.check_output(
-                            [po_stats_cmd, file_path],
-                            stderr = subprocess.STDOUT,
-                            shell = False)
+                    # Gettext files
+                    if source_type == 'gettext':
+                        po_stats_cmd = os.path.join(webstatus_path, 'script', 'postats.sh')
+                        string_stats_json = subprocess.check_output(
+                                [po_stats_cmd, file_path],
+                                stderr = subprocess.STDOUT,
+                                shell = False)
+                        string_stats = json.load(StringIO(string_stats_json))
+                        string_fuzzy = string_stats['fuzzy']
+                        string_translated = string_stats['translated']
+                        string_untranslated = string_stats['untranslated']
 
-                    string_stats = json.load(StringIO(string_stats_json))
-                    string_translated = string_stats['translated']
-                    string_untranslated = string_stats['untranslated']
-                    string_fuzzy = string_stats['fuzzy']
+                    # Properties files
+                    if source_type == 'properties':
+                        try:
+                            compare_script = os.path.join(webstatus_path, 'script', 'properties_compare.py')
+                            string_stats_json = subprocess.check_output(
+                                [compare_script,
+                                 os.path.join(product_folder, 'en_US'),
+                                 os.path.join(product_folder, locale)
+                                ],
+                                stderr = subprocess.STDOUT,
+                                shell = False)
+                        except:
+                            print 'Error running properties_compare.py on %s\n' % locale
+                            error_status = True
+                            string_total = 0
+                            complete = False
+                            error_message = 'Error extracting data with properties_compare.py'
+                        string_stats = json.load(StringIO(string_stats_json))
+                        string_identical = string_stats['identical']
+                        string_missing = string_stats['missing']
+                        string_translated = string_stats['translated']
 
-                    string_total = string_translated + string_untranslated + string_fuzzy
-                    if (string_untranslated == 0) & (string_fuzzy == 0):
-                        # No untranslated or fuzzy strings, locale is complete
+                    string_total = string_translated + string_untranslated + string_missing + string_fuzzy
+                    if (string_missing == 0 and
+                        string_fuzzy == 0 and
+                        string_untranslated == 0):
+                        # No untranslated, missing or fuzzy strings, locale is complete
                         complete = True
                         percentage = 100
                     else:
@@ -199,21 +236,25 @@ def main():
                         complete = False
                         percentage = round((float(string_translated)/string_total) * 100, 1)
                 except Exception as e:
+                    print e
                     error_status = True
                     string_total = 0
                     complete = False
-                    error_message = 'Error extracting stats with msgattrib'
+                    error_message = 'Error extracting stats'
 
             status_record = {
-                'name': product['displayed_name'],
-                'total': string_total,
-                'untranslated': string_untranslated,
-                'translated': string_translated,
-                'fuzzy': string_fuzzy,
                 'complete': complete,
-                'percentage': percentage,
+                'error_message': error_message,
                 'error_status': error_status,
-                'error_message': error_message
+                'fuzzy': string_fuzzy,
+                'identical': string_identical,
+                'missing': string_missing,
+                'name': product['displayed_name'],
+                'percentage': percentage,
+                'total': string_total,
+                'translated': string_translated,
+                'source_type': source_type,
+                'untranslated': string_untranslated
             }
 
             # If the pretty_locale key does not exist, I create it

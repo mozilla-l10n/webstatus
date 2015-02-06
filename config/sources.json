@@ -1,282 +1,350 @@
 {
     "affiliates": {
-        "repository_name": "affiliates",
-        "product_name": "affiliates",
         "displayed_name": "Firefox Affiliates",
+        "excluded_folders": [],
+        "locale_folder": "locale",
+        "product_name": "affiliates",
+        "repository_name": "affiliates",
         "repository_type": "svn",
         "repository_url": "http://svn.mozilla.org/projects/l10n-misc/trunk/affiliates/",
-        "po_file": "LC_MESSAGES/messages.po",
-        "locale_folder": "locale",
-        "excluded_folders": []
+        "source_file": "LC_MESSAGES/messages.po",
+        "source_type": "gettext"
     },
     "browserid": {
-        "repository_name": "browserid",
-        "product_name": "browserid",
         "displayed_name": "Browser ID",
+        "excluded_folders": [],
+        "locale_folder": "locale",
+        "product_name": "browserid",
+        "repository_name": "browserid",
         "repository_type": "svn",
         "repository_url": "http://svn.mozilla.org/projects/l10n-misc/trunk/browserid/",
-        "po_file": "LC_MESSAGES/messages.po",
-        "locale_folder": "locale",
-        "excluded_folders": []
+        "source_file": "LC_MESSAGES/messages.po",
+        "source_type": "gettext"
     },
     "browserid-bigtent": {
-        "repository_name": "browserid-bigtent",
-        "product_name": "browserid-bigtent",
         "displayed_name": "Browser ID Big Tent",
+        "excluded_folders": [],
+        "locale_folder": "locale",
+        "product_name": "browserid-bigtent",
+        "repository_name": "browserid-bigtent",
         "repository_type": "svn",
         "repository_url": "http://svn.mozilla.org/projects/l10n-misc/trunk/browserid-bigtent/",
-        "po_file": "LC_MESSAGES/messages.po",
-        "locale_folder": "locale",
-        "excluded_folders": []
+        "source_file": "LC_MESSAGES/messages.po",
+        "source_type": "gettext"
     },
     "browserid-bigtent-gmail": {
-        "repository_name": "browserid-bigtent",
-        "product_name": "browserid-bigtent-gmail",
         "displayed_name": "Browser ID Big Tent (gmail.po)",
+        "excluded_folders": [],
+        "locale_folder": "locale",
+        "product_name": "browserid-bigtent-gmail",
+        "repository_name": "browserid-bigtent",
         "repository_type": "svn",
         "repository_url": "http://svn.mozilla.org/projects/l10n-misc/trunk/browserid-bigtent/",
-        "po_file": "LC_MESSAGES/gmail.po",
-        "locale_folder": "locale",
-        "excluded_folders": []
+        "source_file": "LC_MESSAGES/gmail.po",
+        "source_type": "gettext"
     },
     "browserid-client": {
-        "repository_name": "browserid",
-        "product_name": "browserid-client",
         "displayed_name": "Browser ID (client.po)",
+        "excluded_folders": [],
+        "locale_folder": "locale",
+        "product_name": "browserid-client",
+        "repository_name": "browserid",
         "repository_type": "svn",
         "repository_url": "http://svn.mozilla.org/projects/l10n-misc/trunk/browserid/",
-        "po_file": "LC_MESSAGES/client.po",
-        "locale_folder": "locale",
-        "excluded_folders": []
+        "source_file": "LC_MESSAGES/client.po",
+        "source_type": "gettext"
     },
     "commbadge": {
-        "repository_name": "commbadge",
-        "product_name": "commbadge",
         "displayed_name": "CommBadge",
+        "excluded_folders": [],
+        "locale_folder": "locale",
+        "product_name": "commbadge",
+        "repository_name": "commbadge",
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla/commbadge",
-        "po_file": "LC_MESSAGES/messages.po",
-        "locale_folder": "locale",
-        "excluded_folders": []
+        "source_file": "LC_MESSAGES/messages.po",
+        "source_type": "gettext"
     },
     "findmydevice-client": {
-        "repository_name": "FindMyDevice-l10n",
-        "product_name": "findmydevice-client",
         "displayed_name": "Find My Device (client)",
+        "excluded_folders": [],
+        "locale_folder": "locale",
+        "product_name": "findmydevice-client",
+        "repository_name": "FindMyDevice-l10n",
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla-services/FindMyDevice-l10n",
-        "po_file": "LC_MESSAGES/client.po",
-        "locale_folder": "locale",
-        "excluded_folders": []
+        "source_file": "LC_MESSAGES/client.po",
+        "source_type": "gettext"
     },
     "findmydevice-server": {
-        "repository_name": "FindMyDevice-l10n",
-        "product_name": "findmydevice-server",
         "displayed_name": "Find My Device (server)",
+        "excluded_folders": [],
+        "locale_folder": "locale",
+        "product_name": "findmydevice-server",
+        "repository_name": "FindMyDevice-l10n",
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla-services/FindMyDevice-l10n",
-        "po_file": "LC_MESSAGES/server.po",
-        "locale_folder": "locale",
-        "excluded_folders": []
+        "source_file": "LC_MESSAGES/server.po",
+        "source_type": "gettext"
     },
     "firefoxflicks": {
-        "repository_name": "firefoxflicks",
-        "product_name": "firefoxflicks",
         "displayed_name": "Firefox Flicks",
+        "excluded_folders": [],
+        "locale_folder": "locale",
+        "product_name": "firefoxflicks",
+        "repository_name": "firefoxflicks",
         "repository_type": "svn",
         "repository_url": "http://svn.mozilla.org/projects/l10n-misc/trunk/firefoxflicks/",
-        "po_file": "LC_MESSAGES/messages.po",
-        "locale_folder": "locale",
-        "excluded_folders": []
+        "source_file": "LC_MESSAGES/messages.po",
+        "source_type": "gettext"
     },
     "fireplace": {
-        "repository_name": "fireplace",
-        "product_name": "fireplace",
         "displayed_name": "Fireplace",
+        "excluded_folders": [],
+        "locale_folder": "locale",
+        "product_name": "fireplace",
+        "repository_name": "fireplace",
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla/fireplace",
-        "po_file": "LC_MESSAGES/messages.po",
-        "locale_folder": "locale",
-        "excluded_folders": []
+        "source_file": "LC_MESSAGES/messages.po",
+        "source_type": "gettext"
     },
     "fxaccount-client": {
-        "repository_name": "fxa-content-server-l10n",
-        "product_name": "fxaccount-client-l10n",
         "displayed_name": "Firefox Account (client)",
+        "excluded_folders": [
+            "linux",
+            "osx",
+            "win32"
+        ],
+        "locale_folder": "locale",
+        "product_name": "fxaccount-client-l10n",
+        "repository_name": "fxa-content-server-l10n",
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla/fxa-content-server-l10n",
-        "po_file": "LC_MESSAGES/client.po",
-        "locale_folder": "locale",
-        "excluded_folders": ["linux", "osx", "win32"]
+        "source_file": "LC_MESSAGES/client.po",
+        "source_type": "gettext"
     },
     "fxaccount-server": {
-        "repository_name": "fxa-content-server-l10n",
-        "product_name": "fxaccount-server-l10n",
         "displayed_name": "Firefox Account (server)",
+        "excluded_folders": [
+            "linux",
+            "osx",
+            "win32"
+        ],
+        "locale_folder": "locale",
+        "product_name": "fxaccount-server-l10n",
+        "repository_name": "fxa-content-server-l10n",
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla/fxa-content-server-l10n",
-        "po_file": "LC_MESSAGES/server.po",
-        "locale_folder": "locale",
-        "excluded_folders": ["linux", "osx", "win32"]
+        "source_file": "LC_MESSAGES/server.po",
+        "source_type": "gettext"
     },
     "input": {
-        "repository_name": "input",
-        "product_name": "input",
         "displayed_name": "Firefox Input",
+        "excluded_folders": [],
+        "locale_folder": "locale",
+        "product_name": "input",
+        "repository_name": "input",
         "repository_type": "svn",
         "repository_url": "http://svn.mozilla.org/projects/l10n-misc/trunk/input/",
-        "po_file": "LC_MESSAGES/messages.po",
-        "locale_folder": "locale",
-        "excluded_folders": []
+        "source_file": "LC_MESSAGES/messages.po",
+        "source_type": "gettext"
+    },
+    "loop-client-l10n": {
+        "displayed_name": "Firefox Hello",
+        "excluded_folders": [],
+        "locale_folder": "l10n",
+        "product_name": "loop-client-l10n",
+        "repository_name": "loop-client-l10n",
+        "repository_type": "git",
+        "repository_url": "https://github.com/mozilla/loop-client-l10n",
+        "source_file": "loop.properties",
+        "source_type": "properties"
     },
     "mdn": {
-        "repository_name": "mdn",
-        "product_name": "mdn",
         "displayed_name": "MDN",
+        "excluded_folders": [
+            "x_testing",
+            "xx_testing",
+            "en_US"
+        ],
+        "locale_folder": "locale",
+        "product_name": "mdn",
+        "repository_name": "mdn",
         "repository_type": "svn",
         "repository_url": "http://svn.mozilla.org/projects/mdn/trunk/",
-        "po_file": "LC_MESSAGES/messages.po",
-        "locale_folder": "locale",
-        "excluded_folders": ["x_testing", "xx_testing", "en_US"]
+        "source_file": "LC_MESSAGES/messages.po",
+        "source_type": "gettext"
     },
     "mdn-js": {
-        "repository_name": "mdn",
-        "product_name": "mdn-js",
         "displayed_name": "MDN (javascript.po)",
+        "excluded_folders": [
+            "x_testing",
+            "xx_testing",
+            "en_US"
+        ],
+        "locale_folder": "locale",
+        "product_name": "mdn-js",
+        "repository_name": "mdn",
         "repository_type": "svn",
         "repository_url": "http://svn.mozilla.org/projects/mdn/trunk/",
-        "po_file": "LC_MESSAGES/javascript.po",
-        "locale_folder": "locale",
-        "excluded_folders": ["x_testing", "xx_testing", "en_US"]
+        "source_file": "LC_MESSAGES/javascript.po",
+        "source_type": "gettext"
     },
     "mdn-promote": {
-        "repository_name": "mdn",
-        "product_name": "mdn-promote",
         "displayed_name": "MDN (promote-mdn.po)",
+        "excluded_folders": [
+            "x_testing",
+            "xx_testing",
+            "en_US"
+        ],
+        "locale_folder": "locale",
+        "product_name": "mdn-promote",
+        "repository_name": "mdn",
         "repository_type": "svn",
         "repository_url": "http://svn.mozilla.org/projects/mdn/trunk/",
-        "po_file": "LC_MESSAGES/promote-mdn.po",
-        "locale_folder": "locale",
-        "excluded_folders": ["x_testing", "xx_testing", "en_US"]
+        "source_file": "LC_MESSAGES/promote-mdn.po",
+        "source_type": "gettext"
     },
     "mozillians": {
-        "repository_name": "mozillians",
-        "product_name": "mozillians",
         "displayed_name": "Mozillians",
+        "excluded_folders": [],
+        "locale_folder": "locales",
+        "product_name": "mozillians",
+        "repository_name": "mozillians",
         "repository_type": "svn",
         "repository_url": "http://svn.mozilla.org/projects/l10n-misc/trunk/mozillians/",
-        "po_file": "LC_MESSAGES/messages.po",
-        "locale_folder": "locales",
-        "excluded_folders": []
+        "source_file": "LC_MESSAGES/messages.po",
+        "source_type": "gettext"
     },
     "olympia": {
-        "repository_name": "olympia",
-        "product_name": "olympia",
         "displayed_name": "AMO (olympia)",
+        "excluded_folders": [],
+        "locale_folder": "locale",
+        "product_name": "olympia",
+        "repository_name": "olympia",
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla/olympia",
-        "po_file": "LC_MESSAGES/messages.po",
-        "locale_folder": "locale",
-        "excluded_folders": []
+        "source_file": "LC_MESSAGES/messages.po",
+        "source_type": "gettext"
     },
     "olympia-js": {
-        "repository_name": "olympia",
-        "product_name": "olympia-js",
         "displayed_name": "AMO (olympia js)",
+        "excluded_folders": [],
+        "locale_folder": "locale",
+        "product_name": "olympia-js",
+        "repository_name": "olympia",
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla/olympia",
-        "po_file": "LC_MESSAGES/javascript.po",
-        "locale_folder": "locale",
-        "excluded_folders": []
+        "source_file": "LC_MESSAGES/javascript.po",
+        "source_type": "gettext"
     },
     "socialapi-directory": {
-        "repository_name": "socialapi-directory",
-        "product_name": "socialapi-directory",
         "displayed_name": "Social API Directory",
+        "excluded_folders": [],
+        "locale_folder": "translations",
+        "product_name": "socialapi-directory",
+        "repository_name": "socialapi-directory",
         "repository_type": "git",
         "repository_url": "https://github.com/mixedpuppy/socialapi-directory",
-        "po_file": "LC_MESSAGES/messages.po",
-        "locale_folder": "translations",
-        "excluded_folders": []
+        "source_file": "LC_MESSAGES/messages.po",
+        "source_type": "gettext"
     },
     "spartacus": {
-        "repository_name": "spartacus",
-        "product_name": "spartacus",
         "displayed_name": "Payments Front End",
+        "excluded_folders": [],
+        "locale_folder": "locale",
+        "product_name": "spartacus",
+        "repository_name": "spartacus",
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla/spartacus",
-        "po_file": "LC_MESSAGES/messages.po",
-        "locale_folder": "locale",
-        "excluded_folders": []
+        "source_file": "LC_MESSAGES/messages.po",
+        "source_type": "gettext"
     },
     "stats": {
-        "repository_name": "marketplace-stats",
-        "product_name": "marketplace-stats",
         "displayed_name": "Marketplace Stats",
+        "excluded_folders": [],
+        "locale_folder": "locale",
+        "product_name": "marketplace-stats",
+        "repository_name": "marketplace-stats",
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla/marketplace-stats",
-        "po_file": "LC_MESSAGES/messages.po",
-        "locale_folder": "locale",
-        "excluded_folders": []
+        "source_file": "LC_MESSAGES/messages.po",
+        "source_type": "gettext"
     },
     "sumo": {
-        "repository_name": "sumo",
-        "product_name": "sumo",
         "displayed_name": "SUMO",
+        "excluded_folders": [
+            "compendia",
+            "xx_testing"
+        ],
+        "locale_folder": "",
+        "product_name": "sumo",
+        "repository_name": "sumo",
         "repository_type": "svn",
         "repository_url": "http://svn.mozilla.org/projects/sumo/locales",
-        "po_file": "LC_MESSAGES/messages.po",
-        "locale_folder": "",
-        "excluded_folders": ["compendia", "xx_testing"]
+        "source_file": "LC_MESSAGES/messages.po",
+        "source_type": "gettext"
     },
     "sumo-js": {
-        "repository_name": "sumo-js",
-        "product_name": "sumo-js",
         "displayed_name": "SUMO (js)",
+        "excluded_folders": [
+            "compendia",
+            "xx_testing"
+        ],
+        "locale_folder": "",
+        "product_name": "sumo-js",
+        "repository_name": "sumo-js",
         "repository_type": "svn",
         "repository_url": "http://svn.mozilla.org/projects/sumo/locales",
-        "po_file": "LC_MESSAGES/javascript.po",
-        "locale_folder": "",
-        "excluded_folders": ["compendia", "xx_testing"]
+        "source_file": "LC_MESSAGES/javascript.po",
+        "source_type": "gettext"
     },
     "sumo-yaocho": {
-        "repository_name": "sumo-yaocho",
-        "product_name": "sumo-yaocho",
         "displayed_name": "SUMO (yaocho)",
+        "excluded_folders": [
+            "compendia",
+            "xx_testing"
+        ],
+        "locale_folder": "",
+        "product_name": "sumo-yaocho",
+        "repository_name": "sumo-yaocho",
         "repository_type": "svn",
         "repository_url": "http://svn.mozilla.org/projects/sumo/locales",
-        "po_file": "LC_MESSAGES/yaocho.po",
-        "locale_folder": "",
-        "excluded_folders": ["compendia", "xx_testing"]
+        "source_file": "LC_MESSAGES/yaocho.po",
+        "source_type": "gettext"
     },
     "zamboni": {
-        "repository_name": "zamboni",
-        "product_name": "zamboni",
         "displayed_name": "Marketplace (zamboni)",
+        "excluded_folders": [],
+        "locale_folder": "locale",
+        "product_name": "zamboni",
+        "repository_name": "zamboni",
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla/zamboni",
-        "po_file": "LC_MESSAGES/messages.po",
-        "locale_folder": "locale",
-        "excluded_folders": []
+        "source_file": "LC_MESSAGES/messages.po",
+        "source_type": "gettext"
     },
     "zamboni-js": {
-        "repository_name": "zamboni",
-        "product_name": "zamboni-js",
         "displayed_name": "Marketplace (zamboni js)",
+        "excluded_folders": [],
+        "locale_folder": "locale",
+        "product_name": "zamboni-js",
+        "repository_name": "zamboni",
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla/zamboni",
-        "po_file": "LC_MESSAGES/javascript.po",
-        "locale_folder": "locale",
-        "excluded_folders": []
+        "source_file": "LC_MESSAGES/javascript.po",
+        "source_type": "gettext"
     },
     "zippy": {
-        "repository_name": "zippy",
-        "product_name": "zippy",
         "displayed_name": "Zippy",
+        "excluded_folders": [],
+        "locale_folder": "locale",
+        "product_name": "zippy",
+        "repository_name": "zippy",
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla/zippy",
-        "po_file": "LC_MESSAGES/messages.po",
-        "locale_folder": "locale",
-        "excluded_folders": []
+        "source_file": "LC_MESSAGES/messages.po",
+        "source_type": "gettext"
     }
 }

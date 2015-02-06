@@ -43,7 +43,7 @@ table a:hover {
     color: #000;
 }
 
-table thead th {
+thead th {
     background: #eaecee;
     padding: 15px 10px;
     color: #000;
@@ -52,65 +52,70 @@ table thead th {
     vertical-align: top;
 }
 
-table tr th {
+tr th {
     background: #eaecee;
 }
 
-table .firstsection {
+.firstsection {
     padding-left: 40px;
     border-left: 1px solid #ddd;
 }
 
-table .lastsection {
+.lastsection {
     padding-right: 40px;
     border-right: 1px solid #ddd;
 }
 
-table .lastsection:last-child {
+.lastsection:last-child {
     border-right: 0;
 }
 
-table tbody,
-table thead {
+tbody,
+thead {
     border-left: 1px solid #ddd;
     border-right: 1px solid #ddd;
 }
 
-table tbody {
+tbody {
     border-bottom: 1px solid #ddd;
 }
 
-table tbody td,
-table tbody th {
+tbody td,
+tbody th {
     padding: 5px 20px;
     text-align: left;
 }
 
-table tbody td {
+tbody td {
     border-bottom: 1px solid #ddd;
 }
 
-table tbody tr {
+tbody tr {
     background: #f5f5f5;
 }
 
-table tbody .odd {
+tbody .odd {
     background: #f0f2f4;
 }
 
-table tbody tr:hover {
+tr:hover {
     background: #eaecee;
     color: #111;
 }
 
-table tbody .fixed {
+.fixed {
     background: #a5fab0;
 }
 
-table tbody .number {
+.number {
     text-align: right;
 }
 
-table tbody .error {
+.source_type {
+    text-transform: uppercase;
+    font-size: 0.85em;
+}
+
+.error {
     background-color: #ff5252;
 }
