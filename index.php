@@ -2,42 +2,21 @@
 date_default_timezone_set('Europe/Rome');
 
 $file_name = 'webstatus.json';
-$file_cache = 'cache/details.inc';
 
 // Read the JSON file
 $json_array = json_decode(file_get_contents($file_name), true);
 
-// Check how old the cache files are for products and locales
-if ((! file_exists($file_cache)) || (time() - filemtime($file_cache) >= 60*60)) {
-    // File is older than 1 hour or doesn't exist, regenerate arrays and save it
-    $available_locales = [];
-    $ignored_locales = ['ja-JP-mac', 'metadata', 'zh-Hant-TW'];
-    foreach (array_keys($json_array) as $locale_code) {
-        if (! in_array($locale_code, $ignored_locales)) {
-            $available_locales[$locale_code] = $locale_code;
-        }
-    }
+// Extract locales and ignore 'metadata'
+$available_locales = array_keys($json_array);
+$ignored_keys = ['metadata'];
+$available_locales = array_diff($available_locales, $ignored_keys);
+sort($available_locales);
 
-    $available_products = [];
-    $available_products['all'] = ' all products';
-    foreach ($available_locales as $locale_code) {
-        foreach (array_keys($json_array[$locale_code]) as $product_code) {
-            if (! in_array($product_code, $available_products)) {
-                $available_products[$product_code] = $json_array[$locale_code][$product_code]['name'];
-            }
-        }
-    }
-    asort($available_products);
-    $file_content = '<?php' . PHP_EOL;
-    $file_content .= '$available_locales = ' . var_export($available_locales, true) . ';' . PHP_EOL;
-    $file_content .= '$available_products = ' . var_export($available_products, true) . ';' . PHP_EOL;
-    file_put_contents($file_cache, $file_content);
-} else {
-    // File is recent, no need to regenerate the arrays
-    include_once $file_cache;
-    echo '<!-- Using cached file: ' . date ('Y-m-d H:i', filemtime($file_cache)) . "-->\n";
-}
+// Using union to make sure the first item is 'All products'
+$available_products = ['all' => 'All products'] +
+                      $json_array['metadata']['products'];
 
+// Locale detection
 if (empty($_REQUEST['locale'])) {
     // Locale was not specified, try to use locale from HTTP header
     $accept_locales = [];
@@ -80,9 +59,7 @@ if (! isset($available_products[$requested_product])) {
 if ($requested_product != 'all') {
     $requested_locale = 'all locales';
 }
-
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -107,13 +84,14 @@ if ($requested_product != 'all') {
     echo '<div class="list">
             <p>Display localization status for a specific project<br/>';
     foreach ($available_products as $product_code => $product_name) {
-        echo "<a href='?product={$product_code}'>{$product_name}</a> ";
+        echo "<a href='?product={$product_code}'>" .
+             str_replace(' ', '&nbsp;', $product_name) .
+             "</a> ";
     }
     echo '  </p>
           </div>';
 
     $table_header = function ($row_header) {
-
         return '<table>
             <thead>
                 <tr>

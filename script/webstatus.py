@@ -129,7 +129,9 @@ def main():
             os.chdir(storage_path)
             clone_repo(product)
 
-    ignored_folders = ['dbg', 'db_LB', 'templates', '.svn', '.g(config_file)it']
+    ignored_folders = ['.svn', '.g(config_file)it', 'dbg',
+                       'db_LB', 'ja-JP-mac', 'templates',
+                       'zh-Hant-TW']
     for key,product in products.iteritems():
         product_folder = os.path.join(
                             storage_path,
@@ -263,10 +265,13 @@ def main():
             json_data[pretty_locale][product['product_name']] = {}
             json_data[pretty_locale][product['product_name']] = status_record
 
-    # Record some metadata
+    # Record some metadata, including the list of tracked products
     json_data['metadata'] = {
-        'creation_date': strftime('%Y-%m-%d %H:%M %Z', localtime())
+        'creation_date': strftime('%Y-%m-%d %H:%M %Z', localtime()),
+        'products': {}
     }
+    for key,product in products.iteritems():
+        json_data['metadata']['products'][key] = product['displayed_name']
 
     # Write back updated json data
     json_file = open(json_filename, 'w')
