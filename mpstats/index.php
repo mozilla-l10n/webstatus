@@ -17,20 +17,15 @@ $products = [
 $excluded_locales = [
     'ak', 'an', 'az', 'br', 'db-LB', 'en', 'en-GB', 'en-US', 'en-ZA',
     'es-AR', 'es-CL', 'es-ES', 'es-MX', 'fur', 'fy', 'ga', 'gu-IN',
-    'hy-AM', 'is', 'ja-JP-mac', 'kk', 'lv', 'mai', 'metadata',
-    'mr', 'nb', 'nn-NO', 'no', 'oc', 'pa-IN', 'pt', 'rm', 'rw',
-    'sah', 'son', 'sr-Cyrl', 'sr-CYRL', 'sr-LATN', 'sv', 'ta-LK',
-    'zh-Hant-TW'
+    'hy-AM', 'is', 'kk', 'lv', 'mai', 'metadata', 'mr', 'nb', 'nn-NO',
+    'no', 'oc', 'pa-IN', 'pt', 'rm', 'rw', 'sah', 'son', 'sr-Cyrl',
+    'sr-CYRL', 'sr-LATN', 'sv', 'ta-LK'
 ];
 
-// Extract locales
-$locales = [];
-foreach ($json_array as $locale => $product) {
-    array_push($locales, $locale);
-}
-sort($locales);
-// Exclude some locales
+// Extract locales and exclude some of them
+$locales = array_keys($json_array);
 $locales = array_diff($locales, $excluded_locales);
+sort($locales);
 
 // Extract product names from en-US
 foreach ($json_array['en-US'] as $code => $product) {
@@ -66,8 +61,8 @@ $columns_number = 1 + 3 * count($products);
 <head>
     <meta charset=utf-8>
     <title>Marketplace Status</title>
-    <link rel="stylesheet" href="../css/mpstats.css" type="text/css" media="all" />
-    <script src="../js/jquery-1.11.1.min.js"></script>
+    <link rel="stylesheet" href="../assets/css/mpstats.css" type="text/css" media="all" />
+    <script src="../assets/js/jquery-1.11.1.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
             // Associate click handlers to anchors
