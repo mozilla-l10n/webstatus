@@ -47,6 +47,7 @@ tr th {
     margin-top: 30px;
     font-size: 0.9em;
     height: 38px;
+    line-height: 2.1;
     padding-left: 30px;
     background: url(../img/github.png) top left no-repeat transparent;
 }
