@@ -115,11 +115,18 @@ if ($requested_product != 'all') {
     $table_footer = '</tbody>
         </table>';
 
-    $table_rows = function($row_header, $current_product) {
-        $perc = $current_product['percentage'];
+    $table_rows = function($row_header, $product, $source_type) {
+        $perc = $product['percentage'];
+
+        // For .properties files I consider also the number of identical strings
+        if ($source_type == 'properties') {
+            $perc_identical = $product['identical'] / $product['total'];
+            $perc = $perc_identical * $perc;
+        }
+
         $opacity = 1;
         if ($perc < 100) {
-            $opacity = floor(round(($perc-20)/100,2)*10)/10;
+            $opacity = floor(round(($perc - 20) / 100, 2) * 10) / 10;
         }
         if ($perc >= 70) {
             $row_style = "background-color: rgba(129, 209, 25, {$opacity})";
@@ -131,7 +138,7 @@ if ($requested_product != 'all') {
             $row_style = "background-color: rgba(255, 174, 61, {$opacity})";
         }
 
-        if ($current_product['error_status'] == 'true') {
+        if ($product['error_status'] == 'true') {
             $row_class = 'error';
             $row_style = '';
         } else {
@@ -140,15 +147,15 @@ if ($requested_product != 'all') {
 
         return  "<tr class='{$row_class}' style='{$row_style}'>\n" .
                 "      <th>{$row_header}</th>\n" .
-                "      <td class='number'>{$current_product['percentage']}</td>\n" .
-                "      <td class='source_type'>{$current_product['source_type']}</td>\n" .
-                "      <td class='number'>{$current_product['translated']}</td>\n" .
-                "      <td class='number'>{$current_product['untranslated']}</td>\n" .
-                "      <td class='number'>{$current_product['identical']}</td>\n" .
-                "      <td class='number'>{$current_product['missing']}</td>\n" .
-                "      <td class='number'>{$current_product['fuzzy']}</td>\n" .
-                "      <td class='number'>{$current_product['total']}</td>\n" .
-                "      <td>{$current_product['error_message']}</td>\n" .
+                "      <td class='number'>{$product['percentage']}</td>\n" .
+                "      <td class='source_type'>{$product['source_type']}</td>\n" .
+                "      <td class='number'>{$product['translated']}</td>\n" .
+                "      <td class='number'>{$product['untranslated']}</td>\n" .
+                "      <td class='number'>{$product['identical']}</td>\n" .
+                "      <td class='number'>{$product['missing']}</td>\n" .
+                "      <td class='number'>{$product['fuzzy']}</td>\n" .
+                "      <td class='number'>{$product['total']}</td>\n" .
+                "      <td>{$product['error_message']}</td>\n" .
                 "</tr>\n";
     };
 
@@ -158,7 +165,7 @@ if ($requested_product != 'all') {
         foreach ($available_products as $key => $value) {
             if (array_key_exists($key, $json_array[$requested_locale])) {
                 $current_product = $json_array[$requested_locale][$key];
-                echo $table_rows($current_product['name'], $current_product);
+                echo $table_rows($current_product['name'], $current_product, $current_product['source_type']);
             }
         }
         echo $table_footer;
@@ -175,7 +182,7 @@ if ($requested_product != 'all') {
                     $completed_locales++;
                 }
                 $total_locales++;
-                echo $table_rows($locale_code, $current_product);
+                echo $table_rows($locale_code, $current_product, $current_product['source_type']);
             }
         }
         echo $table_footer;
