@@ -65,14 +65,16 @@ if ($requested_product != 'all') {
 <head>
     <meta charset=utf-8>
     <title>Web Status</title>
-    <link rel="stylesheet" href="css/webstatus.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="assets/css/bootstrap-theme.min.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="assets/css/main.css" type="text/css" media="all" />
 </head>
-
 <body>
+  <div class="container">
 
 <?php
     echo "<h1>Current locale: {$requested_locale}</h1>\n";
-    echo '<div class="list">
+    echo '<div class="list locale_list">
             <p>Display localization status for a specific locale<br/>';
     foreach ($available_locales as $locale_code) {
         echo "<a href='?locale={$locale_code}'>{$locale_code}</a> ";
@@ -81,7 +83,7 @@ if ($requested_product != 'all') {
           </div>';
 
     echo "<h1>Current product: {$available_products[$requested_product]}</h1>\n";
-    echo '<div class="list">
+    echo '<div class="list product_list">
             <p>Display localization status for a specific project<br/>';
     foreach ($available_products as $product_code => $product_name) {
         echo "<a href='?product={$product_code}'>" .
@@ -92,7 +94,7 @@ if ($requested_product != 'all') {
           </div>';
 
     $table_header = function ($row_header) {
-        return '<table>
+        return '<table class="table table-bordered table-condensed">
             <thead>
                 <tr>
                     <th>' . $row_header . '</th>
@@ -177,10 +179,11 @@ if ($requested_product != 'all') {
             }
         }
         echo $table_footer;
-        echo "<p>Complete locales: {$completed_locales} (total {$total_locales}).</p>";
+        echo "<p>Complete locales: {$completed_locales} out of {$total_locales}.</p>";
     }
 
     echo "<p>Last update: {$json_array['metadata']['creation_date']}</p>";
 ?>
+  </div>
 </body>
 </html>

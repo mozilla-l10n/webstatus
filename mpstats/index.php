@@ -61,8 +61,8 @@ $columns_number = 1 + 3 * count($products);
 <head>
     <meta charset=utf-8>
     <title>Marketplace Status</title>
-    <link rel="stylesheet" href="../css/mpstats.css" type="text/css" media="all" />
-    <script src="../js/jquery-1.11.1.min.js"></script>
+    <link rel="stylesheet" href="../assets/css/mpstats.css" type="text/css" media="all" />
+    <script src="../assets/js/jquery-1.11.1.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
             // Associate click handlers to anchors
