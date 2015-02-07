@@ -135,7 +135,7 @@ if ($requested_product != 'all') {
             $row_style = "background-color: rgba(255, 252, 61, {$opacity})";
         } else {
             $opacity = 1 - $opacity;
-            $row_style = "background-color: rgba(255, 174, 61, {$opacity})";
+            $row_style = "background-color: rgba(255, 194, 115, {$opacity})";
         }
 
         if ($product['error_status'] == 'true') {
