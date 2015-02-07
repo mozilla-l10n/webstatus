@@ -35,3 +35,18 @@ tr th {
 .error {
     background-color: #ff5252;
 }
+
+.repository_link {
+    font-size: 0.7em;
+    display: inline-block;
+    margin-left: 6px;
+    text-transform: uppercase;
+}
+
+.github_link {
+    margin-top: 30px;
+    font-size: 0.9em;
+    height: 38px;
+    padding-left: 30px;
+    background: url(../img/github.png) top left no-repeat transparent;
+}

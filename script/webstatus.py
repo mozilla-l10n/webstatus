@@ -273,7 +273,11 @@ def main():
         'products': {}
     }
     for key,product in products.iteritems():
-        json_data['metadata']['products'][key] = product['displayed_name']
+        json_data['metadata']['products'][key] = {
+            'name': product['displayed_name'],
+            'repository_url': product['repository_url'],
+            'repository_type': product['repository_type']
+        }
 
     # Write back updated json data
     json_file = open(json_filename, 'w')

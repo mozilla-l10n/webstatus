@@ -12,9 +12,16 @@ $ignored_keys = ['metadata'];
 $available_locales = array_diff($available_locales, $ignored_keys);
 sort($available_locales);
 
-// Using union to make sure the first item is 'All products'
-$available_products = ['all' => 'All products'] +
-                      $json_array['metadata']['products'];
+$available_products = $json_array['metadata']['products'];
+// Using union to make sure "all" is the first product
+$product_all = [
+    'all' => [
+        'name' => 'All products',
+        'repository_type' => '',
+        'repository_url' => ''
+    ]
+];
+$available_products = $product_all + $available_products;
 
 // Locale detection
 if (empty($_REQUEST['locale'])) {
@@ -82,12 +89,12 @@ if ($requested_product != 'all') {
     echo '  </p>
           </div>';
 
-    echo "<h1>Current product: {$available_products[$requested_product]}</h1>\n";
+    echo "<h1>Current product: {$available_products[$requested_product]['name']}</h1>\n";
     echo '<div class="list product_list">
             <p>Display localization status for a specific project<br/>';
-    foreach ($available_products as $product_code => $product_name) {
+    foreach ($available_products as $product_code => $product) {
         echo "<a href='?product={$product_code}'>" .
-             str_replace(' ', '&nbsp;', $product_name) .
+             str_replace(' ', '&nbsp;', $product['name']) .
              "</a> ";
     }
     echo '  </p>
@@ -115,7 +122,7 @@ if ($requested_product != 'all') {
     $table_footer = '</tbody>
         </table>';
 
-    $table_rows = function($row_header, $product, $source_type) {
+    $table_rows = function($table_type, $row_header, $product, $source_type, $repo_url, $repo_type) {
         $perc = $product['percentage'];
 
         // For .properties files I consider also the number of identical strings
@@ -147,6 +154,10 @@ if ($requested_product != 'all') {
             $row_class = '';
         }
 
+        if ($table_type == 'locale') {
+            $row_header = "{$row_header}<a href='{$repo_url}' class='repository_link' title='View source repository'>{$repo_type}</a>";
+        }
+
         return  "<tr class='{$row_class}' style='{$row_style}'>\n" .
                 "      <th>{$row_header}</th>\n" .
                 "      <td class='number'>{$product['percentage']}</td>\n" .
@@ -164,10 +175,15 @@ if ($requested_product != 'all') {
     if ($requested_product == 'all') {
         // Display all products for one locale
         echo $table_header('Product');
-        foreach ($available_products as $key => $value) {
-            if (array_key_exists($key, $json_array[$requested_locale])) {
-                $current_product = $json_array[$requested_locale][$key];
-                echo $table_rows($current_product['name'], $current_product, $current_product['source_type']);
+        foreach ($available_products as $product_id => $product) {
+            if (array_key_exists($product_id, $json_array[$requested_locale])) {
+                $current_product = $json_array[$requested_locale][$product_id];
+                echo $table_rows('locale',
+                                 $current_product['name'],
+                                 $current_product,
+                                 $current_product['source_type'],
+                                 $product['repository_url'],
+                                 $product['repository_type']);
             }
         }
         echo $table_footer;
@@ -175,7 +191,6 @@ if ($requested_product != 'all') {
         // Display all locales for one product
         $completed_locales = 0;
         $total_locales = 0;
-        echo "<h2>{$available_products[$requested_product]}</h2>";
         echo $table_header('Locale');
         foreach ($available_locales as $locale_code) {
             if (isset($json_array[$locale_code][$requested_product])) {
@@ -184,7 +199,12 @@ if ($requested_product != 'all') {
                     $completed_locales++;
                 }
                 $total_locales++;
-                echo $table_rows($locale_code, $current_product, $current_product['source_type']);
+                echo $table_rows('product',
+                                 $locale_code,
+                                 $current_product,
+                                 $current_product['source_type'],
+                                 '',
+                                 '');
             }
         }
         echo $table_footer;
@@ -193,6 +213,7 @@ if ($requested_product != 'all') {
 
     echo "<p>Last update: {$json_array['metadata']['creation_date']}</p>";
 ?>
+    <p class="github_link"><a href="https://github.com/mozilla-l10n/webstatus/">Code available on GitHub</a></p>
   </div>
 </body>
 </html>
