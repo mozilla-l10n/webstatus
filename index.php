@@ -120,8 +120,10 @@ if ($requested_product != 'all') {
 
         // For .properties files I consider also the number of identical strings
         if ($source_type == 'properties') {
-            $perc_identical = $product['identical'] / $product['total'];
-            $perc = $perc_identical * $perc;
+            $perc_identical = $product['identical'] / $product['total'] * 100;
+            if ($perc_identical > 20) {
+                $perc = $perc - $perc_identical;
+            }
         }
 
         $opacity = 1;
