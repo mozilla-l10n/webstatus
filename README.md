@@ -26,17 +26,34 @@ See a running instance at http://l10n.mozilla-community.org/~flod/webstatus/
 ## Structure of the Json file
 
 ```JSON
-locale_code: {
-    product_id: {
+"locale_code": {
+    "product_id": {
         "complete": true/false,
         "error_message": "",
         "error_status": true/false,
         "fuzzy": number of fuzzy strings,
+        "identical": number of identical strings,
+        "missing": number of missing strings,
         "name": pretty name to display,
         "percentage": percentage of translated strings,
+        "source_type": type of source (gettext, properties),
         "total": total number of strings,
         "translated": number of translated strings,
         "untranslated": number of untranslated strings
+    }
+}
+```
+
+There's also on `metadata` record, currently at the same level of locales
+```JSON
+"metadata": {
+    "creation_date": creation date,
+    "products": {
+        "product_id": {
+            "name": name of the product,
+            "repository_type": type of repository (svn, git),
+            "repository_url": URL of the repository
+        }
     }
 }
 ```
