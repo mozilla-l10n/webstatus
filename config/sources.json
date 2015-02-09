@@ -109,7 +109,7 @@
         "source_file": "LC_MESSAGES/messages.po",
         "source_type": "gettext"
     },
-    "fxaccount-client": {
+    "fxaccount-client-l10n": {
         "displayed_name": "Firefox Account (client)",
         "excluded_folders": [
             "linux",
@@ -124,7 +124,7 @@
         "source_file": "LC_MESSAGES/client.po",
         "source_type": "gettext"
     },
-    "fxaccount-server": {
+    "fxaccount-server-l10n": {
         "displayed_name": "Firefox Account (server)",
         "excluded_folders": [
             "linux",
@@ -160,6 +160,17 @@
         "repository_url": "https://github.com/mozilla/loop-client-l10n",
         "source_file": "loop.properties",
         "source_type": "properties"
+    },
+    "marketplace-stats": {
+        "displayed_name": "Marketplace Stats",
+        "excluded_folders": [],
+        "locale_folder": "locale",
+        "product_name": "marketplace-stats",
+        "repository_name": "marketplace-stats",
+        "repository_type": "git",
+        "repository_url": "https://github.com/mozilla/marketplace-stats",
+        "source_file": "LC_MESSAGES/messages.po",
+        "source_type": "gettext"
     },
     "mdn": {
         "displayed_name": "MDN",
@@ -258,17 +269,6 @@
         "repository_name": "spartacus",
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla/spartacus",
-        "source_file": "LC_MESSAGES/messages.po",
-        "source_type": "gettext"
-    },
-    "stats": {
-        "displayed_name": "Marketplace Stats",
-        "excluded_folders": [],
-        "locale_folder": "locale",
-        "product_name": "marketplace-stats",
-        "repository_name": "marketplace-stats",
-        "repository_type": "git",
-        "repository_url": "https://github.com/mozilla/marketplace-stats",
         "source_file": "LC_MESSAGES/messages.po",
         "source_type": "gettext"
     },

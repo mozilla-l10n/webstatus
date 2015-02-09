@@ -16,6 +16,7 @@
 
 .product_list a {
     padding-left: 16px;
+    white-space: nowrap;
 }
 
 tr th {

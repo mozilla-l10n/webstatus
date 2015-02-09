@@ -2,7 +2,7 @@
 
 date_default_timezone_set('Europe/Rome');
 
-$json_filename = '../webstatus.json';
+$json_filename = '../web_status.json';
 $json_array = (array) json_decode(file_get_contents($json_filename), true);
 
 $products = [
@@ -23,14 +23,14 @@ $excluded_locales = [
 ];
 
 // Extract locales and exclude some of them
-$locales = array_keys($json_array);
+$locales = array_keys($json_array['locales']);
 $locales = array_diff($locales, $excluded_locales);
 sort($locales);
 
 // Extract product names from en-US
-foreach ($json_array['en-US'] as $code => $product) {
-    if (array_key_exists($code, $products)) {
-        $products[$code] = $product['name'];
+foreach ($json_array['metadata']['products'] as $product_id => $product) {
+    if (isset($products[$product_id])) {
+        $products[$product_id] = $product['name'];
     }
 }
 
@@ -122,8 +122,8 @@ $columns_number = 1 + 3 * count($products);
         $content .= "     <tr id='row_{$locale}'>\n" .
                     "       <th class='rowheader'><a href='#{$locale}' id='{$locale}' class='locale_anchor'>{$locale}</a></th>\n";
         foreach ($products as $code => $name) {
-            if (array_key_exists($code, $json_array[$locale])) {
-                $current_product = $json_array[$locale][$code];
+            if (array_key_exists($code, $json_array['locales'][$locale])) {
+                $current_product = $json_array['locales'][$locale][$code];
                 $content .= "       <td " . getRowStyle($current_product) . ">{$current_product['translated']}</td>\n" .
                             "       <td " . getRowStyle($current_product) . ">{$current_product['untranslated']}</td>\n" .
                             "       <td " . getRowStyle($current_product) . ">{$current_product['percentage']}</td>\n";

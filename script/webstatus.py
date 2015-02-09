@@ -110,8 +110,9 @@ def main():
     check_environment(webstatus_path, settings)
 
     storage_path = settings['storage_path']
-    json_filename = os.path.join(webstatus_path, 'webstatus.json')
+    json_filename = os.path.join(webstatus_path, 'web_status.json')
     json_data = {}
+    json_data['locales'] = {};
 
     # Read products from external Json file
     sources_file = open(os.path.join(webstatus_path, 'config', 'sources.json'))
@@ -262,10 +263,10 @@ def main():
             }
 
             # If the pretty_locale key does not exist, I create it
-            if pretty_locale not in json_data:
-                json_data[pretty_locale] = {}
-            json_data[pretty_locale][product['product_name']] = {}
-            json_data[pretty_locale][product['product_name']] = status_record
+            if pretty_locale not in json_data['locales']:
+                json_data['locales'][pretty_locale] = {}
+            json_data['locales'][pretty_locale][product['product_name']] = {}
+            json_data['locales'][pretty_locale][product['product_name']] = status_record
 
     # Record some metadata, including the list of tracked products
     json_data['metadata'] = {
