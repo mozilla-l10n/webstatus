@@ -61,6 +61,8 @@ $columns_number = 1 + 3 * count($products);
 <head>
     <meta charset=utf-8>
     <title>Marketplace Status</title>
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="../assets/css/bootstrap-theme.min.css" type="text/css" media="all" />
     <link rel="stylesheet" href="../assets/css/mpstats.css" type="text/css" media="all" />
     <script src="../assets/js/jquery-1.11.1.min.js"></script>
     <script type="text/javascript">
@@ -74,8 +76,8 @@ $columns_number = 1 + 3 * count($products);
 
                 // Add empty row before and after this element
                 var row = '#row_' + e.target.id;
-                $(row).before('<tr class="spacer top" colspan="<?php echo $columns_number;?>">&nbsp;</tr>');
-                $(row).after('<tr class="spacer bottom" colspan="<?php echo $columns_number;?>">&nbsp;</tr>');
+                $(row).before('<tr class="spacer_top" colspan="<?php echo $columns_number;?>">&nbsp;</tr>');
+                $(row).after('<tr class="spacer_bottom" colspan="<?php echo $columns_number;?>">&nbsp;</tr>');
                 // Add selected class to this row
                 $(row).addClass('selected');
                 // Scroll slight above the anchor
@@ -95,34 +97,36 @@ $columns_number = 1 + 3 * count($products);
 </head>
 
 <body>
+<div class="container">
+  <h1>Marketplace Projects l10n Overview</h1>
 <?php
-    $content = "<table>\n";
-    $content .= "  <thead>\n";
-    $content .= "     <tr>\n";
-    $content .= "       <th>&nbsp;</th>\n";
+    $content = "<table class='table table-bordered table-condensed'>\n" .
+               "  <thead>\n" .
+               "     <tr>\n" .
+               "       <th>&nbsp;</th>\n";
     foreach ($products as $code => $name) {
         $content .= "       <th colspan='3'>{$name}</th>\n";
     }
-    $content .= "     </tr>\n";
-    $content .= "     <tr>\n";
-    $content .= "       <th>Locale</th>\n";
+    $content .= "     </tr>\n" .
+                "     <tr>\n" .
+                "       <th>Locale</th>\n";
     for ($i=0; $i < count($products); $i++) {
-        $content .= "       <th class='firstsection'>trans.</th>\n";
-        $content .= "       <th>untr.</th>\n";
-        $content .= "       <th class='lastsection'>%</th>\n";
+        $content .= "       <th>trans.</th>\n" .
+                    "       <th>untr.</th>\n" .
+                    "       <th>%</th>\n";
     }
-    $content .= "     </tr>\n";
-    $content .= "   </thead>\n";
-    $content .= "   <tbody>\n";
+    $content .= "     </tr>\n" .
+                "   </thead>\n" .
+                "   <tbody>\n";
     foreach ($locales as $locale) {
-        $content .= "     <tr id='row_{$locale}'>\n";
-        $content .= "       <th class='rowheader'><a href='#{$locale}' id='{$locale}' class='locale_anchor'>{$locale}</a></th>\n";
+        $content .= "     <tr id='row_{$locale}'>\n" .
+                    "       <th class='rowheader'><a href='#{$locale}' id='{$locale}' class='locale_anchor'>{$locale}</a></th>\n";
         foreach ($products as $code => $name) {
             if (array_key_exists($code, $json_array[$locale])) {
                 $current_product = $json_array[$locale][$code];
-                $content .= "       <td class='firstsection' " . getRowStyle($current_product) . ">{$current_product['translated']}</td>\n";
-                $content .= "       <td " . getRowStyle($current_product) . ">{$current_product['untranslated']}</td>\n";
-                $content .= "       <td class='lastsection' " . getRowStyle($current_product) . ">{$current_product['percentage']}</td>\n";
+                $content .= "       <td " . getRowStyle($current_product) . ">{$current_product['translated']}</td>\n" .
+                            "       <td " . getRowStyle($current_product) . ">{$current_product['untranslated']}</td>\n" .
+                            "       <td " . getRowStyle($current_product) . ">{$current_product['percentage']}</td>\n";
             } else {
                 // Missing products
                 $content .= "       <td colspan='3'>&nbsp;</td>\n";
@@ -131,10 +135,11 @@ $columns_number = 1 + 3 * count($products);
         }
         $content .= "     </tr>\n";
     }
-    $content .= "   </tbody>\n";
-    $content .= " </table>\n";
-    $content .= "<p class='lastupdate'>Last update: {$json_array['metadata']['creation_date']}</p>";
+    $content .= "   </tbody>\n" .
+                " </table>\n" .
+                "<p class='lastupdate'>Last update: {$json_array['metadata']['creation_date']}</p>";
     echo $content;
 ?>
+</div>
 </body>
 </html>

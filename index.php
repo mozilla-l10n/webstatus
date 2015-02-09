@@ -213,7 +213,7 @@ if ($requested_product != 'all') {
 
     echo "<p>Last update: {$json_array['metadata']['creation_date']}</p>";
 ?>
-    <p class="github_link"><a href="https://github.com/mozilla-l10n/webstatus/">Code available on GitHub</a></p>
+    <p class="github_link"><a href="https://github.com/mozilla-l10n/webstatus/">Code hosted on GitHub</a></p>
   </div>
 </body>
 </html>
