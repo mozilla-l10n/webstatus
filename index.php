@@ -1,18 +1,22 @@
 <?php
 date_default_timezone_set('Europe/Rome');
 
-$file_name = 'webstatus.json';
+$file_name = 'web_status.json';
 
 // Read the JSON file
 $json_array = json_decode(file_get_contents($file_name), true);
 
 // Extract locales and ignore 'metadata'
-$available_locales = array_keys($json_array);
-$ignored_keys = ['metadata'];
-$available_locales = array_diff($available_locales, $ignored_keys);
+$available_locales = array_keys($json_array['locales']);
 sort($available_locales);
 
 $available_products = $json_array['metadata']['products'];
+// Sort elements based on 'name'
+uasort($available_products, function ($a, $b) {
+
+    return ($a < $b) ? -1 : 1;
+});
+
 // Using union to make sure "all" is the first product
 $product_all = [
     'all' => [
@@ -176,8 +180,8 @@ if ($requested_product != 'all') {
         // Display all products for one locale
         echo $table_header('Product');
         foreach ($available_products as $product_id => $product) {
-            if (array_key_exists($product_id, $json_array[$requested_locale])) {
-                $current_product = $json_array[$requested_locale][$product_id];
+            if (array_key_exists($product_id, $json_array['locales'][$requested_locale])) {
+                $current_product = $json_array['locales'][$requested_locale][$product_id];
                 echo $table_rows('locale',
                                  $current_product['name'],
                                  $current_product,
@@ -193,8 +197,8 @@ if ($requested_product != 'all') {
         $total_locales = 0;
         echo $table_header('Locale');
         foreach ($available_locales as $locale_code) {
-            if (isset($json_array[$locale_code][$requested_product])) {
-                $current_product = $json_array[$locale_code][$requested_product];
+            if (isset($json_array['locales'][$locale_code][$requested_product])) {
+                $current_product = $json_array['locales'][$locale_code][$requested_product];
                 if ($current_product['percentage'] == 100) {
                     $completed_locales++;
                 }
