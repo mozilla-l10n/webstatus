@@ -20,10 +20,10 @@ uasort($available_products, function ($a, $b) {
 // Using union to make sure "all" is the first product
 $product_all = [
     'all' => [
-        'name' => 'All products',
+        'name'            => 'All products',
         'repository_type' => '',
-        'repository_url' => ''
-    ]
+        'repository_url'  => '',
+    ],
 ];
 $available_products = $product_all + $available_products;
 
@@ -126,7 +126,7 @@ if ($requested_product != 'all') {
     $table_footer = '</tbody>
         </table>';
 
-    $table_rows = function($table_type, $row_header, $product, $source_type, $repo_url, $repo_type) {
+    $table_rows = function ($table_type, $row_header, $product, $source_type, $repo_url, $repo_type) {
         $perc = $product['percentage'];
 
         // For .properties files I consider also the number of identical strings
