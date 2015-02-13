@@ -19,7 +19,7 @@ $excluded_locales = [
     'es-AR', 'es-CL', 'es-ES', 'es-MX', 'fur', 'fy', 'ga', 'gu-IN',
     'hy-AM', 'is', 'kk', 'lv', 'mai', 'metadata', 'mr', 'nb', 'nn-NO',
     'no', 'oc', 'pa-IN', 'pt', 'rm', 'rw', 'sah', 'son', 'sr-Cyrl',
-    'sr-CYRL', 'sr-LATN', 'sv', 'ta-LK'
+    'sr-CYRL', 'sr-LATN', 'sv', 'ta-LK',
 ];
 
 // Extract locales and exclude some of them
@@ -34,11 +34,12 @@ foreach ($json_array['metadata']['products'] as $product_id => $product) {
     }
 }
 
-function getRowStyle($current_product) {
+function getRowStyle($current_product)
+{
     $perc = $current_product['percentage'];
     $opacity = 1;
     if ($perc < 100) {
-        $opacity = floor(round(($perc-20)/100,2)*10)/10;
+        $opacity = floor(round(($perc-20)/100, 2)*10)/10;
     }
     if ($perc >= 70) {
         $stylerow = "background-color: rgba(146, 204, 110, {$opacity});";
@@ -50,6 +51,7 @@ function getRowStyle($current_product) {
         $stylerow = "background-color: rgba(255, 82, 82, {$opacity});";
     }
     $stylerow = "style='{$stylerow}'";
+
     return $stylerow;
 }
 
@@ -110,7 +112,7 @@ $columns_number = 1 + 3 * count($products);
     $content .= "     </tr>\n" .
                 "     <tr>\n" .
                 "       <th>Locale</th>\n";
-    for ($i=0; $i < count($products); $i++) {
+    for ($i = 0; $i < count($products); $i++) {
         $content .= "       <th>trans.</th>\n" .
                     "       <th>untr.</th>\n" .
                     "       <th>%</th>\n";
@@ -131,7 +133,6 @@ $columns_number = 1 + 3 * count($products);
                 // Missing products
                 $content .= "       <td colspan='3'>&nbsp;</td>\n";
             }
-
         }
         $content .= "     </tr>\n";
     }
