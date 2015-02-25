@@ -1,10 +1,12 @@
 <?php
 date_default_timezone_set('Europe/Rome');
 
-$file_name = 'web_status.json';
+$sources_file = 'config/sources.json';
+$webstatus_file = 'web_status.json';
 
-// Read the JSON file
-$json_array = json_decode(file_get_contents($file_name), true);
+// Read the JSON files
+$json_sources = json_decode(file_get_contents($sources_file), true);
+$json_array = json_decode(file_get_contents($webstatus_file), true);
 
 // Extract locales and ignore 'metadata'
 $available_locales = array_keys($json_array['locales']);
@@ -26,6 +28,7 @@ $product_all = [
     ],
 ];
 $available_products = $product_all + $available_products;
+$xliff_note = false;
 
 // Locale detection
 if (empty($_REQUEST['locale'])) {
@@ -141,13 +144,17 @@ if ($requested_product != 'all') {
 
     $table_rows = function ($table_type, $row_header, $product, $source_type, $repo_url, $repo_type) {
         $perc = $product['percentage'];
-
+        $source_type_label = $source_type;
         // For .properties files I consider also the number of identical strings
         if ($source_type == 'properties') {
             $perc_identical = $product['identical'] / $product['total'] * 100;
             if ($perc_identical > 20) {
                 $perc = $perc - $perc_identical;
             }
+        }
+
+        if ($source_type == 'xliff') {
+            $source_type_label = $source_type . '<a href="#xliff_notes" title="See notes"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>';
         }
 
         $opacity = 1;
@@ -178,7 +185,7 @@ if ($requested_product != 'all') {
         return  "<tr class='{$row_class}' style='{$row_style}'>\n" .
                 "      <th>{$row_header}</th>\n" .
                 "      <td class='number'>{$product['percentage']}</td>\n" .
-                "      <td class='source_type'>{$product['source_type']}</td>\n" .
+                "      <td class='source_type'>{$source_type_label}</td>\n" .
                 "      <td class='number'>{$product['translated']}</td>\n" .
                 "      <td class='number'>{$product['untranslated']}</td>\n" .
                 "      <td class='number'>{$product['identical']}</td>\n" .
@@ -195,6 +202,9 @@ if ($requested_product != 'all') {
         foreach ($available_products as $product_id => $product) {
             if (array_key_exists($product_id, $json_array['locales'][$requested_locale])) {
                 $current_product = $json_array['locales'][$requested_locale][$product_id];
+                if ($current_product['source_type'] == 'xliff') {
+                    $xliff_note = true;
+                }
                 echo $table_rows('locale',
                                  $current_product['name'],
                                  $current_product,
@@ -208,6 +218,9 @@ if ($requested_product != 'all') {
         // Display all locales for one product
         $completed_locales = 0;
         $total_locales = 0;
+        if ($json_sources[$requested_product]['source_type'] == 'xliff') {
+            $xliff_note = true;
+        }
         echo $table_header('Locale');
         foreach ($available_locales as $locale_code) {
             if (isset($json_array['locales'][$locale_code][$requested_product])) {
@@ -229,7 +242,18 @@ if ($requested_product != 'all') {
     }
 
     echo "<p>Last update: {$json_array['metadata']['creation_date']}</p>";
-?>
+
+    if ($xliff_note) {
+    ?>
+    <h3 id="xliff_notes">Notes on XLIFF files</h3>
+    <p>A MDN document is available explaining <a href="https://developer.mozilla.org/en-US/docs/Mozilla/Localization/Localizing_XLIFF_files">how to to work on XLIFF files</a>.</p>
+    <ul>
+        <li>Strings are reported as missing if a <code>trans-unit</code> has a <code>source</code> element but not a <code>target</code> element.</li>
+        <li>Errors are reported if the XML is not valid, if there are multiple <code>source</code> or <code>target</code> elements, and if a <code>file</code> element is missing a <code>target-language</code> attribute.</li>
+    </ul>
+    <?php
+    }
+    ?>
     <p class="github_link"><a href="https://github.com/mozilla-l10n/webstatus/">Code hosted on GitHub</a></p>
   </div>
 </body>
