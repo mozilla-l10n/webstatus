@@ -65,10 +65,20 @@ $columns_number = 1 + 3 * count($products);
     <title>Marketplace Status</title>
     <link rel="stylesheet" href="../assets/css/bootstrap.min.css" type="text/css" media="all" />
     <link rel="stylesheet" href="../assets/css/bootstrap-theme.min.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="../assets/css/dataTables.bootstrap.css" type="text/css" media="all" />
     <link rel="stylesheet" href="../assets/css/mpstats.css" type="text/css" media="all" />
     <script src="../assets/js/jquery-1.11.2.min.js"></script>
+    <script src="../assets/js/jquery.dataTables.min.js"></script>
+    <script src="../assets/js/dataTables.bootstrap.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
+            // Make table sortable
+            $('#main_table').DataTable({
+                info: false,
+                paging: false,
+                searching: false
+            });
+
             // Associate click handlers to anchors
             $('.locale_anchor').click(function (e) {
                 e.preventDefault;
@@ -102,7 +112,7 @@ $columns_number = 1 + 3 * count($products);
 <div class="container">
   <h1>Marketplace Projects l10n Overview</h1>
 <?php
-    $content = "<table class='table table-bordered table-condensed'>\n" .
+    $content = "<table id='main_table' class='table table-bordered table-condensed'>\n" .
                "  <thead>\n" .
                "     <tr>\n" .
                "       <th>&nbsp;</th>\n";
@@ -113,9 +123,9 @@ $columns_number = 1 + 3 * count($products);
                 "     <tr>\n" .
                 "       <th>Locale</th>\n";
     for ($i = 0; $i < count($products); $i++) {
-        $content .= "       <th>trans.</th>\n" .
-                    "       <th>untr.</th>\n" .
-                    "       <th>%</th>\n";
+        $content .= "       <th><abbr title='Translated'>Tr.</abbr></th>\n" .
+                    "       <th><abbr title='Untranslated'>Un.</abbr></th>\n" .
+                    "       <th><abbr title='Completion percentage'>%</abbr></th>\n";
     }
     $content .= "     </tr>\n" .
                 "   </thead>\n" .

@@ -124,10 +124,10 @@ if ($requested_product != 'all') {
                     <th>' . $row_header . '</th>
                     <th>%</th>
                     <th>Type</th>
-                    <th>Translated</th>
-                    <th>Untransl.</th>
-                    <th>Identical</th>
-                    <th>Missing</th>
+                    <th><abbr title="Translated strings">Tran.</abbr></th>
+                    <th><abbr title="Untranslated strings">Untr.</abbr></th>
+                    <th><abbr title="Identical strings">Iden.</abbr></th>
+                    <th><abbr title="Missing strings">Miss.</abbr></th>
                     <th>Fuzzy</th>
                     <th>Total</th>
                     <th>Errors</th>
