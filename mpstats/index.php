@@ -68,7 +68,7 @@ $columns_number = 1 + 3 * count($products);
     <link rel="stylesheet" href="../assets/css/mpstats.css" type="text/css" media="all" />
     <script src="../assets/js/jquery-1.11.1.min.js"></script>
     <script type="text/javascript">
-        $(document).ready(function() {
+        $(document).ready(function () {
             // Associate click handlers to anchors
             $('.locale_anchor').click(function (e) {
                 e.preventDefault;
