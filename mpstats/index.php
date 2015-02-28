@@ -66,7 +66,7 @@ $columns_number = 1 + 3 * count($products);
     <link rel="stylesheet" href="../assets/css/bootstrap.min.css" type="text/css" media="all" />
     <link rel="stylesheet" href="../assets/css/bootstrap-theme.min.css" type="text/css" media="all" />
     <link rel="stylesheet" href="../assets/css/mpstats.css" type="text/css" media="all" />
-    <script src="../assets/js/jquery-1.11.1.min.js"></script>
+    <script src="../assets/js/jquery-1.11.2.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             // Associate click handlers to anchors

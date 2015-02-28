@@ -80,7 +80,7 @@ if ($requested_product != 'all') {
     <link rel="stylesheet" href="assets/css/bootstrap-theme.min.css" type="text/css" media="all" />
     <link rel="stylesheet" href="assets/css/main.css" type="text/css" media="all" />
     <link rel="stylesheet" href="assets/css/dataTables.bootstrap.css" type="text/css" media="all" />
-    <script src="assets/js/jquery-1.11.1.min.js"></script>
+    <script src="assets/js/jquery-1.11.2.min.js"></script>
     <script src="assets/js/jquery.dataTables.min.js"></script>
     <script src="assets/js/dataTables.bootstrap.min.js"></script>
     <script type="text/javascript">
