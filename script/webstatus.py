@@ -130,9 +130,8 @@ def main():
             os.chdir(storage_path)
             clone_repo(product)
 
-    ignored_folders = ['.svn', '.g(config_file)it', 'dbg',
-                       'db_LB', 'ja_JP_mac', 'templates',
-                       'zh_Hant_TW']
+    ignored_folders = ['.svn', '.git', '.g(config_file)it', 'dbg',
+                       'db_LB', 'ja_JP_mac', 'templates', 'zh_Hant_TW']
     for key,product in products.iteritems():
         product_folder = os.path.join(
                             storage_path,

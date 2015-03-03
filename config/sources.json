@@ -172,6 +172,17 @@
         "source_file": "LC_MESSAGES/messages.po",
         "source_type": "gettext"
     },
+    "masterfirefoxos-l10n": {
+        "displayed_name": "Master Firefox OS",
+        "excluded_folders": ["xx"],
+        "locale_folder": "",
+        "product_name": "masterfirefoxos-l10n",
+        "repository_name": "masterfirefoxos-l10n",
+        "repository_type": "git",
+        "repository_url": "https://github.com/mozilla/masterfirefoxos-l10n",
+        "source_file": "LC_MESSAGES/django.po",
+        "source_type": "gettext"
+    },
     "mdn": {
         "displayed_name": "MDN",
         "excluded_folders": [
