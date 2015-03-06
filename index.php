@@ -192,7 +192,7 @@ if ($requested_product != 'all') {
                 "      <td class='number'>{$product['missing']}</td>\n" .
                 "      <td class='number'>{$product['fuzzy']}</td>\n" .
                 "      <td class='number'>{$product['total']}</td>\n" .
-                "      <td>{$product['error_message']}</td>\n" .
+                '      <td>' . htmlspecialchars($product['error_message']). "</td>\n" .
                 "</tr>\n";
     };
 
