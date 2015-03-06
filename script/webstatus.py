@@ -115,8 +115,8 @@ def main():
     json_data['locales'] = {};
 
     # Read products from external Json file
-    sources_file = open(os.path.join(webstatus_path, 'config', 'sources.json'))
-    products = json.load(sources_file)
+    source_file = open(os.path.join(webstatus_path, 'config', 'sources.json'))
+    products = json.load(source_file)
 
     # Clone/update repositories
     for key,product in products.iteritems():
@@ -215,17 +215,46 @@ def main():
                                 ],
                                 stderr = subprocess.STDOUT,
                                 shell = False)
-                        except:
-                            print 'Error running properties_compare.py on %s\n' % locale
+                        except subprocess.CalledProcessError as error:
                             error_status = True
                             string_total = 0
                             complete = False
-                            error_message = 'Error extracting data with properties_compare.py'
+                            error_message = 'Error extracting data: %s' % str(error.output)
+                        except:
+                            error_status = True
+                            string_total = 0
+                            complete = False
+                            error_message = 'Error extracting data'
                         string_stats = json.load(StringIO(string_stats_json))
                         string_identical = string_stats['identical']
                         string_missing = string_stats['missing']
                         string_translated = string_stats['translated']
 
+                    # Xliff files
+                    if source_type == 'xliff':
+                        try:
+                            compare_script = os.path.join(webstatus_path, 'script', 'xliff_stats.py')
+                            locale_file_name = os.path.join(product_folder, locale, product['source_file'])
+                            string_stats_json = subprocess.check_output(
+                                [compare_script, locale_file_name],
+                                stderr = subprocess.STDOUT,
+                                shell = False)
+                        except subprocess.CalledProcessError as error:
+                            error_status = True
+                            string_total = 0
+                            complete = False
+                            error_message = 'Error extracting data: %s' % str(error.output)
+                        except:
+                            error_status = True
+                            string_total = 0
+                            complete = False
+                            error_message = 'Error extracting data'
+                        string_stats = json.load(StringIO(string_stats_json))
+                        string_identical = string_stats['identical']
+                        string_missing = string_stats['missing']
+                        string_translated = string_stats['translated']
+
+                    # Run stats
                     string_total = string_translated + string_untranslated + \
                                    string_identical + string_missing + \
                                    string_fuzzy

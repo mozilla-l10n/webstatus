@@ -65,13 +65,14 @@ def main():
                         missing += 1
     except Exception as e:
         print e
+        sys.exit(1)
 
     json_data = {
-        'identical': identical,
-        'translated': translated,
-        'missing': missing
+        "identical": identical,
+        "translated": translated,
+        "missing": missing
     }
-    print json.dumps(json_data, sort_keys=True)
+    print json.dumps(json_data)
 
 
 if __name__ == '__main__':

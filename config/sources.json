@@ -87,6 +87,17 @@
         "source_file": "LC_MESSAGES/server.po",
         "source_type": "gettext"
     },
+    "firefox-ios": {
+        "displayed_name": "Firefox for iOS",
+        "excluded_folders": [],
+        "locale_folder": "",
+        "product_name": "firefox-ios",
+        "repository_name": "firefox-ios",
+        "repository_type": "svn",
+        "repository_url": "http://svn.mozilla.org/projects/l10n-misc/trunk/firefox-ios/",
+        "source_file": "firefox-ios.xliff",
+        "source_type": "xliff"
+    },
     "firefoxflicks": {
         "displayed_name": "Firefox Flicks",
         "excluded_folders": [],
