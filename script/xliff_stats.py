@@ -38,12 +38,23 @@ def main():
                 raise ValueError(error_message)
 
             # Compare strings
-            source_string = source[0].firstChild.data
+            try:
+                source_string = source[0].firstChild.data
+            except:
+                error_message = 'Trans unit %s has a malformed <source> element' \
+                                % trans_unit.attributes['id'].value
+                raise ValueError(error_message)
             if target:
-                target_string = target[0].firstChild.data
-                translated += 1
-                if source_string == target_string:
-                    identical += 1
+                try:
+                    source_string = source[0].firstChild.data
+                    target_string = target[0].firstChild.data
+                    translated += 1
+                    if source_string == target_string:
+                        identical += 1
+                except:
+                    error_message = 'Trans unit %s has a malformed <target> element' \
+                                    % trans_unit.attributes['id'].value
+                    raise ValueError(error_message)
             else:
                 missing += 1
 
