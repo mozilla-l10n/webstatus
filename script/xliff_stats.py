@@ -58,10 +58,11 @@ def main():
             else:
                 missing += 1
 
-        # If we have translations, check if files are missing a target-language
+        # If we have translations, check if the first file is missing a target-language
         if translated + identical > 1:
             file_elements = xmldoc.getElementsByTagName('file')
-            for file_element in file_elements:
+            if len(file_elements) > 0:
+                file_element = file_elements[0]
                 if 'target-language' not in file_element.attributes.keys():
                     error_message = 'File %s is missing target-language attribute' \
                                     % file_element.attributes['original'].value

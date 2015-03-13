@@ -249,7 +249,7 @@ if ($requested_product != 'all') {
     <p>A MDN document is available explaining <a href="https://developer.mozilla.org/en-US/docs/Mozilla/Localization/Localizing_XLIFF_files">how to to work on XLIFF files</a>.</p>
     <ul>
         <li>Strings are reported as missing if a <code>trans-unit</code> has a <code>source</code> element but not a <code>target</code> element.</li>
-        <li>Errors are reported if the XML is not valid, if there are multiple <code>source</code> or <code>target</code> elements, and if a <code>file</code> element is missing a <code>target-language</code> attribute.</li>
+        <li>Errors are reported if the XML is not valid, if there are multiple <code>source</code> or <code>target</code> elements, and if the first <code>file</code> element is missing a <code>target-language</code> attribute.</li>
     </ul>
     <?php
     }
