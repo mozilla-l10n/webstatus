@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 
+import argparse
 import json
 import os
 import subprocess
@@ -111,12 +112,33 @@ def main():
 
     storage_path = settings['storage_path']
     json_filename = os.path.join(webstatus_path, 'web_status.json')
-    json_data = {}
-    json_data['locales'] = {};
 
     # Read products from external Json file
-    source_file = open(os.path.join(webstatus_path, 'config', 'sources.json'))
-    products = json.load(source_file)
+    sources_file = open(os.path.join(webstatus_path, 'config', 'sources.json'))
+    all_products = json.load(sources_file)
+    products = {}
+
+    # Get command line parameters
+    parser = argparse.ArgumentParser()
+    parser.add_argument('product_code', nargs='?',
+                        help='Code of the single product to update')
+    args = parser.parse_args()
+
+    if (args.product_code):
+        product_code = args.product_code
+        if not product_code in all_products:
+            print "The requested product code (%s) is not available." \
+                  % product_code
+            sys.exit(1)
+        # Use only the requested product
+        products[product_code] = all_products[product_code]
+        # Load the existing JSON data
+        json_data = json.load(open(json_filename))
+    else:
+        # No product code, need to update everything and start from scratch
+        products = all_products
+        json_data = {}
+        json_data['locales'] = {};
 
     # Clone/update repositories
     for key,product in products.iteritems():
@@ -300,7 +322,8 @@ def main():
         'creation_date': strftime('%Y-%m-%d %H:%M %Z', localtime()),
         'products': {}
     }
-    for key,product in products.iteritems():
+
+    for key,product in all_products.iteritems():
         json_data['metadata']['products'][key] = {
             'name': product['displayed_name'],
             'repository_url': product['repository_url'],
