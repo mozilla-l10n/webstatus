@@ -256,8 +256,7 @@ def main():
 
                     # Run stats
                     string_total = string_translated + string_untranslated + \
-                                   string_identical + string_missing + \
-                                   string_fuzzy
+                                   string_missing + string_fuzzy
                     if (string_missing == 0 and
                         string_fuzzy == 0 and
                         string_untranslated == 0):
