@@ -29,13 +29,24 @@ def main():
 
             # Check if there are multiple source/target elements
             if len(source) > 1:
-                error_message = 'Trans unit %s has multiple <source> elements' \
-                                % trans_unit.attributes['id'].value
-                raise ValueError(error_message)
+                # Exclude elements in alt-trans nodes
+                source_count = 0
+                for source_element in source:
+                    if source_element.parentNode.tagName != 'alt-trans':
+                        source_count += 1
+                if source_count > 1:
+                    error_message = 'Trans unit %s has multiple <source> elements' \
+                                    % trans_unit.attributes['id'].value
+                    raise ValueError(error_message)
             if len(target) > 1:
-                error_message = 'Trans unit %s has multiple <target> elements' \
-                                % trans_unit.attributes['id'].value
-                raise ValueError(error_message)
+                target_count = 0
+                for target_element in target:
+                    if target_element.parentNode.tagName != 'alt-trans':
+                        target_count += 1
+                if target_count > 1:
+                    error_message = 'Trans unit %s has multiple <target> elements' \
+                                    % trans_unit.attributes['id'].value
+                    raise ValueError(error_message)
 
             # Compare strings
             try:
