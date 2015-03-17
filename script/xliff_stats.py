@@ -13,6 +13,7 @@ def main():
     translated = 0
     missing = 0
     identical = 0
+    total = 0
 
     try:
         xmldoc = minidom.parse(args.source_path)
@@ -82,10 +83,12 @@ def main():
         print e
         sys.exit(1)
 
+    total = translated + missing
     json_data = {
         "identical": identical,
-        "translated": translated,
-        "missing": missing
+        "missing": missing,
+        "total": total,
+        "translated": translated
     }
     print json.dumps(json_data)
 

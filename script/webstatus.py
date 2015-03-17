@@ -225,6 +225,7 @@ def main():
                         string_fuzzy = string_stats['fuzzy']
                         string_translated = string_stats['translated']
                         string_untranslated = string_stats['untranslated']
+                        string_total = string_stats['total']
 
                     # Properties files
                     if source_type == 'properties':
@@ -251,6 +252,7 @@ def main():
                         string_identical = string_stats['identical']
                         string_missing = string_stats['missing']
                         string_translated = string_stats['translated']
+                        string_total = string_stats['total']
 
                     # Xliff files
                     if source_type == 'xliff':
@@ -275,10 +277,9 @@ def main():
                         string_identical = string_stats['identical']
                         string_missing = string_stats['missing']
                         string_translated = string_stats['translated']
+                        string_total = string_stats['total']
 
                     # Run stats
-                    string_total = string_translated + string_untranslated + \
-                                   string_missing + string_fuzzy
                     if (string_missing == 0 and
                         string_fuzzy == 0 and
                         string_untranslated == 0):

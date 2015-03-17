@@ -25,9 +25,11 @@ then
     fuzzy=$(($fuzzy-1))
 fi
 
+total=$(($translated+$untranslated+$fuzzy))
 
 echo "{"
+echo "    \"fuzzy\": $fuzzy,"
 echo "    \"translated\": $translated,"
-echo "    \"untranslated\": $untranslated,"
-echo "    \"fuzzy\": $fuzzy"
+echo "    \"total\": $total,"
+echo "    \"untranslated\": $untranslated"
 echo "}"
