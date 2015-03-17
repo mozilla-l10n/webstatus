@@ -39,6 +39,7 @@ def main():
     translated = 0
     missing = 0
     identical = 0
+    total = 0
 
     try:
         silme.format.Manager.register('properties')
@@ -57,20 +58,21 @@ def main():
             if type(item[1]) is not silme.core.structure.Blob:
                 for entity in source_entities:
                     if entity in item[1]:
+                        translated += 1
                         if source_entities[entity] == item[1][entity].get_value():
                             identical += 1
-                        else:
-                            translated += 1
                     else:
                         missing += 1
     except Exception as e:
         print e
         sys.exit(1)
 
+    total = translated + missing
     json_data = {
         "identical": identical,
-        "translated": translated,
-        "missing": missing
+        "missing": missing,
+        "total": total,
+        "translated": translated
     }
     print json.dumps(json_data)
 
