@@ -53,7 +53,7 @@ def main():
             try:
                 source_string = source[0].firstChild.data
             except:
-                error_message = 'Trans unit %s has a malformed <source> element' \
+                error_message = 'Trans unit %s has a malformed or empty <source> element' \
                                 % trans_unit.attributes['id'].value
                 raise ValueError(error_message)
             if target:
@@ -64,7 +64,7 @@ def main():
                     if source_string == target_string:
                         identical += 1
                 except:
-                    error_message = 'Trans unit %s has a malformed <target> element' \
+                    error_message = 'Trans unit %s has a malformed or empty <target> element' \
                                     % trans_unit.attributes['id'].value
                     raise ValueError(error_message)
             else:
