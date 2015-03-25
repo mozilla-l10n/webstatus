@@ -25,6 +25,8 @@ See a running instance at http://l10n.mozilla-community.org/~flod/webstatus/
 
 ## Structure of the Json file
 
+Example at: https://l10n.mozilla-community.org/~flod/webstatus/web_status.json
+
 ```JSON
 "locales": {
     "locale_code": {
