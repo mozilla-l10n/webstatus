@@ -278,7 +278,11 @@ def main():
                         string_missing = string_stats['missing']
                         string_translated = string_stats['translated']
                         string_total = string_stats['total']
-
+                        if string_stats['errors'] != '':
+                            # For XLIFF I might have errors but still display the available stats
+                            error_status = True
+                            complete = False
+                            error_message = 'Error extracting data: %s' % string_stats['errors']
                     # Run stats
                     if (string_missing == 0 and
                         string_fuzzy == 0 and
