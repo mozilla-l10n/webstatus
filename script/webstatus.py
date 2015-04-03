@@ -85,7 +85,7 @@ def clone_repo(product):
         # git repository
         try:
             cmd_status = subprocess.check_output(
-                ['git', 'clone', product['repository_url']],
+                ['git', 'clone', '--depth', '1', product['repository_url']],
                 stderr = subprocess.STDOUT,
                 shell = False)
             print cmd_status
