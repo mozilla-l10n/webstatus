@@ -16,7 +16,7 @@ $products = [
 
 $excluded_locales = [
     'ak', 'an', 'az', 'br', 'db-LB', 'en', 'en-GB', 'en-US', 'en-ZA',
-    'es-AR', 'es-CL', 'es-ES', 'es-MX', 'fur', 'fy', 'ga', 'gu-IN',
+    'es-AR', 'es-CL', 'es-ES', 'es-MX', 'fur', 'fy', 'fy-NL', 'ga', 'gu-IN',
     'hy-AM', 'is', 'kk', 'lv', 'mai', 'metadata', 'mr', 'nb', 'nn-NO',
     'no', 'oc', 'pa-IN', 'pt', 'rm', 'rw', 'sah', 'son', 'sr-Cyrl',
     'sr-CYRL', 'sr-LATN', 'sv', 'ta-LK',
