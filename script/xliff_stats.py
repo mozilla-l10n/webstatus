@@ -6,28 +6,40 @@ import json
 import sys
 from xml.dom import minidom
 
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('source_path', help='Path to XLIFF file')
-    args = parser.parse_args()
 
-    translated = 0
-    missing = 0
+def analyze_file(file_path, string_list):
+    # This function parses a XLIFF file
+    #
+    # file_path: path to the XLIFF file to analyze
+    # string_list: string IDs are stored in the form of fileunit:stringid
+    #
+    # Returns a JSON record with stats about translations.
+    #
+
     identical = 0
+    missing = 0
     total = 0
+    translated = 0
+    untranslated = 0
     errors = []
 
     try:
-        xmldoc = minidom.parse(args.source_path)
+        xmldoc = minidom.parse(file_path)
         trans_units = xmldoc.getElementsByTagName('trans-unit')
         for trans_unit in trans_units:
             source = trans_unit.getElementsByTagName('source')
             target = trans_unit.getElementsByTagName('target')
 
+            file_element_name = trans_unit.parentNode.parentNode.attributes['original'].value
+            # Store the string ID
+            string_id = '%s:%s' % \
+                        (file_element_name, trans_unit.attributes['id'].value)
+            string_list.append(string_id)
+
             # Check if we have at least one source
             if not source:
-                error_msg = u'Trans unit “%s” is missing a <source> element' \
-                            % trans_unit.attributes['id'].value
+                error_msg = u'Trans unit “%s” in file ”%s” is missing a <source> element' \
+                            % (trans_unit.attributes['id'].value, file_element_name)
                 errors.append(error_msg)
                 continue
 
@@ -39,8 +51,8 @@ def main():
                     if source_element.parentNode.tagName != 'alt-trans':
                         source_count += 1
                 if source_count > 1:
-                    error_msg = u'Trans unit “%s” has multiple <source> elements' \
-                                % trans_unit.attributes['id'].value
+                    error_msg = u'Trans unit “%s” in file ”%s” has multiple <source> elements' \
+                                % (trans_unit.attributes['id'].value, file_element_name)
                     errors.append(error_msg)
             if len(target) > 1:
                 target_count = 0
@@ -48,16 +60,16 @@ def main():
                     if target_element.parentNode.tagName != 'alt-trans':
                         target_count += 1
                 if target_count > 1:
-                    error_msg = u'Trans unit “%s” has multiple <target> elements' \
-                                % trans_unit.attributes['id'].value
+                    error_msg = u'Trans unit “%s” in file ”%s” has multiple <target> elements' \
+                                % (trans_unit.attributes['id'].value, file_element_name)
                     errors.append(error_msg)
 
             # Compare strings
             try:
                 source_string = source[0].firstChild.data
             except:
-                error_msg = u'Trans unit “%s” has a malformed or empty <source> element' \
-                            % trans_unit.attributes['id'].value
+                error_msg = u'Trans unit “%s” in file ”%s” has a malformed or empty <source> element' \
+                            % (trans_unit.attributes['id'].value, file_element_name)
                 errors.append(error_msg)
                 continue
             if target:
@@ -68,12 +80,12 @@ def main():
                     if source_string == target_string:
                         identical += 1
                 except:
-                    error_msg = u'Trans unit “%s” has a malformed or empty <target> element' \
-                                % trans_unit.attributes['id'].value
+                    error_msg = u'Trans unit “%s” in file ”%s” has a malformed or empty <target> element' \
+                                % (trans_unit.attributes['id'].value, file_element_name)
                     errors.append(error_msg)
                     continue
             else:
-                missing += 1
+                untranslated += 1
 
         # If we have translations, check if the first file is missing a target-language
         if translated + identical > 1:
@@ -88,15 +100,42 @@ def main():
         print e
         sys.exit(1)
 
-    total = translated + missing
-    json_data = {
+    total = translated + untranslated
+    file_stats = {
         "errors": ' - '.join(errors),
         "identical": identical,
-        "missing": missing,
         "total": total,
-        "translated": translated
+        "translated": translated,
+        "untranslated": untranslated
     }
-    print json.dumps(json_data)
+
+    return file_stats
+
+def diff(a, b):
+    b = set(b)
+    return [aa for aa in a if aa not in b]
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('reference_file', help='Path to reference XLIFF file')
+    parser.add_argument('locale_file', help='Path to localized XLIFF file')
+    args = parser.parse_args()
+
+    reference_strings = []
+    reference_stats = analyze_file(args.reference_file, reference_strings)
+
+    locale_strings = []
+    locale_stats = analyze_file(args.locale_file, locale_strings)
+
+    # Check missing/obsolete strings
+    missing_strings = diff(reference_strings, locale_strings)
+    obsolete_strings = diff(locale_strings, reference_strings)
+    locale_stats['missing'] = len(missing_strings)
+    locale_stats['obsolete'] = len(obsolete_strings)
+    locale_stats['missing_strings'] = missing_strings
+    locale_stats['obsolete_strings'] = obsolete_strings
+
+    print json.dumps(locale_stats)
 
 
 if __name__ == '__main__':
