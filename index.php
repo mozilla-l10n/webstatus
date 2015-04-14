@@ -142,7 +142,7 @@ if ($requested_product != 'all') {
     $table_footer = '</tbody>
         </table>';
 
-    $table_rows = function ($table_type, $row_header, $product, $source_type, $repo_url, $repo_type) {
+    $table_rows = function ($table_type, $row_header, $product, $source_type, $repo_url, $repo_type, $product_id, $locale) {
         $perc = $product['percentage'];
         $source_type_label = $source_type;
         // For .properties files I consider also the number of identical strings
@@ -182,18 +182,27 @@ if ($requested_product != 'all') {
             $row_header = "{$row_header}<a href='{$repo_url}' class='repository_link' title='View source repository'>{$repo_type}</a>";
         }
 
-        return  "<tr class='{$row_class}' style='{$row_style}'>\n" .
-                "      <th>{$row_header}</th>\n" .
-                "      <td class='number'>{$product['percentage']}</td>\n" .
-                "      <td class='source_type'>{$source_type_label}</td>\n" .
-                "      <td class='number'>{$product['translated']}</td>\n" .
-                "      <td class='number'>{$product['untranslated']}</td>\n" .
-                "      <td class='number'>{$product['identical']}</td>\n" .
-                "      <td class='number'>{$product['missing']}</td>\n" .
-                "      <td class='number'>{$product['fuzzy']}</td>\n" .
-                "      <td class='number'>{$product['total']}</td>\n" .
-                '      <td>' . htmlspecialchars($product['error_message']). "</td>\n" .
-                "</tr>\n";
+        $rows =  "<tr class='{$row_class}' style='{$row_style}'>\n" .
+                 "      <th>{$row_header}</th>\n" .
+                 "      <td class='number'>{$product['percentage']}</td>\n" .
+                 "      <td class='source_type'>{$source_type_label}</td>\n" .
+                 "      <td class='number'>{$product['translated']}</td>\n" .
+                 "      <td class='number'>{$product['untranslated']}</td>\n" .
+                 "      <td class='number'>{$product['identical']}</td>\n";
+
+        if ($source_type == 'xliff' && $product['missing'] > 0) {
+            $link = "views/xliff_diff.php?product={$product_id}&locale={$locale}";
+            $rows .=  "      <td class='number'><a href='{$link}' title='Show missing and obsolete strings'>{$product['missing']}</a></td>\n";
+        } else {
+            $rows .=  "      <td class='number'>{$product['missing']}</td>\n";
+        }
+
+        $rows .=  "      <td class='number'>{$product['fuzzy']}</td>\n" .
+                  "      <td class='number'>{$product['total']}</td>\n" .
+                  '      <td>' . htmlspecialchars($product['error_message']). "</td>\n" .
+                  "</tr>\n";
+
+        return $rows;
     };
 
     if ($requested_product == 'all') {
@@ -210,7 +219,9 @@ if ($requested_product != 'all') {
                                  $current_product,
                                  $current_product['source_type'],
                                  $product['repository_url'],
-                                 $product['repository_type']);
+                                 $product['repository_type'],
+                                 $product_id,
+                                 $requested_locale);
             }
         }
         echo $table_footer;
@@ -234,7 +245,9 @@ if ($requested_product != 'all') {
                                  $current_product,
                                  $current_product['source_type'],
                                  '',
-                                 '');
+                                 '',
+                                 $requested_product,
+                                 $locale_code);
             }
         }
         echo $table_footer;
@@ -246,10 +259,17 @@ if ($requested_product != 'all') {
     if ($xliff_note) {
     ?>
     <h3 id="xliff_notes">Notes on XLIFF files</h3>
-    <p>A MDN document is available explaining <a href="https://developer.mozilla.org/en-US/docs/Mozilla/Localization/Localizing_XLIFF_files">how to to work on XLIFF files</a>.</p>
+    <p>A MDN document is available explaining
+       <a href="https://developer.mozilla.org/en-US/docs/Mozilla/Localization/Localizing_XLIFF_files">how to to work on XLIFF files</a>.</p>
     <ul>
-        <li>Strings are reported as missing if a <code>trans-unit</code> has a <code>source</code> element but not a <code>target</code> element.</li>
-        <li>Errors are reported if the XML is not valid, if there are multiple <code>source</code> or <code>target</code> elements, and if the first <code>file</code> element is missing a <code>target-language</code> attribute.</li>
+        <li>Strings are reported as missing if a <code>trans-unit</code> has a <code>source</code> element
+            but not a <code>target</code> element.</li>
+        <li>Errors are reported if the XML is not valid, if there are multiple <code>source</code> or
+            <code>target</code> elements, and if the first <code>file</code> element is missing a
+            <code>target-language</code> attribute.</li>
+        <li>Untranslated strings are strings available in the file but not localized (no <code>target</code>).
+        Missing strings are strings available in en-US but not in the locale file. Completion percentage is
+        determined by adding the number of missing strings to the number of strings actually available in the file.</li>
     </ul>
     <?php
     }

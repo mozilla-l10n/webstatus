@@ -258,9 +258,11 @@ def main():
                     if source_type == 'xliff':
                         try:
                             compare_script = os.path.join(webstatus_path, 'script', 'xliff_stats.py')
+                            reference_file_name = os.path.join(product_folder, 'en-US', product['source_file'])
                             locale_file_name = os.path.join(product_folder, locale, product['source_file'])
                             string_stats_json = subprocess.check_output(
-                                [compare_script, locale_file_name],
+                                [compare_script, reference_file_name,
+                                 locale_file_name],
                                 stderr = subprocess.STDOUT,
                                 shell = False)
                         except subprocess.CalledProcessError as error:
@@ -277,6 +279,7 @@ def main():
                         string_identical = string_stats['identical']
                         string_missing = string_stats['missing']
                         string_translated = string_stats['translated']
+                        string_untranslated = string_stats['untranslated']
                         string_total = string_stats['total']
                         if string_stats['errors'] != '':
                             # For XLIFF I might have errors but still display the available stats
@@ -284,12 +287,15 @@ def main():
                             complete = False
                             error_message = 'Error extracting data: %s' % string_stats['errors']
                     # Run stats
-                    if (string_missing == 0 and
-                        string_fuzzy == 0 and
+                    if (string_fuzzy == 0 and
+                        string_missing == 0 and
                         string_untranslated == 0):
                         # No untranslated, missing or fuzzy strings, locale is complete
                         complete = True
                         percentage = 100
+                    elif (string_missing > 0):
+                        complete = False
+                        percentage = round((float(string_translated)/(string_total + string_missing)) * 100, 1)
                     else:
                         # Need to calculate the level of completeness
                         complete = False
