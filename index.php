@@ -37,9 +37,11 @@ if (empty($_REQUEST['locale'])) {
     // Source: http://www.thefutureoftheweb.com/blog/use-accept-language-header
     if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
         // Break up string into pieces (languages and q factors)
-        preg_match_all('/([a-z]{1,8}(-[a-z]{1,8})?)\s*(;\s*q\s*=\s*(1|0\.[0-9]+))?/i',
-                       $_SERVER['HTTP_ACCEPT_LANGUAGE'],
-                       $lang_parse);
+        preg_match_all(
+            '/([a-z]{1,8}(-[a-z]{1,8})?)\s*(;\s*q\s*=\s*(1|0\.[0-9]+))?/i',
+            $_SERVER['HTTP_ACCEPT_LANGUAGE'],
+            $lang_parse
+        );
         if (count($lang_parse[1])) {
             // Create a list like "en" => 0.8
             $accept_locales = array_combine($lang_parse[1], $lang_parse[4]);
@@ -186,12 +188,18 @@ if ($requested_product != 'all') {
                  "      <th>{$row_header}</th>\n" .
                  "      <td class='number'>{$product['percentage']}</td>\n" .
                  "      <td class='source_type'>{$source_type_label}</td>\n" .
-                 "      <td class='number'>{$product['translated']}</td>\n" .
-                 "      <td class='number'>{$product['untranslated']}</td>\n" .
-                 "      <td class='number'>{$product['identical']}</td>\n";
+                 "      <td class='number'>{$product['translated']}</td>\n";
+
+        $link = "views/xliff_diff.php?product={$product_id}&locale={$locale}";
+        if ($source_type == 'xliff' && $product['untranslated'] > 0) {
+            $rows .=  "      <td class='number'><a href='{$link}' title='Show untranslated strings'>{$product['untranslated']}</a></td>\n";
+        } else {
+            $rows .=  "      <td class='number'>{$product['untranslated']}</td>\n";
+        }
+
+        $rows .= "      <td class='number'>{$product['identical']}</td>\n";
 
         if ($source_type == 'xliff' && $product['missing'] > 0) {
-            $link = "views/xliff_diff.php?product={$product_id}&locale={$locale}";
             $rows .=  "      <td class='number'><a href='{$link}' title='Show missing and obsolete strings'>{$product['missing']}</a></td>\n";
         } else {
             $rows .=  "      <td class='number'>{$product['missing']}</td>\n";

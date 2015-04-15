@@ -7,11 +7,12 @@ import sys
 from xml.dom import minidom
 
 
-def analyze_file(file_path, string_list):
+def analyze_file(file_path, string_list, untranslated_strings):
     # This function parses a XLIFF file
     #
     # file_path: path to the XLIFF file to analyze
     # string_list: string IDs are stored in the form of fileunit:stringid
+    # untranslated_strings: untranslated strings
     #
     # Returns a JSON record with stats about translations.
     #
@@ -85,6 +86,7 @@ def analyze_file(file_path, string_list):
                     errors.append(error_msg)
                     continue
             else:
+                untranslated_strings.append(string_id)
                 untranslated += 1
 
         # If we have translations, check if the first file is missing a target-language
@@ -122,10 +124,19 @@ def main():
     args = parser.parse_args()
 
     reference_strings = []
-    reference_stats = analyze_file(args.reference_file, reference_strings)
+    reference_stats = analyze_file(
+                        args.reference_file,
+                        reference_strings,
+                        []
+                      )
 
     locale_strings = []
-    locale_stats = analyze_file(args.locale_file, locale_strings)
+    untranslated_strings = []
+    locale_stats = analyze_file(
+                    args.locale_file,
+                    locale_strings,
+                    untranslated_strings
+                   )
 
     # Check missing/obsolete strings
     missing_strings = diff(reference_strings, locale_strings)
@@ -134,9 +145,9 @@ def main():
     locale_stats['obsolete'] = len(obsolete_strings)
     locale_stats['missing_strings'] = missing_strings
     locale_stats['obsolete_strings'] = obsolete_strings
+    locale_stats['untranslated_strings'] = untranslated_strings
 
     print json.dumps(locale_stats)
-
 
 if __name__ == '__main__':
     main()
