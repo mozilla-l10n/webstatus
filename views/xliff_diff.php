@@ -67,6 +67,7 @@ if (! $error) {
 
     $html_output .= $display_strings('Missing strings', 'No missing strings', $json_data['missing_strings']);
     $html_output .= $display_strings('Obsolete strings', 'No obsolete strings', $json_data['obsolete_strings']);
+    $html_output .= $display_strings('Untranslated strings', 'No untranslated strings', $json_data['untranslated_strings']);
 }
 
 ?>
