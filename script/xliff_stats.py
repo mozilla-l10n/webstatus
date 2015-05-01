@@ -75,16 +75,12 @@ def analyze_file(file_path, string_list, untranslated_strings):
                 continue
             if target:
                 try:
-                    source_string = source[0].firstChild.data
                     target_string = target[0].firstChild.data
-                    translated += 1
-                    if source_string == target_string:
-                        identical += 1
                 except:
-                    error_msg = u'Trans unit “%s” in file ”%s” has a malformed or empty <target> element' \
-                                % (trans_unit.attributes['id'].value, file_element_name)
-                    errors.append(error_msg)
-                    continue
+                    target_string = ''
+                translated += 1
+                if source_string == target_string:
+                    identical += 1
             else:
                 untranslated_strings.append(string_id)
                 untranslated += 1
