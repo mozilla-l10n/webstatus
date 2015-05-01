@@ -89,7 +89,7 @@
     },
     "firefox-ios": {
         "displayed_name": "Firefox for iOS",
-        "excluded_folders": [],
+        "excluded_folders": [ "template" ],
         "locale_folder": "",
         "product_name": "firefox-ios",
         "repository_name": "firefox-ios",
