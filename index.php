@@ -70,17 +70,22 @@ if (empty($_REQUEST['locale'])) {
 $requested_product = !empty($_REQUEST['product']) ? $_REQUEST['product'] : 'all';
 // Check if the requested product is available
 if (! isset($available_products[$requested_product])) {
+    // Product is not available, display all products
     $requested_product = 'all';
 }
+
 if ($requested_product != 'all') {
     $requested_locale = 'all locales';
+    $page_title = "Web Status – {$available_products[$requested_product]['name']}";
+} else {
+    $page_title = "Web Status – {$requested_locale}";
 }
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset=utf-8>
-    <title>Web Status</title>
+    <title><?php echo $page_title; ?></title>
     <link rel="stylesheet" href="assets/css/bootstrap.min.css" type="text/css" media="all" />
     <link rel="stylesheet" href="assets/css/bootstrap-theme.min.css" type="text/css" media="all" />
     <link rel="stylesheet" href="assets/css/main.css" type="text/css" media="all" />
