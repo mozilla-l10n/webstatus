@@ -107,7 +107,15 @@ if ($requested_product != 'all') {
   <div class="container">
 
 <?php
-    echo "<h1>Current locale: {$requested_locale}</h1>\n";
+    echo "<h1>Current locale: {$requested_locale}\n";
+    $url_history = "https://l10n.mozilla-community.org/~flod/webstatus_history/?product={$requested_product}&";
+    if ($requested_locale == 'all locales') {
+        $url_history .= "locale=all";
+    } else {
+        $url_history .= "locale={$requested_locale}";
+    }
+    echo "\n<a href='{$url_history}' class='stats-icon' title='See historical graphs'><span class='glyphicon glyphicon-stats' aria-hidden='true'></span></a>";
+    echo "</h1>\n";
     echo '<div class="list locale_list">
             <p>Display localization status for a specific locale<br/>';
     foreach ($available_locales as $locale_code) {
