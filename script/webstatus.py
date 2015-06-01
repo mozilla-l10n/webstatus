@@ -7,7 +7,7 @@ import subprocess
 import sys
 from ConfigParser import SafeConfigParser
 from StringIO import StringIO
-from time import strftime, localtime
+from datetime import datetime
 
 
 def check_environment(main_path, settings):
@@ -330,7 +330,7 @@ def main():
 
     # Record some metadata, including the list of tracked products
     json_data['metadata'] = {
-        'creation_date': strftime('%Y-%m-%d %H:%M %Z', localtime()),
+        'creation_date': datetime.utcnow().strftime('%Y-%m-%d %H:%M UTC'),
         'products': {}
     }
 
