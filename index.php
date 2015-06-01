@@ -1,5 +1,5 @@
 <?php
-date_default_timezone_set('Europe/Rome');
+date_default_timezone_set('Europe/Paris');
 
 $sources_file = 'config/sources.json';
 $webstatus_file = 'web_status.json';
@@ -275,7 +275,8 @@ if ($requested_product != 'all') {
         echo "<p>Complete locales: {$completed_locales} out of {$total_locales}.</p>";
     }
 
-    echo "<p>Last update: {$json_array['metadata']['creation_date']}</p>";
+    $last_update_local = date('Y-m-d H:i e (O)', strtotime($json_array['metadata']['creation_date']));
+    echo "<p>Last update: {$last_update_local}</p>";
 
     if ($xliff_note) {
     ?>

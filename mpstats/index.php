@@ -1,6 +1,5 @@
 <?php
-
-date_default_timezone_set('Europe/Rome');
+date_default_timezone_set('Europe/Paris');
 
 $json_filename = '../web_status.json';
 $json_array = (array) json_decode(file_get_contents($json_filename), true);
@@ -146,9 +145,11 @@ $columns_number = 1 + 3 * count($products);
         }
         $content .= "     </tr>\n";
     }
+
+    $last_update_local = date('Y-m-d H:i e (O)', strtotime($json_array['metadata']['creation_date']));
     $content .= "   </tbody>\n" .
                 " </table>\n" .
-                "<p class='lastupdate'>Last update: {$json_array['metadata']['creation_date']}</p>";
+                "<p class='lastupdate'>Last update: {$last_update_local}</p>";
     echo $content;
 ?>
 </div>
