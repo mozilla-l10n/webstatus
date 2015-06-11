@@ -8,7 +8,7 @@ import sys
 
 # Import Silme library (http://hg.mozilla.org/l10n/silme/)
 silmepath = os.path.join(
-    os.path.abspath(os.path.join(sys.path[0], os.pardir)),
+    os.path.abspath(os.path.join(os.path.dirname( __file__ ), os.pardir)),
     'libraries',
     'silme'
 )
@@ -17,7 +17,7 @@ if not os.path.isdir(silmepath):
     try:
         print 'Cloning silme...'
         cmd_status = subprocess.check_output(
-                    'hg clone http://hg.mozilla.org/l10n/silme libraries/silme -u silme-0.8.0',
+                    'hg clone http://hg.mozilla.org/l10n/silme %s -u silme-0.8.0' % silmepath,
                     stderr = subprocess.STDOUT,
                     shell = True)
         print cmd_status
