@@ -158,7 +158,7 @@
         "repository_name": "input",
         "repository_type": "svn",
         "repository_url": "http://svn.mozilla.org/projects/l10n-misc/trunk/input/",
-        "source_file": "LC_MESSAGES/messages.po",
+        "source_file": "LC_MESSAGES/django.po",
         "source_type": "gettext"
     },
     "loop-client-l10n": {
