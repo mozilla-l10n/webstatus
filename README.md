@@ -23,7 +23,7 @@ Marketplace Stats view.
 
 See a running instance at http://l10n.mozilla-community.org/~flod/webstatus/
 
-## Structure of the Json file
+## Structure of the JSON file
 
 Example at: https://l10n.mozilla-community.org/~flod/webstatus/web_status.json
 
@@ -57,4 +57,21 @@ Example at: https://l10n.mozilla-community.org/~flod/webstatus/web_status.json
         }
     }
 }
+```
+
+## Structure of the config/sources.json file
+
+```JSON
+    "webproject_id": {
+        "displayed_name": displayed name,
+        "excluded_folders": array of extra folders to exclude,
+        "locale_folder": empty if folders for each locale are in the root of the repo
+                         path if they're in a subfolder (typically 'locale'),
+        "product_name": webproject_id,
+        "repository_name": name of the local folder used to store the clone,
+        "repository_type": type of repository (svn, git),
+        "repository_url": URL of the repository,
+        "source_file": file name (typically 'LC_MESSAGES/messages.po'),
+        "source_type": source type (gettext, properties, xliff)
+    },
 ```
