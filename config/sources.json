@@ -209,21 +209,6 @@
         "source_file": "LC_MESSAGES/messages.po",
         "source_type": "gettext"
     },
-    "mdn-js": {
-        "displayed_name": "MDN (javascript.po)",
-        "excluded_folders": [
-            "x_testing",
-            "xx_testing",
-            "en_US"
-        ],
-        "locale_folder": "locale",
-        "product_name": "mdn-js",
-        "repository_name": "mdn",
-        "repository_type": "svn",
-        "repository_url": "http://svn.mozilla.org/projects/mdn/trunk/",
-        "source_file": "LC_MESSAGES/javascript.po",
-        "source_type": "gettext"
-    },
     "mdn-promote": {
         "displayed_name": "MDN (promote-mdn.po)",
         "excluded_folders": [
@@ -320,20 +305,6 @@
         "repository_type": "svn",
         "repository_url": "http://svn.mozilla.org/projects/sumo/locales",
         "source_file": "LC_MESSAGES/buddyup.po",
-        "source_type": "gettext"
-    },
-    "sumo-js": {
-        "displayed_name": "SUMO (js)",
-        "excluded_folders": [
-            "compendia",
-            "xx_testing"
-        ],
-        "locale_folder": "",
-        "product_name": "sumo-js",
-        "repository_name": "sumo",
-        "repository_type": "svn",
-        "repository_url": "http://svn.mozilla.org/projects/sumo/locales",
-        "source_file": "LC_MESSAGES/javascript.po",
         "source_type": "gettext"
     },
     "sumo-yaocho": {
