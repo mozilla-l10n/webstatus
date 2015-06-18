@@ -55,7 +55,7 @@
         "source_type": "gettext"
     },
     "commbadge": {
-        "displayed_name": "CommBadge",
+        "displayed_name": "Marketplace CommBadge",
         "excluded_folders": [],
         "locale_folder": "locale",
         "product_name": "commbadge",
@@ -110,7 +110,7 @@
         "source_type": "gettext"
     },
     "fireplace": {
-        "displayed_name": "Fireplace",
+        "displayed_name": "Marketplace Fireplace",
         "excluded_folders": [],
         "locale_folder": "locale",
         "product_name": "fireplace",
@@ -269,7 +269,7 @@
         "source_type": "gettext"
     },
     "spartacus": {
-        "displayed_name": "Payments Front End",
+        "displayed_name": "Marketplace Spartacus",
         "excluded_folders": [],
         "locale_folder": "locale",
         "product_name": "spartacus",
@@ -322,7 +322,7 @@
         "source_type": "gettext"
     },
     "zamboni": {
-        "displayed_name": "Marketplace (zamboni)",
+        "displayed_name": "Marketplace",
         "excluded_folders": [],
         "locale_folder": "locale",
         "product_name": "zamboni",
@@ -333,7 +333,7 @@
         "source_type": "gettext"
     },
     "zamboni-js": {
-        "displayed_name": "Marketplace (zamboni js)",
+        "displayed_name": "Marketplace (js)",
         "excluded_folders": [],
         "locale_folder": "locale",
         "product_name": "zamboni-js",
@@ -344,7 +344,7 @@
         "source_type": "gettext"
     },
     "zippy": {
-        "displayed_name": "Zippy",
+        "displayed_name": "Marketplace Zippy",
         "excluded_folders": [],
         "locale_folder": "locale",
         "product_name": "zippy",
