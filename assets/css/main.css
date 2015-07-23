@@ -38,6 +38,7 @@ tr th {
 .source_type {
     text-transform: uppercase;
     text-align: center;
+    min-width: 65px;
 }
 
 .source_type a:hover {

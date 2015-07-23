@@ -286,6 +286,8 @@ if ($requested_product != 'all') {
     <ul>
         <li>Strings are reported as missing if a <code>trans-unit</code> has a <code>source</code> element
             but not a <code>target</code> element.</li>
+        <li>Don't use straight double quotes (<code>"example"</code>) in your translations. Use curly double
+            quotes (<code>“example”</code>) or straight single quotes (<code>'example'</code>).</li>
         <li>Errors are reported if the XML is not valid, if there are multiple <code>source</code> or
             <code>target</code> elements, and if the first <code>file</code> element is missing a
             <code>target-language</code> attribute.</li>
