@@ -8,7 +8,7 @@ import sys
 
 # Import Silme library (http://hg.mozilla.org/l10n/silme/)
 silmepath = os.path.join(
-    os.path.abspath(os.path.join(os.path.dirname( __file__ ), os.pardir)),
+    os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir)),
     'libraries',
     'silme'
 )
@@ -17,9 +17,9 @@ if not os.path.isdir(silmepath):
     try:
         print 'Cloning silme...'
         cmd_status = subprocess.check_output(
-                    'hg clone http://hg.mozilla.org/l10n/silme %s -u silme-0.8.0' % silmepath,
-                    stderr = subprocess.STDOUT,
-                    shell = True)
+            'hg clone http://hg.mozilla.org/l10n/silme %s -u silme-0.8.0' % silmepath,
+            stderr=subprocess.STDOUT,
+            shell=True)
         print cmd_status
     except Exception as e:
         print e
@@ -29,6 +29,7 @@ sys.path.append(os.path.join(silmepath, 'lib'))
 import silme.core
 import silme.io
 import silme.format
+
 
 def main():
     parser = argparse.ArgumentParser()
@@ -44,9 +45,11 @@ def main():
     try:
         silme.format.Manager.register('properties')
         rcs_client_source = silme.io.Manager.get('file')
-        l10n_package_source = rcs_client_source.get_package(args.source_path, object_type='entitylist')
+        l10n_package_source = rcs_client_source.get_package(
+            args.source_path, object_type='entitylist')
         rcs_client_locale = silme.io.Manager.get('file')
-        l10n_package_locale = rcs_client_locale.get_package(args.locale_path, object_type='entitylist')
+        l10n_package_locale = rcs_client_locale.get_package(
+            args.locale_path, object_type='entitylist')
 
         source_entities = {}
         for item in l10n_package_source:

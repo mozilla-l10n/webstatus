@@ -31,7 +31,8 @@ def analyze_file(file_path, string_list, untranslated_strings):
             source = trans_unit.getElementsByTagName('source')
             target = trans_unit.getElementsByTagName('target')
 
-            file_element_name = trans_unit.parentNode.parentNode.attributes['original'].value
+            file_element_name = trans_unit.parentNode.parentNode.attributes[
+                'original'].value
             # Store the string ID
             string_id = '%s:%s' % \
                         (file_element_name, trans_unit.attributes['id'].value)
@@ -81,7 +82,8 @@ def analyze_file(file_path, string_list, untranslated_strings):
                 translated += 1
                 if source_string == target_string:
                     identical += 1
-                # Check if there are double quotes breaking import tools (bug 1140751 and others)
+                # Check if there are double quotes breaking import tools (bug
+                # 1140751 and others)
                 if '"' in target_string:
                     error_msg = u'Trans unit “%s” in file ”%s” is using straight double quotes. \
                                   Please use curly double quotes or single quotes instead.' \
@@ -91,7 +93,8 @@ def analyze_file(file_path, string_list, untranslated_strings):
                 untranslated_strings.append(string_id)
                 untranslated += 1
 
-        # If we have translations, check if the first file is missing a target-language
+        # If we have translations, check if the first file is missing a
+        # target-language
         if translated + identical > 1:
             file_elements = xmldoc.getElementsByTagName('file')
             if len(file_elements) > 0:
@@ -115,9 +118,11 @@ def analyze_file(file_path, string_list, untranslated_strings):
 
     return file_stats
 
+
 def diff(a, b):
     b = set(b)
     return [aa for aa in a if aa not in b]
+
 
 def main():
     parser = argparse.ArgumentParser()
@@ -127,18 +132,18 @@ def main():
 
     reference_strings = []
     reference_stats = analyze_file(
-                        args.reference_file,
-                        reference_strings,
-                        []
-                      )
+        args.reference_file,
+        reference_strings,
+        []
+    )
 
     locale_strings = []
     untranslated_strings = []
     locale_stats = analyze_file(
-                    args.locale_file,
-                    locale_strings,
-                    untranslated_strings
-                   )
+        args.locale_file,
+        locale_strings,
+        untranslated_strings
+    )
 
     # Check missing/obsolete strings
     missing_strings = diff(reference_strings, locale_strings)
