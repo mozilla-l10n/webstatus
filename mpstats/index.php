@@ -38,7 +38,7 @@ function getRowStyle($current_product)
     $perc = $current_product['percentage'];
     $opacity = 1;
     if ($perc < 100) {
-        $opacity = floor(round(($perc-20)/100, 2)*10)/10;
+        $opacity = floor(round(($perc - 20) / 100, 2) * 10) / 10;
     }
     if ($perc >= 70) {
         $stylerow = "background-color: rgba(146, 204, 110, {$opacity});";

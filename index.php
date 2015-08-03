@@ -220,7 +220,7 @@ if ($requested_product != 'all') {
 
         $rows .=  "      <td class='number'>{$product['fuzzy']}</td>\n" .
                   "      <td class='number'>{$product['total']}</td>\n" .
-                  '      <td>' . htmlspecialchars($product['error_message']). "</td>\n" .
+                  '      <td>' . htmlspecialchars($product['error_message']) . "</td>\n" .
                   "</tr>\n";
 
         return $rows;
@@ -279,7 +279,7 @@ if ($requested_product != 'all') {
     echo "<p>Last update: {$last_update_local}</p>";
 
     if ($xliff_note) {
-    ?>
+        ?>
     <h3 id="xliff_notes">Notes on XLIFF files</h3>
     <p>A MDN document is available explaining
        <a href="https://developer.mozilla.org/en-US/docs/Mozilla/Localization/Localizing_XLIFF_files">how to to work on XLIFF files</a>.</p>
@@ -296,6 +296,7 @@ if ($requested_product != 'all') {
         determined by adding the number of missing strings to the number of strings actually available in the file.</li>
     </ul>
     <?php
+
     }
     ?>
     <p class="github_link"><a href="https://github.com/mozilla-l10n/webstatus/">Code hosted on GitHub</a></p>
