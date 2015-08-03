@@ -74,6 +74,9 @@ if (! isset($available_products[$requested_product])) {
     $requested_product = 'all';
 }
 
+$requested_locale = htmlspecialchars($requested_locale);
+$requested_product = htmlspecialchars($requested_product);
+
 if ($requested_product != 'all') {
     $requested_locale = 'all locales';
     $page_title = "Web Status – {$available_products[$requested_product]['name']}";
