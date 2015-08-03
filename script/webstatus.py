@@ -25,7 +25,7 @@ def check_environment(main_path, settings):
             settings['storage_path'] = parser.get('config', 'storage_path')
             if not os.path.isdir(settings['storage_path']):
                 print 'Folder specified in config.ini is missing (%s).' \
-                        % settings['storage_path']
+                    % settings['storage_path']
                 print 'Script will try to create it.'
                 try:
                     os.makedirs(settings['storage_path'])
@@ -62,8 +62,8 @@ def update_repo(product):
         try:
             cmd_status = subprocess.check_output(
                 ['git', 'pull'],
-                stderr = subprocess.STDOUT,
-                shell = False)
+                stderr=subprocess.STDOUT,
+                shell=False)
             print cmd_status
         except Exception as e:
             print e
@@ -72,8 +72,8 @@ def update_repo(product):
         try:
             cmd_status = subprocess.check_output(
                 ['svn', 'up'],
-                stderr = subprocess.STDOUT,
-                shell = False)
+                stderr=subprocess.STDOUT,
+                shell=False)
             print cmd_status
         except Exception as e:
             print e
@@ -86,8 +86,8 @@ def clone_repo(product):
         try:
             cmd_status = subprocess.check_output(
                 ['git', 'clone', '--depth', '1', product['repository_url']],
-                stderr = subprocess.STDOUT,
-                shell = False)
+                stderr=subprocess.STDOUT,
+                shell=False)
             print cmd_status
         except Exception as e:
             print e
@@ -97,8 +97,8 @@ def clone_repo(product):
             cmd_status = subprocess.check_output(
                 ['svn', 'co',
                  product['repository_url'], product['product_name']],
-                stderr = subprocess.STDOUT,
-                shell = False)
+                stderr=subprocess.STDOUT,
+                shell=False)
             print cmd_status
         except Exception as e:
             print e
@@ -138,10 +138,10 @@ def main():
         # No product code, need to update everything and start from scratch
         products = all_products
         json_data = {}
-        json_data['locales'] = {};
+        json_data['locales'] = {}
 
     # Clone/update repositories
-    for key,product in products.iteritems():
+    for key, product in products.iteritems():
         repo_path = os.path.join(storage_path, product['repository_name'])
         if os.path.isdir(repo_path):
             # Repo exists, just need to update it
@@ -154,20 +154,20 @@ def main():
 
     ignored_folders = ['.svn', '.git', '.g(config_file)it', 'dbg',
                        'db_LB', 'ja_JP_mac', 'templates', 'zh_Hant_TW']
-    for key,product in products.iteritems():
+    for key, product in products.iteritems():
         product_folder = os.path.join(
-                            storage_path,
-                            product['repository_name'],
-                            product['locale_folder']
-                         )
+            storage_path,
+            product['repository_name'],
+            product['locale_folder']
+        )
         for locale in sorted(os.listdir(product_folder)):
             locale_folder = os.path.join(product_folder, locale)
 
             # Ignore files, consider just folders. Ignore some of them
             # based on ignored_folders and repo's excluded_folders
             if (not os.path.isdir(locale_folder)
-                or locale in ignored_folders
-                or locale in product['excluded_folders']):
+                    or locale in ignored_folders
+                    or locale in product['excluded_folders']):
                 continue
 
             print locale_folder
@@ -198,8 +198,8 @@ def main():
                         translation_status = subprocess.check_output(
                             ['msgfmt', '--statistics', file_path,
                              '-o', os.devnull],
-                            stderr = subprocess.STDOUT,
-                            shell = False)
+                            stderr=subprocess.STDOUT,
+                            shell=False)
                         print translation_status
                     except:
                         print 'Error running msgfmt on %s\n' % locale
@@ -216,11 +216,12 @@ def main():
                 try:
                     # Gettext files
                     if source_type == 'gettext':
-                        po_stats_cmd = os.path.join(webstatus_path, 'script', 'postats.sh')
+                        po_stats_cmd = os.path.join(
+                            webstatus_path, 'script', 'postats.sh')
                         string_stats_json = subprocess.check_output(
-                                [po_stats_cmd, file_path],
-                                stderr = subprocess.STDOUT,
-                                shell = False)
+                            [po_stats_cmd, file_path],
+                            stderr=subprocess.STDOUT,
+                            shell=False)
                         string_stats = json.load(StringIO(string_stats_json))
                         string_fuzzy = string_stats['fuzzy']
                         string_translated = string_stats['translated']
@@ -230,19 +231,21 @@ def main():
                     # Properties files
                     if source_type == 'properties':
                         try:
-                            compare_script = os.path.join(webstatus_path, 'script', 'properties_compare.py')
+                            compare_script = os.path.join(
+                                webstatus_path, 'script', 'properties_compare.py')
                             string_stats_json = subprocess.check_output(
                                 [compare_script,
                                  os.path.join(product_folder, 'en_US'),
                                  os.path.join(product_folder, locale)
-                                ],
-                                stderr = subprocess.STDOUT,
-                                shell = False)
+                                 ],
+                                stderr=subprocess.STDOUT,
+                                shell=False)
                         except subprocess.CalledProcessError as error:
                             error_status = True
                             string_total = 0
                             complete = False
-                            error_message = 'Error extracting data: %s' % str(error.output)
+                            error_message = 'Error extracting data: %s' % str(
+                                error.output)
                         except:
                             error_status = True
                             string_total = 0
@@ -257,19 +260,23 @@ def main():
                     # Xliff files
                     if source_type == 'xliff':
                         try:
-                            compare_script = os.path.join(webstatus_path, 'script', 'xliff_stats.py')
-                            reference_file_name = os.path.join(product_folder, 'en-US', product['source_file'])
-                            locale_file_name = os.path.join(product_folder, locale, product['source_file'])
+                            compare_script = os.path.join(
+                                webstatus_path, 'script', 'xliff_stats.py')
+                            reference_file_name = os.path.join(
+                                product_folder, 'en-US', product['source_file'])
+                            locale_file_name = os.path.join(
+                                product_folder, locale, product['source_file'])
                             string_stats_json = subprocess.check_output(
                                 [compare_script, reference_file_name,
                                  locale_file_name],
-                                stderr = subprocess.STDOUT,
-                                shell = False)
+                                stderr=subprocess.STDOUT,
+                                shell=False)
                         except subprocess.CalledProcessError as error:
                             error_status = True
                             string_total = 0
                             complete = False
-                            error_message = 'Error extracting data: %s' % str(error.output)
+                            error_message = 'Error extracting data: %s' % str(
+                                error.output)
                         except:
                             error_status = True
                             string_total = 0
@@ -282,24 +289,29 @@ def main():
                         string_untranslated = string_stats['untranslated']
                         string_total = string_stats['total']
                         if string_stats['errors'] != '':
-                            # For XLIFF I might have errors but still display the available stats
+                            # For XLIFF I might have errors but still display
+                            # the available stats
                             error_status = True
                             complete = False
-                            error_message = 'Error extracting data: %s' % string_stats['errors']
+                            error_message = 'Error extracting data: %s' % \
+                                string_stats['errors']
                     # Run stats
                     if (string_fuzzy == 0 and
-                        string_missing == 0 and
-                        string_untranslated == 0):
-                        # No untranslated, missing or fuzzy strings, locale is complete
+                            string_missing == 0 and
+                            string_untranslated == 0):
+                        # No untranslated, missing or fuzzy strings, locale is
+                        # complete
                         complete = True
                         percentage = 100
                     elif (string_missing > 0):
                         complete = False
-                        percentage = round((float(string_translated)/(string_total + string_missing)) * 100, 1)
+                        percentage = round(
+                            (float(string_translated) / (string_total + string_missing)) * 100, 1)
                     else:
                         # Need to calculate the level of completeness
                         complete = False
-                        percentage = round((float(string_translated)/string_total) * 100, 1)
+                        percentage = round(
+                            (float(string_translated) / string_total) * 100, 1)
                 except Exception as e:
                     print e
                     error_status = True
@@ -326,7 +338,8 @@ def main():
             if pretty_locale not in json_data['locales']:
                 json_data['locales'][pretty_locale] = {}
             json_data['locales'][pretty_locale][product['product_name']] = {}
-            json_data['locales'][pretty_locale][product['product_name']] = status_record
+            json_data['locales'][pretty_locale][
+                product['product_name']] = status_record
 
     # Record some metadata, including the list of tracked products
     json_data['metadata'] = {
@@ -334,7 +347,7 @@ def main():
         'products': {}
     }
 
-    for key,product in all_products.iteritems():
+    for key, product in all_products.iteritems():
         json_data['metadata']['products'][key] = {
             'name': product['displayed_name'],
             'repository_url': product['repository_url'],
