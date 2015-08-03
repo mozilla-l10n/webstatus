@@ -7,7 +7,9 @@ before_script:
   ## Composer
   - composer self-update
   - composer install --no-interaction --prefer-source
+  - hg clone http://hg.mozilla.org/l10n/silme libraries/silme -u silme-0.8.0
 script:
+  - php tests/functional/scripts.php
   - vendor/bin/php-cs-fixer --diff --dry-run -v fix
 notifications:
   irc:
