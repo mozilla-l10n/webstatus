@@ -140,7 +140,9 @@ $columns_number = 1 + 3 * count($products);
                             "       <td " . getRowStyle($current_product) . ">{$current_product['percentage']}</td>\n";
             } else {
                 // Missing products
-                $content .= "       <td colspan='3'>&nbsp;</td>\n";
+                $content .= "       <td> </td>\n" .
+                            "       <td> </td>\n" .
+                            "       <td> </td>\n";
             }
         }
         $content .= "     </tr>\n";
