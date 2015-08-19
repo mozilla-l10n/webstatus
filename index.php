@@ -8,7 +8,7 @@ $webstatus_file = 'web_status.json';
 $json_sources = json_decode(file_get_contents($sources_file), true);
 $json_array = json_decode(file_get_contents($webstatus_file), true);
 
-// Extract locales and ignore 'metadata'
+// Extract locales
 $available_locales = array_keys($json_array['locales']);
 sort($available_locales);
 
@@ -76,6 +76,13 @@ if (! isset($available_products[$requested_product])) {
 
 $requested_locale = htmlspecialchars($requested_locale);
 $requested_product = htmlspecialchars($requested_product);
+
+if (! in_array($requested_locale, $available_locales)) {
+    $unsupported_locale = true;
+    $requested_locale = '-';
+} else {
+    $unsupported_locale = false;
+}
 
 if ($requested_product != 'all') {
     $requested_locale = 'all locales';
@@ -230,25 +237,29 @@ if ($requested_product != 'all') {
     };
 
     if ($requested_product == 'all') {
-        // Display all products for one locale
-        echo $table_header('Product');
-        foreach ($available_products as $product_id => $product) {
-            if (array_key_exists($product_id, $json_array['locales'][$requested_locale])) {
-                $current_product = $json_array['locales'][$requested_locale][$product_id];
-                if ($current_product['source_type'] == 'xliff') {
-                    $xliff_note = true;
+        if ($unsupported_locale) {
+            echo '<h1>Unsupported locale</h1><p>The requested locale is not supported.</p>';
+        } else {
+            // Display all products for one locale
+            echo $table_header('Product');
+            foreach ($available_products as $product_id => $product) {
+                if (array_key_exists($product_id, $json_array['locales'][$requested_locale])) {
+                    $current_product = $json_array['locales'][$requested_locale][$product_id];
+                    if ($current_product['source_type'] == 'xliff') {
+                        $xliff_note = true;
+                    }
+                    echo $table_rows('locale',
+                                     $current_product['name'],
+                                     $current_product,
+                                     $current_product['source_type'],
+                                     $product['repository_url'],
+                                     $product['repository_type'],
+                                     $product_id,
+                                     $requested_locale);
                 }
-                echo $table_rows('locale',
-                                 $current_product['name'],
-                                 $current_product,
-                                 $current_product['source_type'],
-                                 $product['repository_url'],
-                                 $product['repository_type'],
-                                 $product_id,
-                                 $requested_locale);
             }
+            echo $table_footer;
         }
-        echo $table_footer;
     } else {
         // Display all locales for one product
         $completed_locales = 0;
