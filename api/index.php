@@ -1,21 +1,15 @@
 <?php
-date_default_timezone_set('Europe/Rome');
+namespace Webstatus;
 
-$sources_file = '../config/sources.json';
-$webstatus_file = '../web_status.json';
+require __DIR__ . '/../app/inc/init.php';
 
-// Read the JSON files
-$json_sources = json_decode(file_get_contents($sources_file), true);
-$json_webstatus = json_decode(file_get_contents($webstatus_file), true);
+$webstatus = new Webstatus($webstatus_file, $sources_file);
+$available_locales = $webstatus->getAvailableLocales();
+$available_products =  $webstatus->getAvailableProducts();
+$webstatus_data = $webstatus->getWebstatusData();
 
-// Extract locales and ignore 'metadata'
-$available_locales = array_keys($json_webstatus['locales']);
-sort($available_locales);
-
-$available_products = $json_webstatus['metadata']['products'];
-
-$requested_product = !empty($_REQUEST['product']) ? $_REQUEST['product'] : '';
 // Check if the requested product is available
+$requested_product = Utils::getQueryParam('product', '');
 if (! isset($available_products[$requested_product])) {
     // Product is not available
     http_response_code(400);
@@ -23,18 +17,17 @@ if (! isset($available_products[$requested_product])) {
 }
 
 // Check if the output is JSON or plain text
-$plain_text = isset($_REQUEST['txt']) ? true : false;
+$plain_text = Utils::getQueryParam('txt', false);
 
 // Check the type of list, default 'supported' list
-$list_type = isset($_REQUEST['type']) ? $_REQUEST['type'] : 'supported';
+$list_type = Utils::getQueryParam('type', 'supported');
 
 $locales = [];
-
 if ($list_type == 'incomplete') {
     foreach ($available_locales as $locale_code) {
-        if (isset($json_webstatus['locales'][$locale_code][$requested_product])) {
-            if ($json_webstatus['locales'][$locale_code][$requested_product]['error_status'] ||
-                $json_webstatus['locales'][$locale_code][$requested_product]['percentage'] != 100) {
+        if (isset($webstatus_data[$locale_code][$requested_product])) {
+            if ($webstatus_data[$locale_code][$requested_product]['error_status'] ||
+                $webstatus_data[$locale_code][$requested_product]['percentage'] != 100) {
                 // Add locale if it has errors or it's not completely localized
                 $locales[] = $locale_code;
             }
@@ -42,7 +35,7 @@ if ($list_type == 'incomplete') {
     }
 } elseif ($list_type == 'supported') {
     foreach ($available_locales as $locale_code) {
-        if (isset($json_webstatus['locales'][$locale_code][$requested_product])) {
+        if (isset($webstatus_data[$locale_code][$requested_product])) {
             $locales[] = $locale_code;
         }
     }

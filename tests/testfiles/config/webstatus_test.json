@@ -1,0 +1,128 @@
+{
+  "locales": {
+    "en-US": {
+      "affiliates": {
+        "complete": false,
+        "error_message": "",
+        "error_status": false,
+        "fuzzy": 7,
+        "identical": 0,
+        "missing": 0,
+        "name": "Firefox Affiliates",
+        "percentage": 97.6,
+        "source_type": "gettext",
+        "total": 290,
+        "translated": 283,
+        "untranslated": 0
+      },
+      "zippy": {
+        "complete": true,
+        "error_message": "",
+        "error_status": false,
+        "fuzzy": 0,
+        "identical": 0,
+        "missing": 0,
+        "name": "Zippy",
+        "percentage": 100,
+        "source_type": "gettext",
+        "total": 27,
+        "translated": 27,
+        "untranslated": 0
+      }
+    },
+    "fr": {
+      "affiliates": {
+        "complete": true,
+        "error_message": "",
+        "error_status": false,
+        "fuzzy": 0,
+        "identical": 0,
+        "missing": 0,
+        "name": "Firefox Affiliates",
+        "percentage": 100,
+        "source_type": "gettext",
+        "total": 290,
+        "translated": 290,
+        "untranslated": 0
+      },
+      "browserid": {
+        "complete": true,
+        "error_message": "",
+        "error_status": false,
+        "fuzzy": 0,
+        "identical": 0,
+        "missing": 0,
+        "name": "Browser ID",
+        "percentage": 100,
+        "source_type": "gettext",
+        "total": 110,
+        "translated": 110,
+        "untranslated": 0
+      },
+      "zippy": {
+        "complete": true,
+        "error_message": "",
+        "error_status": false,
+        "fuzzy": 0,
+        "identical": 0,
+        "missing": 0,
+        "name": "Zippy",
+        "percentage": 100,
+        "source_type": "gettext",
+        "total": 27,
+        "translated": 27,
+        "untranslated": 0
+      }
+    },
+    "it": {
+      "browserid": {
+        "complete": true,
+        "error_message": "",
+        "error_status": false,
+        "fuzzy": 0,
+        "identical": 0,
+        "missing": 0,
+        "name": "Browser ID",
+        "percentage": 100,
+        "source_type": "gettext",
+        "total": 110,
+        "translated": 110,
+        "untranslated": 0
+      },
+      "zippy": {
+        "complete": true,
+        "error_message": "",
+        "error_status": false,
+        "fuzzy": 0,
+        "identical": 0,
+        "missing": 0,
+        "name": "Zippy",
+        "percentage": 100,
+        "source_type": "gettext",
+        "total": 27,
+        "translated": 27,
+        "untranslated": 0
+      }
+    }
+  },
+  "metadata": {
+    "creation_date": "2015-08-21 06:42 UTC",
+    "products": {
+      "affiliates": {
+        "name": "Firefox Affiliates",
+        "repository_type": "svn",
+        "repository_url": "http://svn.mozilla.org/projects/l10n-misc/trunk/affiliates/"
+      },
+      "browserid": {
+        "name": "Browser ID",
+        "repository_type": "svn",
+        "repository_url": "http://svn.mozilla.org/projects/l10n-misc/trunk/browserid/"
+      },
+      "zippy": {
+        "name": "Zippy",
+        "repository_type": "git",
+        "repository_url": "https://github.com/mozilla/zippy"
+      }
+    }
+  }
+}

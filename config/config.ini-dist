@@ -1,4 +1,0 @@
-[config]
-
-; Path to the folder used to store Git/SVN repositories
-storage_path=/path/to/your/folder

@@ -1,6 +1,6 @@
 composer.phar
 composer.lock
-config/config.ini
+app/config/config.ini
 libraries/silme
 web_status.json
 vendor/
