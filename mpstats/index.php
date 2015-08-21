@@ -1,8 +1,13 @@
 <?php
-date_default_timezone_set('Europe/Paris');
+namespace Webstatus;
 
-$json_filename = '../web_status.json';
-$json_array = (array) json_decode(file_get_contents($json_filename), true);
+require __DIR__ . '/../app/inc/init.php';
+
+$webstatus = new Webstatus($webstatus_file, $sources_file);
+$available_locales = $webstatus->getAvailableLocales();
+$available_products =  $webstatus->getAvailableProducts();
+$webstatus_data = $webstatus->getWebstatusData();
+$webstatus_metadata = $webstatus->getWebstatusMetadata();
 
 $products = [
     'fireplace'         => '',
@@ -22,12 +27,10 @@ $excluded_locales = [
 ];
 
 // Extract locales and exclude some of them
-$locales = array_keys($json_array['locales']);
-$locales = array_diff($locales, $excluded_locales);
-sort($locales);
+$locales = array_diff($available_locales, $excluded_locales);
 
-// Extract product names from en-US
-foreach ($json_array['metadata']['products'] as $product_id => $product) {
+// Extract product names
+foreach ($webstatus_metadata['products'] as $product_id => $product) {
     if (isset($products[$product_id])) {
         $products[$product_id] = $product['name'];
     }
@@ -133,8 +136,8 @@ $columns_number = 1 + 3 * count($products);
         $content .= "     <tr id='row_{$locale}'>\n" .
                     "       <th class='rowheader'><a href='#{$locale}' id='{$locale}' class='locale_anchor'>{$locale}</a></th>\n";
         foreach ($products as $code => $name) {
-            if (array_key_exists($code, $json_array['locales'][$locale])) {
-                $current_product = $json_array['locales'][$locale][$code];
+            if (array_key_exists($code, $webstatus_data[$locale])) {
+                $current_product = $webstatus_data[$locale][$code];
                 $content .= "       <td " . getRowStyle($current_product) . ">{$current_product['translated']}</td>\n" .
                             "       <td " . getRowStyle($current_product) . ">{$current_product['untranslated']}</td>\n" .
                             "       <td " . getRowStyle($current_product) . ">{$current_product['percentage']}</td>\n";
@@ -148,7 +151,7 @@ $columns_number = 1 + 3 * count($products);
         $content .= "     </tr>\n";
     }
 
-    $last_update_local = date('Y-m-d H:i e (O)', strtotime($json_array['metadata']['creation_date']));
+    $last_update_local = date('Y-m-d H:i e (O)', strtotime($webstatus_metadata['creation_date']));
     $content .= "   </tbody>\n" .
                 " </table>\n" .
                 "<p class='lastupdate'>Last update: {$last_update_local}</p>";

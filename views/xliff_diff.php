@@ -1,75 +1,81 @@
 <?php
-date_default_timezone_set('Europe/Rome');
+namespace Webstatus;
+
+require __DIR__ . '/../app/inc/init.php';
+
+$webstatus = new Webstatus($webstatus_file, $sources_file);
+$available_locales = $webstatus->getAvailableLocales();
+$available_products =  $webstatus->getAvailableProducts();
 
 $html_output = '';
-$error = false;
+$error_messages = '';
 
-// Read locale
-if (empty($_REQUEST['locale'])) {
-    $html_output .= "<p>No locale requested.</p>\n";
-    $error = true;
+// Read locale and product
+$requested_locale = Utils::getQueryParam('locale', '');
+if ($requested_locale != '') {
+    if (! in_array($requested_locale, $available_locales)) {
+        $error_messages .= "<p>This locale is not supported.</p>\n";
+    }
 } else {
-    $requested_locale = $_REQUEST['locale'];
+    $error_messages .= "<p>No locale requested.</p>\n";
 }
 
-// Read product, check if it uses XLIFF
-$sources_file = '../config/sources.json';
-$json_sources = json_decode(file_get_contents($sources_file), true);
-if (! empty($_REQUEST['product'])) {
-    $requested_product = $json_sources[$_REQUEST['product']];
-    if ($requested_product['source_type'] != 'xliff') {
-        $html_output .= "<p>This product doesn't use XLIFF files.</p>\n";
+$requested_product = Utils::getQueryParam('product', '');
+if ($requested_product != '') {
+    if (! isset($available_products[$requested_product])) {
+        $error_messages .= "<p>This product is not supported.</p>\n";
+    } elseif ($webstatus->getSourceType($requested_product) != 'xliff') {
+        $error_messages .= "<p>This product doesn't use XLIFF files.</p>\n";
         $error = true;
     }
 } else {
-    $html_output .= "<p>No product requested.</p>\n";
+    $error_messages .= "<p>No product requested.</p>\n";
     $error = true;
 }
 
 // Run the XLIFF compare script
-$server_config = parse_ini_file(__DIR__ . '/../config/config.ini');
-if (! $error) {
+if ($error_messages == '') {
+    $server_config = parse_ini_file($config_file);
+    $product_data = $webstatus->getSingleProductData($requested_product);
     if (! isset($server_config['storage_path'])) {
-        $html_output = "<p>Missing or broken config/config.ini file.</p>\n";
-        $error = true;
+        $error_messages .= "<p>Missing or broken app/config/config.ini file.</p>\n";
     } else {
         $base_path = $server_config['storage_path'] . DIRECTORY_SEPARATOR .
-                     $requested_product['repository_name'] . DIRECTORY_SEPARATOR;
-        if ($requested_product['locale_folder'] != '') {
-            $base_path .= $requested_product['locale_folder'] . DIRECTORY_SEPARATOR;
+                     $product_data['repository_name'] . DIRECTORY_SEPARATOR;
+        if ($product_data['locale_folder'] != '') {
+            $base_path .= $product_data['locale_folder'] . DIRECTORY_SEPARATOR;
         }
         $reference_file = $base_path . 'en-US' . DIRECTORY_SEPARATOR .
-                          $requested_product['source_file'];
+                          $product_data['source_file'];
         $locale_file = $base_path .  $requested_locale . DIRECTORY_SEPARATOR .
-                       $requested_product['source_file'];
-        $command = "python ../script/xliff_stats.py {$reference_file} {$locale_file}";
+                       $product_data['source_file'];
+        $command = "python ../scripts/xliff_stats.py {$reference_file} {$locale_file}";
 
         $json_data = json_decode(shell_exec($command), true);
-    }
 
-    $html_output .= "<h1>{$requested_product['displayed_name']} - Comparison for {$requested_locale}</h1>\n";
+        $html_output .= "<h1>{$product_data['displayed_name']} - Comparison for {$requested_locale}</h1>\n";
 
-    $display_strings = function ($title, $empty_message, $string_list) {
-        $local_output = '';
-        if (count($string_list) == 0) {
-            $local_output .= "<h2>{$title}</h2>\n<p>{$empty_message}</p>\n";
-        } else {
-            $local_output .= "<h2>{$title} (" . count($string_list) . ")</h2>\n<ul>\n";
-            foreach ($string_list as $value) {
-                $elements = explode(':', $value);
-                $local_output .= "<li>{$elements[0]}: {$elements[1]}</li>\n";
+        $display_strings = function ($title, $empty_message, $string_list) {
+            $local_output = '';
+            if (count($string_list) == 0) {
+                $local_output .= "<h2>{$title}</h2>\n<p>{$empty_message}</p>\n";
+            } else {
+                $local_output .= "<h2>{$title} (" . count($string_list) . ")</h2>\n<ul>\n";
+                foreach ($string_list as $value) {
+                    $elements = explode(':', $value);
+                    $local_output .= "<li>{$elements[0]}: {$elements[1]}</li>\n";
+                }
+                $local_output .= "</ul>\n";
             }
-            $local_output .= "</ul>\n";
-        }
 
-        return $local_output;
-    };
+            return $local_output;
+        };
 
-    $html_output .= $display_strings('Missing strings', 'No missing strings', $json_data['missing_strings']);
-    $html_output .= $display_strings('Obsolete strings', 'No obsolete strings', $json_data['obsolete_strings']);
-    $html_output .= $display_strings('Untranslated strings', 'No untranslated strings', $json_data['untranslated_strings']);
+        $html_output .= $display_strings('Missing strings', 'No missing strings', $json_data['missing_strings']);
+        $html_output .= $display_strings('Obsolete strings', 'No obsolete strings', $json_data['obsolete_strings']);
+        $html_output .= $display_strings('Untranslated strings', 'No untranslated strings', $json_data['untranslated_strings']);
+    }
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -83,7 +89,11 @@ if (! $error) {
 <body>
   <div class="container">
     <?php
-        echo $html_output;
+        if ($error_messages != '') {
+            echo "<h1>Error</h1>\n{$error_messages}";
+        } else {
+            echo $html_output;
+        }
     ?>
   </div>
 </body>

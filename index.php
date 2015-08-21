@@ -1,94 +1,39 @@
 <?php
-date_default_timezone_set('Europe/Paris');
+namespace Webstatus;
 
-$sources_file = 'config/sources.json';
-$webstatus_file = 'web_status.json';
+require __DIR__ . '/app/inc/init.php';
 
-// Read the JSON files
-$json_sources = json_decode(file_get_contents($sources_file), true);
-$json_array = json_decode(file_get_contents($webstatus_file), true);
+$webstatus = new Webstatus($webstatus_file, $sources_file);
+$available_locales = $webstatus->getAvailableLocales();
+$available_products =  $webstatus->getAvailableProducts();
+$webstatus_data = $webstatus->getWebstatusData();
+$webstatus_metadata = $webstatus->getWebstatusMetadata();
 
-// Extract locales
-$available_locales = array_keys($json_array['locales']);
-sort($available_locales);
+$requested_locale = Utils::getQueryParam('locale', Utils::detectLocale($available_locales));
+$requested_product = Utils::getQueryParam('product', 'all');
 
-$available_products = $json_array['metadata']['products'];
-// Sort elements based on 'name'
-uasort($available_products, function ($a, $b) {
-
-    return ($a < $b) ? -1 : 1;
-});
-
-// Using union to make sure "all" is the first product
-$product_all = [
-    'all' => [
-        'name'            => 'All products',
-        'repository_type' => '',
-        'repository_url'  => '',
-    ],
-];
-$available_products = $product_all + $available_products;
-$xliff_note = false;
-
-// Locale detection
-if (empty($_REQUEST['locale'])) {
-    // Locale was not specified, try to use locale from HTTP header
-    $accept_locales = [];
-    // Source: http://www.thefutureoftheweb.com/blog/use-accept-language-header
-    if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
-        // Break up string into pieces (languages and q factors)
-        preg_match_all(
-            '/([a-z]{1,8}(-[a-z]{1,8})?)\s*(;\s*q\s*=\s*(1|0\.[0-9]+))?/i',
-            $_SERVER['HTTP_ACCEPT_LANGUAGE'],
-            $lang_parse
-        );
-        if (count($lang_parse[1])) {
-            // Create a list like "en" => 0.8
-            $accept_locales = array_combine($lang_parse[1], $lang_parse[4]);
-            // Set default to 1 for any without q factor
-            foreach ($accept_locales as $accept_locale => $val) {
-                if ($val === '') {
-                    $accept_locales[$accept_locale] = 1;
-                }
-            }
-            // Sort list based on value
-            arsort($accept_locales, SORT_NUMERIC);
-        }
-    }
-    // Do I have any of these locales
-    $intersection = array_values(array_intersect(array_keys($accept_locales), $available_locales));
-    if (! isset($intersection[0])) {
-        // This locale is not available, fall back to en-US
-        $requested_locale = 'en-US';
-    } else {
-        $requested_locale = $intersection[0];
-    }
+// Check if the requested product is supported
+$supported_product = (in_array($requested_product, array_keys($available_products))) ? true : false;
+if ($supported_product) {
+    $product_name = $available_products[$requested_product]['name'];
 } else {
-    $requested_locale = $_REQUEST['locale'];
+    $product_name = 'N/A';
 }
 
-$requested_product = !empty($_REQUEST['product']) ? $_REQUEST['product'] : 'all';
-// Check if the requested product is available
-if (! isset($available_products[$requested_product])) {
-    // Product is not available, display all products
-    $requested_product = 'all';
-}
-
-$requested_locale = htmlspecialchars($requested_locale);
-$requested_product = htmlspecialchars($requested_product);
-
-if (! in_array($requested_locale, $available_locales)) {
-    $unsupported_locale = true;
-    $requested_locale = '-';
-} else {
-    $unsupported_locale = false;
-}
-
+// Update page title
 if ($requested_product != 'all') {
-    $requested_locale = 'all locales';
-    $page_title = "Web Status – {$available_products[$requested_product]['name']}";
+    $requested_locale = 'All locales';
+    $page_title = "Web Status – {$product_name}";
 } else {
     $page_title = "Web Status – {$requested_locale}";
+}
+
+// Determine proper URL for history page
+$url_history = "https://l10n.mozilla-community.org/~flod/webstatus_history/?product={$requested_product}&";
+if ($requested_locale == 'All locales') {
+    $url_history .= "locale=all";
+} else {
+    $url_history .= "locale={$requested_locale}";
 }
 ?>
 <!DOCTYPE html>
@@ -115,36 +60,34 @@ if ($requested_product != 'all') {
 </head>
 <body>
   <div class="container">
-
+    <h1>
+        Current locale: <?=$requested_locale?>
+        <a href="<?=$url_history?>" class="stats-icon" title="See historical graphs"><span class="glyphicon glyphicon-stats" aria-hidden="true"></span></a>
+    </h1>
+    <div class="list locale_list">
+        <p>
+            Display localization status for a specific locale<br/>
 <?php
-    echo "<h1>Current locale: {$requested_locale}\n";
-    $url_history = "https://l10n.mozilla-community.org/~flod/webstatus_history/?product={$requested_product}&";
-    if ($requested_locale == 'all locales') {
-        $url_history .= "locale=all";
-    } else {
-        $url_history .= "locale={$requested_locale}";
-    }
-    echo "\n<a href='{$url_history}' class='stats-icon' title='See historical graphs'><span class='glyphicon glyphicon-stats' aria-hidden='true'></span></a>";
-    echo "</h1>\n";
-    echo '<div class="list locale_list">
-            <p>Display localization status for a specific locale<br/>';
     foreach ($available_locales as $locale_code) {
         echo "<a href='?locale={$locale_code}'>{$locale_code}</a> ";
     }
-    echo '  </p>
-          </div>';
+?>
+        </p>
+    </div>
 
-    echo "<h1>Current product: {$available_products[$requested_product]['name']}</h1>\n";
-    echo '<div class="list product_list">
-            <p>Display localization status for a specific project<br/>';
+    <h1>Current product: <?=$product_name?></h1>
+    <div class="list product_list">
+        <p>Display localization status for a specific project<br/>
+<?php
     foreach ($available_products as $product_code => $product) {
         echo "<a href='?product={$product_code}'>" .
              str_replace(' ', '&nbsp;', $product['name']) .
              "</a> ";
     }
-    echo '  </p>
-          </div>';
-
+?>
+        </p>
+    </div>
+<?php
     $table_header = function ($row_header) {
         return '<table id="main_table" class="table table-bordered table-condensed">
             <thead>
@@ -237,17 +180,15 @@ if ($requested_product != 'all') {
     };
 
     if ($requested_product == 'all') {
-        if ($unsupported_locale) {
+        if (! in_array($requested_locale, $available_locales)) {
             echo '<h1>Unsupported locale</h1><p>The requested locale is not supported.</p>';
         } else {
             // Display all products for one locale
             echo $table_header('Product');
             foreach ($available_products as $product_id => $product) {
-                if (array_key_exists($product_id, $json_array['locales'][$requested_locale])) {
-                    $current_product = $json_array['locales'][$requested_locale][$product_id];
-                    if ($current_product['source_type'] == 'xliff') {
-                        $xliff_note = true;
-                    }
+                if (array_key_exists($product_id, $webstatus_data[$requested_locale])) {
+                    $current_product = $webstatus_data[$requested_locale][$product_id];
+                    $xliff_note = ($current_product['source_type'] == 'xliff') ? true : false;
                     echo $table_rows('locale',
                                      $current_product['name'],
                                      $current_product,
@@ -264,35 +205,38 @@ if ($requested_product != 'all') {
         // Display all locales for one product
         $completed_locales = 0;
         $total_locales = 0;
-        if ($json_sources[$requested_product]['source_type'] == 'xliff') {
-            $xliff_note = true;
-        }
-        echo $table_header('Locale');
-        foreach ($available_locales as $locale_code) {
-            if (isset($json_array['locales'][$locale_code][$requested_product])) {
-                $current_product = $json_array['locales'][$locale_code][$requested_product];
-                if ($current_product['percentage'] == 100) {
-                    $completed_locales++;
+
+        if (! $supported_product) {
+            echo '<h1>Unsupported product</h1><p>The requested product is not supported.</p>';
+        } else {
+            $xliff_note = ($webstatus->getSourceType($requested_product) == 'xliff') ? true : false;
+            echo $table_header('Locale');
+            foreach ($available_locales as $locale_code) {
+                if (isset($webstatus_data[$locale_code][$requested_product])) {
+                    $current_product = $webstatus_data[$locale_code][$requested_product];
+                    if ($current_product['percentage'] == 100) {
+                        $completed_locales++;
+                    }
+                    $total_locales++;
+                    echo $table_rows('product',
+                                     $locale_code,
+                                     $current_product,
+                                     $current_product['source_type'],
+                                     '',
+                                     '',
+                                     $requested_product,
+                                     $locale_code);
                 }
-                $total_locales++;
-                echo $table_rows('product',
-                                 $locale_code,
-                                 $current_product,
-                                 $current_product['source_type'],
-                                 '',
-                                 '',
-                                 $requested_product,
-                                 $locale_code);
             }
+            echo $table_footer;
+            echo "<p>Complete locales: {$completed_locales} out of {$total_locales}.</p>";
         }
-        echo $table_footer;
-        echo "<p>Complete locales: {$completed_locales} out of {$total_locales}.</p>";
     }
 
-    $last_update_local = date('Y-m-d H:i e (O)', strtotime($json_array['metadata']['creation_date']));
+    $last_update_local = date('Y-m-d H:i e (O)', strtotime($webstatus_metadata['creation_date']));
     echo "<p>Last update: {$last_update_local}</p>";
 
-    if ($xliff_note) {
+    if (isset($xliff_note) && $xliff_note) {
         ?>
     <h3 id="xliff_notes">Notes on XLIFF files</h3>
     <p>A MDN document is available explaining
