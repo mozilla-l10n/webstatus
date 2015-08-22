@@ -1,6 +1,6 @@
-composer.phar
-composer.lock
 app/config/config.ini
-libraries/silme
-web_status.json
+app/libraries/silme
+composer.lock
+composer.phar
 vendor/
+web_status.json

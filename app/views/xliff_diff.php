@@ -1,8 +1,6 @@
 <?php
 namespace Webstatus;
 
-require __DIR__ . '/../app/inc/init.php';
-
 $webstatus = new Webstatus($webstatus_file, $sources_file);
 $available_locales = $webstatus->getAvailableLocales();
 $available_products =  $webstatus->getAvailableProducts();
@@ -35,7 +33,6 @@ if ($requested_product != '') {
 
 // Run the XLIFF compare script
 if ($error_messages == '') {
-    $server_config = parse_ini_file($config_file);
     $product_data = $webstatus->getSingleProductData($requested_product);
     if (! isset($server_config['storage_path'])) {
         $error_messages .= "<p>Missing or broken app/config/config.ini file.</p>\n";
@@ -49,7 +46,8 @@ if ($error_messages == '') {
                           $product_data['source_file'];
         $locale_file = $base_path .  $requested_locale . DIRECTORY_SEPARATOR .
                        $product_data['source_file'];
-        $command = "python ../scripts/xliff_stats.py {$reference_file} {$locale_file}";
+        $script_path = __DIR__ . '/../scripts/xliff_stats.py';
+        $command = "python {$script_path} {$reference_file} {$locale_file}";
 
         $json_data = json_decode(shell_exec($command), true);
 
@@ -82,19 +80,18 @@ if ($error_messages == '') {
 <head>
     <meta charset=utf-8>
     <title>Web Status</title>
-    <link rel="stylesheet" href="../assets/css/bootstrap.min.css" type="text/css" media="all" />
-    <link rel="stylesheet" href="../assets/css/bootstrap-theme.min.css" type="text/css" media="all" />
-    <link rel="stylesheet" href="../assets/css/main.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="<?=$assets_folder?>/css/bootstrap.min.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="<?=$assets_folder?>/css/bootstrap-theme.min.css" type="text/css" media="all" />
 </head>
 <body>
   <div class="container">
-    <?php
-        if ($error_messages != '') {
-            echo "<h1>Error</h1>\n{$error_messages}";
-        } else {
-            echo $html_output;
-        }
-    ?>
+<?php
+if ($error_messages != '') {
+    echo "<h1>Error</h1>\n{$error_messages}";
+} else {
+    echo $html_output;
+}
+?>
   </div>
 </body>
 </html>

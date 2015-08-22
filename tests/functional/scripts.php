@@ -1,5 +1,5 @@
 <?php
-define('SCRIPTS',  realpath(__DIR__ . '/../../') . '/scripts/');
+define('SCRIPTS',  realpath(__DIR__ . '/../../') . '/app/scripts/');
 define('TESTFILES',  realpath(__DIR__ . '/../') . '/testfiles/');
 
 mb_internal_encoding('UTF-8');

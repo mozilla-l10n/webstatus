@@ -7,7 +7,7 @@ before_script:
   ## Composer
   - composer self-update
   - composer install --no-interaction --prefer-source
-  - hg clone http://hg.mozilla.org/l10n/silme libraries/silme -u silme-0.8.0
+  - hg clone http://hg.mozilla.org/l10n/silme app/libraries/silme -u silme-0.8.0
 script:
   - vendor/atoum/atoum/bin/atoum -d tests/units/
   - php tests/functional/scripts.php
