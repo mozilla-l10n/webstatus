@@ -1,0 +1,9 @@
+# Rewrite all requests to the front controller
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Existing files and folders are not redirected
+    RewriteCond %{REQUEST_FILENAME} !-f
+
+    RewriteRule (.*) web/index.php [L,QSA]
+</IfModule>

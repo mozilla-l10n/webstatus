@@ -1,8 +1,6 @@
 <?php
 namespace Webstatus;
 
-require __DIR__ . '/../app/inc/init.php';
-
 $webstatus = new Webstatus($webstatus_file, $sources_file);
 $available_locales = $webstatus->getAvailableLocales();
 $available_products =  $webstatus->getAvailableProducts();

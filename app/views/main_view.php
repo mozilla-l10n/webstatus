@@ -1,8 +1,6 @@
 <?php
 namespace Webstatus;
 
-require __DIR__ . '/app/inc/init.php';
-
 $webstatus = new Webstatus($webstatus_file, $sources_file);
 $available_locales = $webstatus->getAvailableLocales();
 $available_products =  $webstatus->getAvailableProducts();
@@ -41,13 +39,13 @@ if ($requested_locale == 'All locales') {
 <head>
     <meta charset=utf-8>
     <title><?php echo $page_title; ?></title>
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css" type="text/css" media="all" />
-    <link rel="stylesheet" href="assets/css/bootstrap-theme.min.css" type="text/css" media="all" />
-    <link rel="stylesheet" href="assets/css/main.css" type="text/css" media="all" />
-    <link rel="stylesheet" href="assets/css/dataTables.bootstrap.css" type="text/css" media="all" />
-    <script src="assets/js/jquery-1.11.3.min.js"></script>
-    <script src="assets/js/jquery.dataTables.min.js"></script>
-    <script src="assets/js/dataTables.bootstrap.min.js"></script>
+    <link rel="stylesheet" href="<?=$assets_folder?>/css/bootstrap.min.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="<?=$assets_folder?>/css/bootstrap-theme.min.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="<?=$assets_folder?>/css/dataTables.bootstrap.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="<?=$assets_folder?>/css/main.css" type="text/css" media="all" />
+    <script src="<?=$assets_folder?>/js/jquery-1.11.3.min.js"></script>
+    <script src="<?=$assets_folder?>/js/jquery.dataTables.min.js"></script>
+    <script src="<?=$assets_folder?>/js/dataTables.bootstrap.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             $('#main_table').DataTable({

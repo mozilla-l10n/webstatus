@@ -107,14 +107,16 @@ def clone_repo(product):
 def main():
     # Check environment
     settings = {}
-    webstatus_path = os.path.abspath(os.path.join(sys.path[0], os.pardir))
+    webstatus_path = os.path.abspath(
+        os.path.join(sys.path[0], os.pardir, os.pardir))
     check_environment(webstatus_path, settings)
 
     storage_path = settings['storage_path']
     json_filename = os.path.join(webstatus_path, 'web_status.json')
 
     # Read products from external Json file
-    sources_file = open(os.path.join(webstatus_path, 'app', 'config', 'sources.json'))
+    sources_file = open(os.path.join(
+        webstatus_path, 'app', 'config', 'sources.json'))
     all_products = json.load(sources_file)
     products = {}
 
@@ -217,7 +219,7 @@ def main():
                     # Gettext files
                     if source_type == 'gettext':
                         po_stats_cmd = os.path.join(
-                            webstatus_path, 'scripts', 'postats.sh')
+                            webstatus_path, 'app', 'scripts', 'postats.sh')
                         string_stats_json = subprocess.check_output(
                             [po_stats_cmd, file_path],
                             stderr=subprocess.STDOUT,
@@ -232,7 +234,8 @@ def main():
                     if source_type == 'properties':
                         try:
                             compare_script = os.path.join(
-                                webstatus_path, 'scripts', 'properties_compare.py')
+                                webstatus_path, 'app',
+                                'scripts', 'properties_compare.py')
                             string_stats_json = subprocess.check_output(
                                 [compare_script,
                                  os.path.join(product_folder, 'en_US'),
@@ -261,7 +264,8 @@ def main():
                     if source_type == 'xliff':
                         try:
                             compare_script = os.path.join(
-                                webstatus_path, 'scripts', 'xliff_stats.py')
+                                webstatus_path, 'app',
+                                'scripts', 'xliff_stats.py')
                             reference_file_name = os.path.join(
                                 product_folder, 'en-US', product['source_file'])
                             locale_file_name = os.path.join(
