@@ -79,6 +79,53 @@ class Utils
     }
 
     /**
+     * Return inline style (color, opacity) for a row based on
+     * the level of translation
+     *
+     * @param string $percentage Percentage of translated strings
+     * @param string $view       Which view it's currently displayed
+     *
+     * @return array Inline CSS colors for the given percentage
+     */
+    public static function getRowStyle($percentage, $view = 'main')
+    {
+        // $base_colors store the 3 base RGB colors
+        $base_colors = [];
+        if ($view == 'mpstats') {
+            $base_colors = [
+                'green'  => '146, 204, 110',
+                'yellow' => '235, 235, 110',
+                'red'    => '255, 82, 82',
+            ];
+        } else {
+            $base_colors = [
+                'green'  => '129, 209, 25',
+                'yellow' => '255, 252, 61',
+                'red'    => '255, 194, 115',
+            ];
+        }
+
+        if ($percentage < 100) {
+            $opacity = floor(round(($percentage - 20) / 100, 2) * 10) / 10;
+        } else {
+            $opacity = 1;
+        }
+
+        if ($percentage >= 70) {
+            $color = 'green';
+        } elseif ($percentage >= 40) {
+            $opacity = 1 - $opacity;
+            $color = 'yellow';
+        } else {
+            $opacity = 0.8 - $opacity;
+            $color = 'red';
+        }
+        $stylerow = "style='background-color: rgba({$base_colors[$color]}, {$opacity});'";
+
+        return $stylerow;
+    }
+
+    /**
      * Function sanitizing a string or an array of strings.
      *
      * @param mixed   $origin  String/Array of strings to sanitize

@@ -80,8 +80,11 @@ if ($error_messages == '') {
 <head>
     <meta charset=utf-8>
     <title>Web Status</title>
-    <link rel="stylesheet" href="<?=$assets_folder?>/css/bootstrap.min.css" type="text/css" media="all" />
-    <link rel="stylesheet" href="<?=$assets_folder?>/css/bootstrap-theme.min.css" type="text/css" media="all" />
+<?php
+foreach ($default_css as $css_filename) {
+    echo "    <link rel=\"stylesheet\" href=\"{$assets_folder}/css/{$css_filename}\" type=\"text/css\" media=\"all\" />\n";
+}
+?>
 </head>
 <body>
   <div class="container">

@@ -34,27 +34,6 @@ foreach ($webstatus_metadata['products'] as $product_id => $product) {
     }
 }
 
-function getRowStyle($current_product)
-{
-    $perc = $current_product['percentage'];
-    $opacity = 1;
-    if ($perc < 100) {
-        $opacity = floor(round(($perc - 20) / 100, 2) * 10) / 10;
-    }
-    if ($perc >= 70) {
-        $stylerow = "background-color: rgba(146, 204, 110, {$opacity});";
-    } elseif ($perc >= 40) {
-        $opacity = 1 - $opacity;
-        $stylerow = "background-color: rgba(235, 235, 110, {$opacity});";
-    } else {
-        $opacity = 1 - $opacity;
-        $stylerow = "background-color: rgba(255, 82, 82, {$opacity});";
-    }
-    $stylerow = "style='{$stylerow}'";
-
-    return $stylerow;
-}
-
 $columns_number = 1 + 3 * count($products);
 ?>
 
@@ -63,49 +42,17 @@ $columns_number = 1 + 3 * count($products);
 <head>
     <meta charset=utf-8>
     <title>Marketplace Status</title>
-    <link rel="stylesheet" href="<?=$assets_folder?>/css/bootstrap.min.css" type="text/css" media="all" />
-    <link rel="stylesheet" href="<?=$assets_folder?>/css/bootstrap-theme.min.css" type="text/css" media="all" />
-    <link rel="stylesheet" href="<?=$assets_folder?>/css/dataTables.bootstrap.css" type="text/css" media="all" />
-    <link rel="stylesheet" href="<?=$assets_folder?>/css/mpstats.css" type="text/css" media="all" />
-    <script src="<?=$assets_folder?>/js/jquery-1.11.3.min.js"></script>
-    <script src="<?=$assets_folder?>/js/jquery.dataTables.min.js"></script>
-    <script src="<?=$assets_folder?>/js/dataTables.bootstrap.min.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            // Make table sortable
-            $('#main_table').DataTable({
-                info: false,
-                paging: false,
-                searching: false
-            });
+<?php
+array_push($default_css, 'mpstats.css');
+foreach ($default_css as $css_filename) {
+    echo "    <link rel=\"stylesheet\" href=\"{$assets_folder}/css/{$css_filename}\" type=\"text/css\" media=\"all\" />\n";
+}
 
-            // Associate click handlers to anchors
-            $('.locale_anchor').click(function (e) {
-                e.preventDefault;
-                // Remove other selected rows and spacers
-                $('tr').removeClass('selected');
-                $('.spacer').remove();
-
-                // Add empty row before and after this element
-                var row = '#row_' + e.target.id;
-                $(row).before('<tr class="spacer_top" colspan="<?php echo $columns_number;?>">&nbsp;</tr>');
-                $(row).after('<tr class="spacer_bottom" colspan="<?php echo $columns_number;?>">&nbsp;</tr>');
-                // Add selected class to this row
-                $(row).addClass('selected');
-                // Scroll slight above the anchor
-                var y = $(window).scrollTop();
-                $("html, body").animate(
-                    {
-                        scrollTop: y - 150
-                    }, 500);
-            });
-
-            var anchor = location.hash.substring(1);
-            if (anchor !== '') {
-                $('#' + anchor).click();
-            }
-        });
-    </script>
+array_push($default_js, 'mpstats.js');
+foreach ($default_js as $js_filename) {
+    echo "    <script src=\"{$assets_folder}/js/{$js_filename}\"></script>\n";
+}
+?>
 </head>
 
 <body>
@@ -136,9 +83,9 @@ $columns_number = 1 + 3 * count($products);
         foreach ($products as $code => $name) {
             if (array_key_exists($code, $webstatus_data[$locale])) {
                 $current_product = $webstatus_data[$locale][$code];
-                $content .= "       <td " . getRowStyle($current_product) . ">{$current_product['translated']}</td>\n" .
-                            "       <td " . getRowStyle($current_product) . ">{$current_product['untranslated']}</td>\n" .
-                            "       <td " . getRowStyle($current_product) . ">{$current_product['percentage']}</td>\n";
+                $content .= "       <td " . Utils::getRowStyle($current_product['percentage'], 'mpstats') . ">{$current_product['translated']}</td>\n" .
+                            "       <td " . Utils::getRowStyle($current_product['percentage'], 'mpstats') . ">{$current_product['untranslated']}</td>\n" .
+                            "       <td " . Utils::getRowStyle($current_product['percentage'], 'mpstats') . ">{$current_product['percentage']}</td>\n";
             } else {
                 // Missing products
                 $content .= "       <td> </td>\n" .
