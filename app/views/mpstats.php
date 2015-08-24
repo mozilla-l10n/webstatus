@@ -34,27 +34,6 @@ foreach ($webstatus_metadata['products'] as $product_id => $product) {
     }
 }
 
-function getRowStyle($current_product)
-{
-    $perc = $current_product['percentage'];
-    $opacity = 1;
-    if ($perc < 100) {
-        $opacity = floor(round(($perc - 20) / 100, 2) * 10) / 10;
-    }
-    if ($perc >= 70) {
-        $stylerow = "background-color: rgba(146, 204, 110, {$opacity});";
-    } elseif ($perc >= 40) {
-        $opacity = 1 - $opacity;
-        $stylerow = "background-color: rgba(235, 235, 110, {$opacity});";
-    } else {
-        $opacity = 1 - $opacity;
-        $stylerow = "background-color: rgba(255, 82, 82, {$opacity});";
-    }
-    $stylerow = "style='{$stylerow}'";
-
-    return $stylerow;
-}
-
 $columns_number = 1 + 3 * count($products);
 ?>
 
@@ -104,9 +83,9 @@ foreach ($default_js as $js_filename) {
         foreach ($products as $code => $name) {
             if (array_key_exists($code, $webstatus_data[$locale])) {
                 $current_product = $webstatus_data[$locale][$code];
-                $content .= "       <td " . getRowStyle($current_product) . ">{$current_product['translated']}</td>\n" .
-                            "       <td " . getRowStyle($current_product) . ">{$current_product['untranslated']}</td>\n" .
-                            "       <td " . getRowStyle($current_product) . ">{$current_product['percentage']}</td>\n";
+                $content .= "       <td " . Utils::getRowStyle($current_product['percentage'], 'mpstats') . ">{$current_product['translated']}</td>\n" .
+                            "       <td " . Utils::getRowStyle($current_product['percentage'], 'mpstats') . ">{$current_product['untranslated']}</td>\n" .
+                            "       <td " . Utils::getRowStyle($current_product['percentage'], 'mpstats') . ">{$current_product['percentage']}</td>\n";
             } else {
                 // Missing products
                 $content .= "       <td> </td>\n" .
