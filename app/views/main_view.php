@@ -39,22 +39,16 @@ if ($requested_locale == 'All locales') {
 <head>
     <meta charset=utf-8>
     <title><?php echo $page_title; ?></title>
-    <link rel="stylesheet" href="<?=$assets_folder?>/css/bootstrap.min.css" type="text/css" media="all" />
-    <link rel="stylesheet" href="<?=$assets_folder?>/css/bootstrap-theme.min.css" type="text/css" media="all" />
-    <link rel="stylesheet" href="<?=$assets_folder?>/css/dataTables.bootstrap.css" type="text/css" media="all" />
-    <link rel="stylesheet" href="<?=$assets_folder?>/css/main.css" type="text/css" media="all" />
-    <script src="<?=$assets_folder?>/js/jquery-1.11.3.min.js"></script>
-    <script src="<?=$assets_folder?>/js/jquery.dataTables.min.js"></script>
-    <script src="<?=$assets_folder?>/js/dataTables.bootstrap.min.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('#main_table').DataTable({
-                info: false,
-                paging: false,
-                searching: false
-            });
-        });
-    </script>
+<?php
+array_push($default_css, 'main.css');
+foreach ($default_css as $css_filename) {
+    echo "    <link rel=\"stylesheet\" href=\"{$assets_folder}/css/{$css_filename}\" type=\"text/css\" media=\"all\" />\n";
+}
+
+array_push($default_js, 'main.js');
+foreach ($default_js as $js_filename) {
+    echo "    <script src=\"{$assets_folder}/js/{$js_filename}\"></script>\n";
+}?>
 </head>
 <body>
   <div class="container">
