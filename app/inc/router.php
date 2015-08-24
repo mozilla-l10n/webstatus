@@ -20,18 +20,22 @@ $base_url = ($webroot_folder == '') ? '' : "{$webroot_folder}/";
 $unknown_url = false;
 switch ($url['path']) {
     case "{$base_url}api":
-        $view = 'api';
+        $controller = 'api';
         break;
     case "{$base_url}mpstats":
+        $controller = 'mpstats';
         $view = 'mpstats';
         break;
     case "{$base_url}views/xliff_diff.php":
+        $controller = 'xliff_diff';
         $view = 'xliff_diff';
         break;
     case $base_url:
+        $controller = 'main_view';
         $view = 'main_view';
         break;
     case $webroot_folder:
+        $controller = 'main_view';
         $view = 'main_view';
         break;
     default:
@@ -46,4 +50,10 @@ if ($unknown_url) {
     die();
 }
 
-include __DIR__ . "/../views/{$view}.php";
+if (isset($controller)) {
+    include __DIR__ . "/../controllers/{$controller}.php";
+}
+
+if (isset($view)) {
+    include __DIR__ . "/../views/{$view}.php";
+}
