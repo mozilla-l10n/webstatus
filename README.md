@@ -29,8 +29,10 @@ Marketplace Stats view.
 ```
 Simple API requests:
 * ```product=XXX```: request the list of supported locales for product XXX.
-* ```type=incomplete```: get only incomplete locales (missing strings or errors).
+* ```type=incomplete```: get only incomplete locales (missing strings or errors). Default output: all supported locales.
 * ```txt```: get the response as text (default JSON).
+
+Query example: [api/?product=firefox-ios&type=incomplete&txt](https://l10n.mozilla-community.org/~flod/webstatus/api/?product=firefox-ios&type=incomplete&txt)
 
 A running instance of this project is available at http://l10n.mozilla-community.org/~flod/webstatus/
 

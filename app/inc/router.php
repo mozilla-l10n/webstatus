@@ -11,12 +11,12 @@ if ($url['path'] != '/') {
     $url['path'] = array_filter($url['path']); // Remove empty items
     $url['path'] = array_values($url['path']); // Reorder keys
     $url['path'] = implode('/', $url['path']);
+    $url['path'] = urldecode($url['path']);
 } else {
     $url['path'] = '';
 }
 
 $base_url = ($webroot_folder == '') ? '' : "{$webroot_folder}/";
-
 $unknown_url = false;
 switch ($url['path']) {
     case "{$base_url}api":
@@ -41,7 +41,6 @@ switch ($url['path']) {
 
 if ($unknown_url) {
     // Unknown, redirect to main URL
-    echo "Need redirect<br>";
     header("Location: /{$webroot_folder}");
     die();
 }
