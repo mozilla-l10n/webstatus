@@ -18,6 +18,34 @@ if ($supported_product) {
     $product_name = 'N/A';
 }
 
+// Calculate some common data for products
+$common_data = function ($product_data) {
+    $result = [];
+
+    // Check if we need to display the note for XLIFF files
+    $result['xliff_note'] = ($product_data['source_type'] == 'xliff') ? true : false;
+
+    // Determine percentage of completeness. For .properties files
+    // I consider also the number of identical strings
+    $percentage = $product_data['percentage'];
+    if ($product_data['source_type'] == 'properties') {
+        $perc_identical = $product_data['identical'] / $product_data['total'] * 100;
+        if ($perc_identical > 20) {
+            $percentage = $percentage - $perc_identical;
+        }
+    }
+
+    if ($product_data['error_status']) {
+        $result['row_class'] = 'error';
+        $result['row_style'] = '';
+    } else {
+        $result['row_class'] = '';
+        $result['row_style'] = Utils::getRowStyle($percentage);
+    }
+
+    return $result;
+};
+
 $template_meta = [];
 $table_rows = [];
 if ($requested_product != 'all') {
@@ -40,33 +68,15 @@ if ($requested_product != 'all') {
                 }
                 $template_meta['total_locales'] = $template_meta['total_locales'] + 1;
 
-                // Check if we need to display the note for XLIFF files
-                $xliff_note = ($current_product['source_type'] == 'xliff') ? true : false;
-
-                // Determine percentage of completeness. For .properties files
-                // I consider also the number of identical strings
-                $percentage = $current_product['percentage'];
-                if ($current_product['source_type'] == 'properties') {
-                    $perc_identical = $current_product['identical'] / $current_product['total'] * 100;
-                    if ($perc_identical > 20) {
-                        $percentage = $percentage - $perc_identical;
-                    }
-                }
-
-                if ($current_product['error_status']) {
-                    $row_class = 'error';
-                    $row_style = '';
-                } else {
-                    $row_class = '';
-                    $row_style = Utils::getRowStyle($percentage);
-                }
+                $extra_data = $common_data($current_product);
+                $xliff_note = $extra_data['xliff_note'];
 
                 $row = [
-                    'class'           => $row_class,
+                    'class'           => $extra_data['row_class'],
                     'locale'          => $locale_code,
                     'product_data'    => $current_product,
                     'product_id'      => $requested_product,
-                    'style'           => $row_style,
+                    'style'           => $extra_data['row_style'],
                 ];
                 array_push($table_rows, $row);
             }
@@ -83,34 +93,16 @@ if ($requested_product != 'all') {
             if (array_key_exists($product_id, $webstatus_data[$requested_locale])) {
                 $current_product = $webstatus_data[$requested_locale][$product_id];
 
-                // Check if we need to display the note for XLIFF files
-                $xliff_note = ($current_product['source_type'] == 'xliff') ? true : false;
-
-                // Determine percentage of completeness. For .properties files
-                // I consider also the number of identical strings
-                $percentage = $current_product['percentage'];
-                if ($current_product['source_type'] == 'properties') {
-                    $perc_identical = $current_product['identical'] / $current_product['total'] * 100;
-                    if ($perc_identical > 20) {
-                        $percentage = $percentage - $perc_identical;
-                    }
-                }
-
-                if ($current_product['error_status']) {
-                    $row_class = 'error';
-                    $row_style = '';
-                } else {
-                    $row_class = '';
-                    $row_style = Utils::getRowStyle($percentage);
-                }
+                $extra_data = $common_data($current_product);
+                $xliff_note = $extra_data['xliff_note'];
 
                 $row = [
-                    'class'           => $row_class,
+                    'class'           => $extra_data['row_class'],
                     'product_data'    => $current_product,
                     'product_id'      => $requested_product,
                     'repository_url'  => $product['repository_url'],
                     'repository_type' => $product['repository_type'],
-                    'style'           => $row_style,
+                    'style'           => $extra_data['row_style'],
                 ];
                 array_push($table_rows, $row);
             }
