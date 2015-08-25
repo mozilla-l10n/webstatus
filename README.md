@@ -1,14 +1,17 @@
 Web Status
 =========
 
-Python script and PHP Web views used to analyze Web projects based on Gettext (.po) files.
-* ```script/webstatus.py``` generates a JSON file for all listed projects.
-* ```index.php``` is used to display the content of the JSON file, per project or per locale.
-* ```mpstats/index.php``` is used to display projects related to Marketplace for all locales in a single page.
+Python scripts and PHP Web views used to analyze Web projects based on Gettext (.po), .properties and XLIFF files.
+* ```app/scripts/webstatus.py``` generates a JSON file for all listed projects.
+* ```app/scripts/webstatus.py product-id``` generates a JSON file updating only the requested ```product-id```.
 
 Prerequisites:
-* Copy ```config/config.ini-dist``` as ```config/config.ini```, adapting the path to your system. This is the path used to store all local clones (currently about 1 GB of space required).
-* You need ```git```, ```svn``` and ```msgfmt```(included in package *gettext*) on your system.
+* Copy ```app/config/config.ini-dist``` as ```app/config/config.ini```, adapting the variables to your system:
+    * ```storage_path```is the path used to store all local clones (currently about 1 GB of space required).
+    * ```web_folder``` indicates if the website is served from a root or a subfolder.
+* Install [Composer](https://getcomposer.org/), a dependency manager for PHP.
+* Make sure ```git```, ```hg```, ```python```, ```svn``` and ```msgfmt```(included in package *gettext*) are installed in your system.
+* Run ```app/scripts/webstatus.py``` at least once to generate the data in ```/web_status.json```. If you're only interested in the front-end, you can copy an existing JSON file from a [running instance](https://l10n.mozilla-community.org/~flod/webstatus/web_status.json).
 
 ## Available URLS
 ```
@@ -21,7 +24,15 @@ Main Web Status view.
 ```
 Marketplace Stats view.
 
-See a running instance at http://l10n.mozilla-community.org/~flod/webstatus/
+```
+/api
+```
+Simple API requests:
+* ```product=XXX```: request the list of supported locales for product XXX.
+* ```type=incomplete```: get only incomplete locales (missing strings or errors).
+* ```txt```: get the response as text (default JSON).
+
+A running instance of this project is available at http://l10n.mozilla-community.org/~flod/webstatus/
 
 ## Structure of the JSON file
 
