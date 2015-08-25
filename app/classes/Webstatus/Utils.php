@@ -120,7 +120,7 @@ class Utils
             $opacity = 0.8 - $opacity;
             $color = 'red';
         }
-        $stylerow = "style='background-color: rgba({$base_colors[$color]}, {$opacity});'";
+        $stylerow = "background-color: rgba({$base_colors[$color]}, {$opacity});";
 
         return $stylerow;
     }

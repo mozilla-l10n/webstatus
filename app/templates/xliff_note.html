@@ -1,0 +1,15 @@
+<h3 id="xliff_notes">Notes on XLIFF files</h3>
+<p>A MDN document is available explaining
+   <a href="https://developer.mozilla.org/en-US/docs/Mozilla/Localization/Localizing_XLIFF_files">how to to work on XLIFF files</a>.</p>
+<ul>
+    <li>Strings are reported as missing if a <code>trans-unit</code> has a <code>source</code> element
+        but not a <code>target</code> element.</li>
+    <li>Don't use straight double quotes (<code>"example"</code>) in your translations. Use curly double
+        quotes (<code>“example”</code>) or straight single quotes (<code>'example'</code>).</li>
+    <li>Errors are reported if the XML is not valid, if there are multiple <code>source</code> or
+        <code>target</code> elements, and if the first <code>file</code> element is missing a
+        <code>target-language</code> attribute.</li>
+    <li>Untranslated strings are strings available in the file but not localized (no <code>target</code>).
+    Missing strings are strings available in en-US but not in the locale file. Completion percentage is
+    determined by adding the number of missing strings to the number of strings actually available in the file.</li>
+</ul>

@@ -1,0 +1,21 @@
+<h1>
+    Current locale: {{ requested_locale }}
+    <a href="{{ url_history }}" class="stats-icon" title="See historical graphs"><span class="glyphicon glyphicon-stats" aria-hidden="true"></span></a>
+</h1>
+<div class="list locale_list">
+    <p>
+        Display localization status for a specific locale<br/>
+        {% for locale in available_locales %}
+            <a href="?locale={{ locale }}">{{ locale }}</a>
+        {% endfor %}
+    </p>
+</div>
+
+<h1>Current product: {{ product_name }}</h1>
+<div class="list product_list">
+    <p>Display localization status for a specific project<br/>
+    {% for product_code, product in available_products %}
+        <a href="?product={{ product_code }}">{{ product.name }}</a>
+    {% endfor %}
+    </p>
+</div>

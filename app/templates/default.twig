@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset=utf-8>
+    <title>{{ page_title }}</title>
+    {% for css_filename in default_css %}
+        <link rel="stylesheet" href="{{ assets_folder }}/css/{{ css_filename }}" type="text/css" media="all" />
+    {% endfor %}
+    {% for js_filename in default_js %}
+        <script src="{{ assets_folder }}/js/{{ js_filename }}"></script>
+    {% endfor %}
+</head>
+<body>
+    <div class="container">
+        <h1>{{ content_title }}</h1>
+        {% block body %}
+            {{ main_content|raw }}
+        {% endblock %}
+    </div>
+</body>
+</html>

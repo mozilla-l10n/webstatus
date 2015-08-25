@@ -1,0 +1,67 @@
+{% extends 'default.twig' %}
+
+{% block body %}
+    {% include 'selectors.twig' %}
+    {% if supported == false %}
+        <h1>Unsupported product</h1>
+        <p>The requested product is not supported.</p>
+    {% else %}
+        <table id="main_table" class="table table-bordered table-condensed">
+            <thead>
+                <tr>
+                    <th>Locale</th>
+                    <th>%</th>
+                    <th>Type</th>
+                    <th><abbr title="Translated strings">Tran.</abbr></th>
+                    <th><abbr title="Untranslated strings">Untr.</abbr></th>
+                    <th><abbr title="Identical strings">Iden.</abbr></th>
+                    <th><abbr title="Missing strings">Miss.</abbr></th>
+                    <th>Fuzzy</th>
+                    <th>Total</th>
+                    <th>Errors</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in table_rows %}
+                    <tr class="{{ row.class }}" style="{{ row.style }}">
+                        <th>{{ row.locale }}</th>
+                        <td class="number">{{ row.product_data.percentage }}</td>
+                        <td class="source_type">
+                            {{ row.product_data.source_type }}
+                            {% if row.product_data.source_type == 'xliff' %}
+                                <a href="#xliff_notes" title="See notes"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></a>
+                            {% endif %}
+                        </td>
+                        <td class="number">{{ row.product_data.translated }}</td>
+                        {% if row.product_data.source_type == 'xliff' and row.product_data.untranslated > 0 %}
+                            <td class="number">
+                                <a href="views/xliff_diff.php?product={{ row.product_id }}&amp;locale={{ row.locale }}" title="Show untranslated strings">{{ row.product_data.untranslated }}</a>
+                            </td>
+                        {% else %}
+                            <td class="number">{{ row.product_data.untranslated }}</td>
+                        {% endif %}
+                        <td class="number">{{ row.product_data.identical }}</td>
+                        {% if row.product_data.source_type == 'xliff' and row.product_data.missing > 0 %}
+                            <td class="number">
+                                <a href="views/xliff_diff.php?product={{ row.product_id }}&amp;locale={{ row.locale }}" title="Show missing and obsolete strings">{{ row.product_data.missing }}</a>
+                            </td>
+                        {% else %}
+                            <td class="number">{{ row.product_data.missing }}</td>
+                        {% endif %}
+                        <td class="number">{{ row.product_data.fuzzy }}</td>
+                        <td class="number">{{ row.product_data.total }}</td>
+                        <td>{{ row.product_data.error_message }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+    {% if template_meta.total_locales is defined %}
+        <p>Complete locales: {{ template_meta.complete_locales }} out of {{ template_meta.total_locales }}.</p>
+    {% endif %}
+    <p class="lastupdate">Last update: {{ last_update }}</p>
+    {% if xliff_note %}
+        {% include 'xliff_note.html' %}
+    {% endif %}
+    <p class="github_link"><a href="https://github.com/mozilla-l10n/webstatus/">Code hosted on GitHub</a></p>
+{% endblock %}

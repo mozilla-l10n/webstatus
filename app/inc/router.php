@@ -24,19 +24,15 @@ switch ($url['path']) {
         break;
     case "{$base_url}mpstats":
         $controller = 'mpstats';
-        $view = 'mpstats';
         break;
     case "{$base_url}views/xliff_diff.php":
         $controller = 'xliff_diff';
-        $view = 'xliff_diff';
         break;
     case $base_url:
         $controller = 'main_view';
-        $view = 'main_view';
         break;
     case $webroot_folder:
         $controller = 'main_view';
-        $view = 'main_view';
         break;
     default:
         $unknown_url = true;
@@ -52,8 +48,4 @@ if ($unknown_url) {
 
 if (isset($controller)) {
     include __DIR__ . "/../controllers/{$controller}.php";
-}
-
-if (isset($view)) {
-    include __DIR__ . "/../views/{$view}.php";
 }

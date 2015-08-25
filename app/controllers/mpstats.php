@@ -35,3 +35,57 @@ foreach ($webstatus_metadata['products'] as $product_id => $product) {
 }
 
 $columns_number = 1 + 3 * count($products);
+
+$table_header = [];
+foreach ($products as $code => $name) {
+    array_push($table_header, $name);
+}
+
+$table_rows = [];
+foreach ($locales as $locale) {
+    $row = [
+        'locale'   => $locale,
+        'products' => [],
+    ];
+
+    $empty_product = [
+        'translated'   => ' ',
+        'untranslated' => ' ',
+        'percentage'   => ' ',
+        'style'        => '',
+    ];
+
+    foreach ($products as $code => $name) {
+        $single_product = $empty_product;
+        if (array_key_exists($code, $webstatus_data[$locale])) {
+            $current_product = $webstatus_data[$locale][$code];
+            $single_product['translated'] = $current_product['translated'];
+            $single_product['untranslated'] = $current_product['untranslated'];
+            $single_product['percentage'] = $current_product['percentage'];
+            $single_product['style'] = Utils::getRowStyle($current_product['percentage'], 'mpstats');
+        }
+        array_push($row['products'], $single_product);
+    }
+
+    array_push($table_rows, $row);
+}
+
+$last_update_local = date('Y-m-d H:i e (O)', strtotime($webstatus_metadata['creation_date']));
+
+// Add specific CSS and JS files
+array_push($default_css, 'mpstats.css');
+array_push($default_js, 'mpstats.js');
+
+print $twig->render(
+    'mpstats.twig',
+    [
+        'assets_folder'   => $assets_folder,
+        'default_css'     => $default_css,
+        'default_js'      => $default_js,
+        'last_update'     => $last_update_local,
+        'page_title'      => 'Marketplace Status',
+        'products_number' => count($products),
+        'table_header'    => $table_header,
+        'table_rows'      => $table_rows,
+    ]
+);
