@@ -27,7 +27,6 @@ switch ($url['path']) {
         break;
     case "{$base_url}views/xliff_diff.php":
         $controller = 'xliff_diff';
-        $view = 'xliff_diff';
         break;
     case $base_url:
         $controller = 'main_view';

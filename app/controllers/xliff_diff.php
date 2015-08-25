@@ -51,8 +51,6 @@ if ($error_messages == '') {
 
         $json_data = json_decode(shell_exec($command), true);
 
-        $html_output .= "<h1>{$product_data['displayed_name']} - Comparison for {$requested_locale}</h1>\n";
-
         $display_strings = function ($title, $empty_message, $string_list) {
             $local_output = '';
             if (count($string_list) == 0) {
@@ -74,3 +72,23 @@ if ($error_messages == '') {
         $html_output .= $display_strings('Untranslated strings', 'No untranslated strings', $json_data['untranslated_strings']);
     }
 }
+
+if ($error_messages != '') {
+    $content_title = "Error";
+    $main_content = $error_messages;
+} else {
+    $content_title = "{$product_data['displayed_name']} - Comparison for {$requested_locale}";
+    $main_content = $html_output;
+}
+
+print $twig->render(
+    'default.twig',
+    [
+        'assets_folder' => $assets_folder,
+        'default_css'   => $default_css,
+        'default_js'    => [], // Don't need JS files for this view
+        'content_title' => $content_title,
+        'main_content'  => $main_content,
+        'page_title'    => 'Web Status - XLIFF Comparison',
+    ]
+);
