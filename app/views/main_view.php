@@ -97,7 +97,7 @@ foreach ($default_js as $js_filename) {
             $row_header = "{$row_header}<a href='{$repo_url}' class='repository_link' title='View source repository'>{$repo_type}</a>";
         }
 
-        $rows =  "\n<tr class='{$row_class}' {$row_style}>\n" .
+        $rows =  "\n<tr class='{$row_class}' style='{$row_style}'>\n" .
                  "      <th>{$row_header}</th>\n" .
                  "      <td class='number'>{$product['percentage']}</td>\n" .
                  "      <td class='source_type'>{$source_type_label}</td>\n" .

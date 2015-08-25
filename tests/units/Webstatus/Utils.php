@@ -47,16 +47,16 @@ class Utils extends atoum\test
     public function getRowStyleDP()
     {
         return [
-            ['100', '', 'style=\'background-color: rgba(129, 209, 25, 1);\''],
-            ['90', 'mpstats', 'style=\'background-color: rgba(146, 204, 110, 0.7);\''],
-            ['80', '', 'style=\'background-color: rgba(129, 209, 25, 0.6);\''],
-            ['70', 'mpstats', 'style=\'background-color: rgba(146, 204, 110, 0.5);\''],
-            ['50', '', 'style=\'background-color: rgba(255, 252, 61, 0.7);\''],
-            ['40', 'mpstats', 'style=\'background-color: rgba(235, 235, 110, 0.8);\''],
-            ['30', '', 'style=\'background-color: rgba(255, 194, 115, 0.7);\''],
-            ['20', 'mpstats', 'style=\'background-color: rgba(255, 82, 82, 0.8);\''],
-            ['10', '', 'style=\'background-color: rgba(255, 194, 115, 0.9);\''],
-            ['0', 'mpstats', 'style=\'background-color: rgba(255, 82, 82, 1);\''],
+            ['100', '', 'background-color: rgba(129, 209, 25, 1);'],
+            ['90', 'mpstats', 'background-color: rgba(146, 204, 110, 0.7);'],
+            ['80', '', 'background-color: rgba(129, 209, 25, 0.6);'],
+            ['70', 'mpstats', 'background-color: rgba(146, 204, 110, 0.5);'],
+            ['50', '', 'background-color: rgba(255, 252, 61, 0.7);'],
+            ['40', 'mpstats', 'background-color: rgba(235, 235, 110, 0.8);'],
+            ['30', '', 'background-color: rgba(255, 194, 115, 0.7);'],
+            ['20', 'mpstats', 'background-color: rgba(255, 82, 82, 0.8);'],
+            ['10', '', 'background-color: rgba(255, 194, 115, 0.9);'],
+            ['0', 'mpstats', 'background-color: rgba(255, 82, 82, 1);'],
         ];
     }
 
