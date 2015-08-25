@@ -18,12 +18,12 @@ if ($supported_product) {
     $product_name = 'N/A';
 }
 
-// Calculate some common data for products
-$common_data = function ($product_data) {
-    $result = [];
+// Default: don't display note for XLIFF files
+$xliff_note = false;
 
-    // Check if we need to display the note for XLIFF files
-    $result['xliff_note'] = ($product_data['source_type'] == 'xliff') ? true : false;
+// Calculate some common data for products
+$calculate_row_style = function ($product_data) {
+    $result = [];
 
     // Determine percentage of completeness. For .properties files
     // I consider also the number of identical strings
@@ -36,11 +36,11 @@ $common_data = function ($product_data) {
     }
 
     if ($product_data['error_status']) {
-        $result['row_class'] = 'error';
-        $result['row_style'] = '';
+        $result['class'] = 'error';
+        $result['style'] = '';
     } else {
-        $result['row_class'] = '';
-        $result['row_style'] = Utils::getRowStyle($percentage);
+        $result['class'] = '';
+        $result['style'] = Utils::getRowStyle($percentage);
     }
 
     return $result;
@@ -58,6 +58,10 @@ if ($requested_product != 'all') {
     if ($supported) {
         $template_meta['complete_locales'] = 0;
         $template_meta['total_locales'] = 0;
+
+        // Check if we need to display the note for this specific product
+        $xliff_note = $webstatus->getsoUrceType($requested_product) == 'xliff' ? true : false;
+
         foreach ($available_locales as $locale_code) {
             if (isset($webstatus_data[$locale_code][$requested_product])) {
                 $current_product = $webstatus_data[$locale_code][$requested_product];
@@ -68,15 +72,15 @@ if ($requested_product != 'all') {
                 }
                 $template_meta['total_locales'] = $template_meta['total_locales'] + 1;
 
-                $extra_data = $common_data($current_product);
-                $xliff_note = $extra_data['xliff_note'];
+                // Calculate inline CSS and class for this row
+                $row_style = $calculate_row_style($current_product);
 
                 $row = [
-                    'class'           => $extra_data['row_class'],
+                    'class'           => $row_style['class'],
                     'locale'          => $locale_code,
                     'product_data'    => $current_product,
                     'product_id'      => $requested_product,
-                    'style'           => $extra_data['row_style'],
+                    'style'           => $row_style['style'],
                 ];
                 array_push($table_rows, $row);
             }
@@ -93,16 +97,20 @@ if ($requested_product != 'all') {
             if (array_key_exists($product_id, $webstatus_data[$requested_locale])) {
                 $current_product = $webstatus_data[$requested_locale][$product_id];
 
-                $extra_data = $common_data($current_product);
-                $xliff_note = $extra_data['xliff_note'];
+                // I display the note even if there's only one XLIFF based product
+                if ($webstatus->getsoUrceType($product_id) == 'xliff') {
+                    $xliff_note = true;
+                }
+                // Calculate inline CSS and class for this row
+                $row_style = $calculate_row_style($current_product);
 
                 $row = [
-                    'class'           => $extra_data['row_class'],
+                    'class'           => $row_style['class'],
                     'product_data'    => $current_product,
                     'product_id'      => $requested_product,
                     'repository_url'  => $product['repository_url'],
-                    'repository_type' => $product['repository_type'],
-                    'style'           => $extra_data['row_style'],
+                    'repository_type' => $webstatus->getsoUrceType($product_id),
+                    'style'           => $row_style['style'],
                 ];
                 array_push($table_rows, $row);
             }
