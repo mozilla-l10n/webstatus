@@ -84,23 +84,6 @@ $compare_results[] = compare_json(
     shell_exec("{$script_name} {$source_file} {$target_file}")
 );
 
-$target_file = TESTFILES . 'xliff/it_errors2.xliff';
-$compare_results[] = compare_json(
-    '{
-        "identical": 0,
-        "errors": "Trans unit \u201cClear Everything\u201d in file \u201dClient\/ClearPrivateData.strings\u201d is using straight double quotes.                                   Please use curly double quotes or single quotes instead. - File \u201cClient\/ClearPrivateData.strings\u201d is missing target-language attribute",
-        "missing": 0,
-        "untranslated_strings": [],
-        "untranslated": 0,
-        "missing_strings": [],
-        "obsolete": 0,
-        "translated": 6,
-        "obsolete_strings": [],
-        "total": 6
-     }',
-    shell_exec("{$script_name} {$source_file} {$target_file}")
-);
-
 $target_file = TESTFILES . 'xliff/it_incomplete.xliff';
 $compare_results[] = compare_json(
     '{
