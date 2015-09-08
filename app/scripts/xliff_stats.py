@@ -82,13 +82,6 @@ def analyze_file(file_path, string_list, untranslated_strings):
                 translated += 1
                 if source_string == target_string:
                     identical += 1
-                # Check if there are double quotes breaking import tools (bug
-                # 1140751 and others)
-                if '"' in target_string:
-                    error_msg = u'Trans unit “%s” in file ”%s” is using straight double quotes. \
-                                  Please use curly double quotes or single quotes instead.' \
-                                % (trans_unit.attributes['id'].value, file_element_name)
-                    errors.append(error_msg)
             else:
                 untranslated_strings.append(string_id)
                 untranslated += 1
