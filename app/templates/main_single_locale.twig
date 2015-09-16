@@ -35,7 +35,7 @@
                         <td class="number">{{ row.product_data.translated }}</td>
                         {% if row.product_data.source_type == 'xliff' and row.product_data.untranslated > 0 %}
                             <td class="number">
-                                <a href="views/xliff_diff.php?product={{ row.product_id }}&amp;locale={{ row.locale }}" title="Show untranslated strings">{{ row.product_data.untranslated }}</a>
+                                <a href="views/xliff_diff.php?product={{ row.product_id }}&amp;locale={{ requested_locale }}" title="Show untranslated strings">{{ row.product_data.untranslated }}</a>
                             </td>
                         {% else %}
                             <td class="number">{{ row.product_data.untranslated }}</td>
@@ -43,7 +43,7 @@
                         <td class="number">{{ row.product_data.identical }}</td>
                         {% if row.product_data.source_type == 'xliff' and row.product_data.missing > 0 %}
                             <td class="number">
-                                <a href="views/xliff_diff.php?product={{ row.product_id }}&amp;locale={{ row.locale }}" title="Show missing and obsolete strings">{{ row.product_data.missing }}</a>
+                                <a href="views/xliff_diff.php?product={{ row.product_id }}&amp;locale={{ requested_locale }}" title="Show missing and obsolete strings">{{ row.product_data.missing }}</a>
                             </td>
                         {% else %}
                             <td class="number">{{ row.product_data.missing }}</td>
@@ -60,5 +60,5 @@
     {% if xliff_note %}
         {% include 'xliff_note.html' %}
     {% endif %}
-    <p class="github_link"><a href="https://github.com/mozilla-l10n/webstatus/">Code hosted on GitHub</a></p>
+    <p class="github_link">Code hosted on <a href="https://github.com/mozilla-l10n/webstatus/">GitHub</a>. Please open a <a href="https://github.com/mozilla-l10n/webstatus/issues">new issue</a> to report errors.</p>
 {% endblock %}
