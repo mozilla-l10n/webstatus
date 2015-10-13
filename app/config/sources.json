@@ -54,17 +54,6 @@
         "source_file": "firefox-ios.xliff",
         "source_type": "xliff"
     },
-    "firefoxflicks": {
-        "displayed_name": "Firefox Flicks",
-        "excluded_folders": [],
-        "locale_folder": "locale",
-        "product_name": "firefoxflicks",
-        "repository_name": "firefoxflicks",
-        "repository_type": "svn",
-        "repository_url": "http://svn.mozilla.org/projects/l10n-misc/trunk/firefoxflicks/",
-        "source_file": "LC_MESSAGES/messages.po",
-        "source_type": "gettext"
-    },
     "fireplace": {
         "displayed_name": "Marketplace Fireplace",
         "excluded_folders": [],
