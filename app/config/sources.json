@@ -10,50 +10,6 @@
         "source_file": "LC_MESSAGES/messages.po",
         "source_type": "gettext"
     },
-    "browserid": {
-        "displayed_name": "Browser ID",
-        "excluded_folders": [],
-        "locale_folder": "locale",
-        "product_name": "browserid",
-        "repository_name": "browserid",
-        "repository_type": "svn",
-        "repository_url": "http://svn.mozilla.org/projects/l10n-misc/trunk/browserid/",
-        "source_file": "LC_MESSAGES/messages.po",
-        "source_type": "gettext"
-    },
-    "browserid-bigtent": {
-        "displayed_name": "Browser ID Big Tent",
-        "excluded_folders": [],
-        "locale_folder": "locale",
-        "product_name": "browserid-bigtent",
-        "repository_name": "browserid-bigtent",
-        "repository_type": "svn",
-        "repository_url": "http://svn.mozilla.org/projects/l10n-misc/trunk/browserid-bigtent/",
-        "source_file": "LC_MESSAGES/messages.po",
-        "source_type": "gettext"
-    },
-    "browserid-bigtent-gmail": {
-        "displayed_name": "Browser ID Big Tent (gmail.po)",
-        "excluded_folders": [],
-        "locale_folder": "locale",
-        "product_name": "browserid-bigtent-gmail",
-        "repository_name": "browserid-bigtent",
-        "repository_type": "svn",
-        "repository_url": "http://svn.mozilla.org/projects/l10n-misc/trunk/browserid-bigtent/",
-        "source_file": "LC_MESSAGES/gmail.po",
-        "source_type": "gettext"
-    },
-    "browserid-client": {
-        "displayed_name": "Browser ID (client.po)",
-        "excluded_folders": [],
-        "locale_folder": "locale",
-        "product_name": "browserid-client",
-        "repository_name": "browserid",
-        "repository_type": "svn",
-        "repository_url": "http://svn.mozilla.org/projects/l10n-misc/trunk/browserid/",
-        "source_file": "LC_MESSAGES/client.po",
-        "source_type": "gettext"
-    },
     "commbadge": {
         "displayed_name": "Marketplace CommBadge",
         "excluded_folders": [],
