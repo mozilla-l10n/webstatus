@@ -251,8 +251,8 @@ def main():
                                     'scripts', 'properties_compare.py')
                                 string_stats_json = subprocess.check_output(
                                     [compare_script,
-                                     os.path.join(product_folder, reference_locale),
-                                     os.path.join(product_folder, locale)
+                                     os.path.join(product_folder, reference_locale, source_file),
+                                     locale_file_name
                                      ],
                                     stderr=subprocess.STDOUT,
                                     shell=False)
@@ -267,6 +267,7 @@ def main():
                                 string_count['total'] = 0
                                 complete = False
                                 error_record['message'] = 'Error extracting data'
+
                             string_stats = json.load(StringIO(string_stats_json))
                             string_count['identical'] += string_stats['identical']
                             string_count['missing'] += string_stats['missing']
