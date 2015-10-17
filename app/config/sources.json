@@ -65,6 +65,22 @@
         ],
         "source_type": "gettext"
     },
+    "fundraising": {
+        "displayed_name": "Fundraising",
+        "excluded_folders": [],
+        "locale_folder": "locales",
+        "product_name": "fundraising",
+        "repository_name": "donate.mozilla.org",
+        "repository_type": "git",
+        "repository_url": "https://github.com/mozilla/donate.mozilla.org",
+        "source_files": [
+            "assets.properties",
+            "email.properties",
+            "messages.properties",
+            "snippet.properties"
+        ],
+        "source_type": "properties"
+    },
     "fxaccount-l10n": {
         "displayed_name": "Firefox Account (client)",
         "excluded_folders": [
