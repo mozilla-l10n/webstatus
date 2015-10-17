@@ -221,7 +221,8 @@ def main():
                             error_record['status'] = True
                             string_count['total'] = 0
                             complete = False
-                            error_record['message'] = 'Error extracting data with msgfmt --statistics'
+                            error_record[
+                                'message'] = 'Error extracting data with msgfmt --statistics'
                 else:
                     print 'File does not exist'
                     error_record['status'] = True
@@ -237,10 +238,13 @@ def main():
                                 [po_stats_cmd, locale_file_name],
                                 stderr=subprocess.STDOUT,
                                 shell=False)
-                            string_stats = json.load(StringIO(string_stats_json))
+                            string_stats = json.load(
+                                StringIO(string_stats_json))
                             string_count['fuzzy'] += string_stats['fuzzy']
-                            string_count['translated'] += string_stats['translated']
-                            string_count['untranslated'] += string_stats['untranslated']
+                            string_count[
+                                'translated'] += string_stats['translated']
+                            string_count[
+                                'untranslated'] += string_stats['untranslated']
                             string_count['total'] += string_stats['total']
 
                         # Properties files
@@ -251,7 +255,8 @@ def main():
                                     'scripts', 'properties_compare.py')
                                 string_stats_json = subprocess.check_output(
                                     [compare_script,
-                                     os.path.join(product_folder, reference_locale, source_file),
+                                     os.path.join(
+                                         product_folder, reference_locale, source_file),
                                      locale_file_name
                                      ],
                                     stderr=subprocess.STDOUT,
@@ -266,12 +271,16 @@ def main():
                                 error_record['status'] = True
                                 string_count['total'] = 0
                                 complete = False
-                                error_record['message'] = 'Error extracting data'
+                                error_record[
+                                    'message'] = 'Error extracting data'
 
-                            string_stats = json.load(StringIO(string_stats_json))
-                            string_count['identical'] += string_stats['identical']
+                            string_stats = json.load(
+                                StringIO(string_stats_json))
+                            string_count[
+                                'identical'] += string_stats['identical']
                             string_count['missing'] += string_stats['missing']
-                            string_count['translated'] += string_stats['translated']
+                            string_count[
+                                'translated'] += string_stats['translated']
                             string_count['total'] += string_stats['total']
 
                         # Xliff files
@@ -297,12 +306,17 @@ def main():
                                 error_record['status'] = True
                                 string_count['total'] = 0
                                 complete = False
-                                error_record['message'] = 'Error extracting data'
-                            string_stats = json.load(StringIO(string_stats_json))
-                            string_count['identical'] += string_stats['identical']
+                                error_record[
+                                    'message'] = 'Error extracting data'
+                            string_stats = json.load(
+                                StringIO(string_stats_json))
+                            string_count[
+                                'identical'] += string_stats['identical']
                             string_count['missing'] += string_stats['missing']
-                            string_count['translated'] += string_stats['translated']
-                            string_count['untranslated'] += string_stats['untranslated']
+                            string_count[
+                                'translated'] += string_stats['translated']
+                            string_count[
+                                'untranslated'] += string_stats['untranslated']
                             string_count['total'] += string_stats['total']
                             if string_stats['errors'] != '':
                                 # For XLIFF I might have errors but still display
