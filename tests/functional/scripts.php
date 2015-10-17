@@ -109,8 +109,8 @@ $compare_results[] = compare_json(
 
 // Test .properties files
 $script_name = SCRIPTS . 'properties_compare.py';
-$source_file = TESTFILES . 'properties/en';
-$target_file = TESTFILES . 'properties/fr';
+$source_file = TESTFILES . 'properties/en/test.properties';
+$target_file = TESTFILES . 'properties/fr/test.properties';
 
 echo "\nTesting .properties file...\n";
 $compare_results[] = compare_json(

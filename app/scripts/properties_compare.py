@@ -33,8 +33,8 @@ import silme.format
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('source_path', help="Path to source files")
-    parser.add_argument('locale_path', help="Path to localized files")
+    parser.add_argument('source_file', help="Path to source files")
+    parser.add_argument('locale_file', help="Path to localized files")
     args = parser.parse_args()
 
     translated = 0
@@ -44,28 +44,27 @@ def main():
 
     try:
         silme.format.Manager.register('properties')
-        rcs_client_source = silme.io.Manager.get('file')
-        l10n_package_source = rcs_client_source.get_package(
-            args.source_path, object_type='entitylist')
-        rcs_client_locale = silme.io.Manager.get('file')
-        l10n_package_locale = rcs_client_locale.get_package(
-            args.locale_path, object_type='entitylist')
+        ioclient = silme.io.Manager.get('file')
+        entities_source = ioclient.get_entitylist(args.source_file)
+        entities_locale = ioclient.get_entitylist(args.locale_file)
 
-        source_entities = {}
-        for item in l10n_package_source:
-            if type(item[1]) is not silme.core.structure.Blob:
-                for entity in item[1]:
-                    source_entities[entity] = item[1][entity].get_value()
+        # Store reference strings
+        source_strings = {}
+        for entity in entities_source:
+            source_strings[entity] = entities_source[entity].get_value()
 
-        for item in l10n_package_locale:
-            if type(item[1]) is not silme.core.structure.Blob:
-                for entity in source_entities:
-                    if entity in item[1]:
-                        translated += 1
-                        if source_entities[entity] == item[1][entity].get_value():
-                            identical += 1
-                    else:
-                        missing += 1
+        # Store translations
+        locale_strings = {}
+        for entity in entities_locale:
+            locale_strings[entity] = entities_locale[entity].get_value()
+
+        for entity in source_strings:
+            if entity in locale_strings:
+                translated += 1
+                if source_strings[entity] == locale_strings[entity]:
+                    identical += 1
+            else:
+                missing += 1
     except Exception as e:
         print e
         sys.exit(1)

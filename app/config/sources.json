@@ -7,8 +7,11 @@
         "repository_name": "affiliates",
         "repository_type": "svn",
         "repository_url": "http://svn.mozilla.org/projects/l10n-misc/trunk/affiliates/",
-        "source_file": "LC_MESSAGES/messages.po",
-        "source_type": "gettext"
+        "source_files": [
+            "LC_MESSAGES/messages.po"
+        ],
+        "source_type": "gettext",
+        "underscore_locales": true
     },
     "commbadge": {
         "displayed_name": "Marketplace CommBadge",
@@ -18,30 +21,26 @@
         "repository_name": "commbadge",
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla/commbadge",
-        "source_file": "LC_MESSAGES/messages.po",
-        "source_type": "gettext"
+        "source_files": [
+            "LC_MESSAGES/messages.po"
+        ],
+        "source_type": "gettext",
+        "underscore_locales": true
     },
     "findmydevice-client": {
-        "displayed_name": "Find My Device (client)",
+        "displayed_name": "Find My Device",
         "excluded_folders": [],
         "locale_folder": "locale",
         "product_name": "findmydevice-client",
         "repository_name": "FindMyDevice-l10n",
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla-services/FindMyDevice-l10n",
-        "source_file": "LC_MESSAGES/client.po",
-        "source_type": "gettext"
-    },
-    "findmydevice-server": {
-        "displayed_name": "Find My Device (server)",
-        "excluded_folders": [],
-        "locale_folder": "locale",
-        "product_name": "findmydevice-server",
-        "repository_name": "FindMyDevice-l10n",
-        "repository_type": "git",
-        "repository_url": "https://github.com/mozilla-services/FindMyDevice-l10n",
-        "source_file": "LC_MESSAGES/server.po",
-        "source_type": "gettext"
+        "source_files": [
+            "LC_MESSAGES/client.po",
+            "LC_MESSAGES/server.po"
+        ],
+        "source_type": "gettext",
+        "underscore_locales": true
     },
     "firefox-ios": {
         "displayed_name": "Firefox for iOS",
@@ -51,8 +50,11 @@
         "repository_name": "firefox-ios",
         "repository_type": "svn",
         "repository_url": "http://svn.mozilla.org/projects/l10n-misc/trunk/firefox-ios/",
-        "source_file": "firefox-ios.xliff",
-        "source_type": "xliff"
+        "source_files": [
+            "firefox-ios.xliff"
+        ],
+        "source_type": "xliff",
+        "underscore_locales": false
     },
     "fireplace": {
         "displayed_name": "Marketplace Fireplace",
@@ -62,10 +64,30 @@
         "repository_name": "fireplace",
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla/fireplace",
-        "source_file": "LC_MESSAGES/messages.po",
-        "source_type": "gettext"
+        "source_files": [
+            "LC_MESSAGES/messages.po"
+        ],
+        "source_type": "gettext",
+        "underscore_locales": true
     },
-    "fxaccount-client-l10n": {
+    "fundraising": {
+        "displayed_name": "Fundraising",
+        "excluded_folders": [],
+        "locale_folder": "locales",
+        "product_name": "fundraising",
+        "repository_name": "donate.mozilla.org",
+        "repository_type": "git",
+        "repository_url": "https://github.com/mozilla/donate.mozilla.org",
+        "source_files": [
+            "assets.properties",
+            "email.properties",
+            "messages.properties",
+            "snippet.properties"
+        ],
+        "source_type": "properties",
+        "underscore_locales": false
+    },
+    "fxaccount-l10n": {
         "displayed_name": "Firefox Account (client)",
         "excluded_folders": [
             "linux",
@@ -73,27 +95,16 @@
             "win32"
         ],
         "locale_folder": "locale",
-        "product_name": "fxaccount-client-l10n",
+        "product_name": "fxaccount-l10n",
         "repository_name": "fxa-content-server-l10n",
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla/fxa-content-server-l10n",
-        "source_file": "LC_MESSAGES/client.po",
-        "source_type": "gettext"
-    },
-    "fxaccount-server-l10n": {
-        "displayed_name": "Firefox Account (server)",
-        "excluded_folders": [
-            "linux",
-            "osx",
-            "win32"
+        "source_files": [
+            "LC_MESSAGES/client.po",
+            "LC_MESSAGES/server.po"
         ],
-        "locale_folder": "locale",
-        "product_name": "fxaccount-server-l10n",
-        "repository_name": "fxa-content-server-l10n",
-        "repository_type": "git",
-        "repository_url": "https://github.com/mozilla/fxa-content-server-l10n",
-        "source_file": "LC_MESSAGES/server.po",
-        "source_type": "gettext"
+        "source_type": "gettext",
+        "underscore_locales": true
     },
     "input": {
         "displayed_name": "Firefox Input",
@@ -103,8 +114,11 @@
         "repository_name": "input",
         "repository_type": "svn",
         "repository_url": "http://svn.mozilla.org/projects/l10n-misc/trunk/input/",
-        "source_file": "LC_MESSAGES/django.po",
-        "source_type": "gettext"
+        "source_files": [
+            "LC_MESSAGES/django.po"
+        ],
+        "source_type": "gettext",
+        "underscore_locales": true
     },
     "loop-client-l10n": {
         "displayed_name": "Firefox Hello",
@@ -114,8 +128,11 @@
         "repository_name": "loop-client-l10n",
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla/loop-client-l10n",
-        "source_file": "loop.properties",
-        "source_type": "properties"
+        "source_files": [
+            "loop.properties"
+        ],
+        "source_type": "properties",
+        "underscore_locales": true
     },
     "marketplace-stats": {
         "displayed_name": "Marketplace Stats",
@@ -125,8 +142,11 @@
         "repository_name": "marketplace-stats",
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla/marketplace-stats",
-        "source_file": "LC_MESSAGES/messages.po",
-        "source_type": "gettext"
+        "source_files": [
+            "LC_MESSAGES/messages.po"
+        ],
+        "source_type": "gettext",
+        "underscore_locales": true
     },
     "masterfirefoxos-l10n": {
         "displayed_name": "Master Firefox OS",
@@ -136,8 +156,11 @@
         "repository_name": "masterfirefoxos-l10n",
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla/masterfirefoxos-l10n",
-        "source_file": "LC_MESSAGES/django.po",
-        "source_type": "gettext"
+        "source_files": [
+            "LC_MESSAGES/django.po"
+        ],
+        "source_type": "gettext",
+        "underscore_locales": true
     },
     "mdn": {
         "displayed_name": "MDN",
@@ -151,23 +174,12 @@
         "repository_name": "mdn",
         "repository_type": "svn",
         "repository_url": "http://svn.mozilla.org/projects/mdn/trunk/",
-        "source_file": "LC_MESSAGES/messages.po",
-        "source_type": "gettext"
-    },
-    "mdn-promote": {
-        "displayed_name": "MDN (promote-mdn.po)",
-        "excluded_folders": [
-            "x_testing",
-            "xx_testing",
-            "en_US"
+        "source_files": [
+            "LC_MESSAGES/messages.po",
+            "LC_MESSAGES/promote-mdn.po"
         ],
-        "locale_folder": "locale",
-        "product_name": "mdn-promote",
-        "repository_name": "mdn",
-        "repository_type": "svn",
-        "repository_url": "http://svn.mozilla.org/projects/mdn/trunk/",
-        "source_file": "LC_MESSAGES/promote-mdn.po",
-        "source_type": "gettext"
+        "source_type": "gettext",
+        "underscore_locales": true
     },
     "mozillians": {
         "displayed_name": "Mozillians",
@@ -177,8 +189,11 @@
         "repository_name": "mozillians",
         "repository_type": "svn",
         "repository_url": "http://svn.mozilla.org/projects/l10n-misc/trunk/mozillians/",
-        "source_file": "LC_MESSAGES/messages.po",
-        "source_type": "gettext"
+        "source_files": [
+            "LC_MESSAGES/messages.po"
+        ],
+        "source_type": "gettext",
+        "underscore_locales": true
     },
     "olympia": {
         "displayed_name": "AMO (olympia)",
@@ -188,19 +203,12 @@
         "repository_name": "olympia",
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla/olympia",
-        "source_file": "LC_MESSAGES/messages.po",
-        "source_type": "gettext"
-    },
-    "olympia-js": {
-        "displayed_name": "AMO (olympia js)",
-        "excluded_folders": [],
-        "locale_folder": "locale",
-        "product_name": "olympia-js",
-        "repository_name": "olympia",
-        "repository_type": "git",
-        "repository_url": "https://github.com/mozilla/olympia",
-        "source_file": "LC_MESSAGES/javascript.po",
-        "source_type": "gettext"
+        "source_files": [
+            "LC_MESSAGES/javascript.po",
+            "LC_MESSAGES/messages.po"
+        ],
+        "source_type": "gettext",
+        "underscore_locales": true
     },
     "payments-l10n": {
         "displayed_name": "Firefox Accounts Payments",
@@ -210,8 +218,11 @@
         "repository_name": "payments-l10n",
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla/payments-l10n",
-        "source_file": "LC_MESSAGES/payments-ui.po",
-        "source_type": "gettext"
+        "source_files": [
+            "LC_MESSAGES/payments-ui.po"
+        ],
+        "source_type": "gettext",
+        "underscore_locales": true
     },
     "socialapi-directory": {
         "displayed_name": "Social API Directory",
@@ -221,8 +232,11 @@
         "repository_name": "socialapi-directory",
         "repository_type": "git",
         "repository_url": "https://github.com/mixedpuppy/socialapi-directory",
-        "source_file": "LC_MESSAGES/messages.po",
-        "source_type": "gettext"
+        "source_files": [
+            "LC_MESSAGES/messages.po"
+        ],
+        "source_type": "gettext",
+        "underscore_locales": true
     },
     "spartacus": {
         "displayed_name": "Marketplace Spartacus",
@@ -232,8 +246,11 @@
         "repository_name": "spartacus",
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla/spartacus",
-        "source_file": "LC_MESSAGES/messages.po",
-        "source_type": "gettext"
+        "source_files": [
+            "LC_MESSAGES/messages.po"
+        ],
+        "source_type": "gettext",
+        "underscore_locales": true
     },
     "sumo": {
         "displayed_name": "SUMO",
@@ -246,36 +263,13 @@
         "repository_name": "sumo",
         "repository_type": "svn",
         "repository_url": "http://svn.mozilla.org/projects/sumo/locales",
-        "source_file": "LC_MESSAGES/messages.po",
-        "source_type": "gettext"
-    },
-    "sumo-buddyup": {
-        "displayed_name": "SUMO (buddyup)",
-        "excluded_folders": [
-            "compendia",
-            "xx_testing"
+        "source_files": [
+            "LC_MESSAGES/buddyup.po",
+            "LC_MESSAGES/messages.po",
+            "LC_MESSAGES/yaocho.po"
         ],
-        "locale_folder": "",
-        "product_name": "sumo-buddyup",
-        "repository_name": "sumo",
-        "repository_type": "svn",
-        "repository_url": "http://svn.mozilla.org/projects/sumo/locales",
-        "source_file": "LC_MESSAGES/buddyup.po",
-        "source_type": "gettext"
-    },
-    "sumo-yaocho": {
-        "displayed_name": "SUMO (yaocho)",
-        "excluded_folders": [
-            "compendia",
-            "xx_testing"
-        ],
-        "locale_folder": "",
-        "product_name": "sumo-yaocho",
-        "repository_name": "sumo",
-        "repository_type": "svn",
-        "repository_url": "http://svn.mozilla.org/projects/sumo/locales",
-        "source_file": "LC_MESSAGES/yaocho.po",
-        "source_type": "gettext"
+        "source_type": "gettext",
+        "underscore_locales": true
     },
     "zamboni": {
         "displayed_name": "Marketplace",
@@ -285,19 +279,12 @@
         "repository_name": "zamboni",
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla/zamboni",
-        "source_file": "LC_MESSAGES/messages.po",
-        "source_type": "gettext"
-    },
-    "zamboni-js": {
-        "displayed_name": "Marketplace (js)",
-        "excluded_folders": [],
-        "locale_folder": "locale",
-        "product_name": "zamboni-js",
-        "repository_name": "zamboni",
-        "repository_type": "git",
-        "repository_url": "https://github.com/mozilla/zamboni",
-        "source_file": "LC_MESSAGES/javascript.po",
-        "source_type": "gettext"
+        "source_files": [
+            "LC_MESSAGES/javascript.po",
+            "LC_MESSAGES/messages.po"
+        ],
+        "source_type": "gettext",
+        "underscore_locales": true
     },
     "zippy": {
         "displayed_name": "Marketplace Zippy",
@@ -307,7 +294,10 @@
         "repository_name": "zippy",
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla/zippy",
-        "source_file": "LC_MESSAGES/messages.po",
-        "source_type": "gettext"
+        "source_files": [
+            "LC_MESSAGES/messages.po"
+        ],
+        "source_type": "gettext",
+        "underscore_locales": true
     }
 }
