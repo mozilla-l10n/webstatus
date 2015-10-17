@@ -88,7 +88,7 @@
         "underscore_locales": false
     },
     "fxaccount-l10n": {
-        "displayed_name": "Firefox Account (client)",
+        "displayed_name": "Firefox Account",
         "excluded_folders": [
             "linux",
             "osx",
