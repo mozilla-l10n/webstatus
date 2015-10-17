@@ -50,7 +50,7 @@ class Webstatus extends atoum\test
             'repository_name'  => 'affiliates',
             'repository_type'  => 'svn',
             'repository_url'   => 'http://svn.mozilla.org/projects/l10n-misc/trunk/affiliates/',
-            'source_file'      => 'LC_MESSAGES/messages.po',
+            'source_files'     => ['LC_MESSAGES/messages.po'],
             'source_type'      => 'xliff',
         ];
 

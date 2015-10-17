@@ -183,6 +183,7 @@ def main():
             string_missing = 0
             string_translated = 0
             string_untranslated = 0
+            string_total = 0
             percentage = 0
 
             pretty_locale = locale.replace('_', '-')
@@ -193,136 +194,136 @@ def main():
             else:
                 source_type = 'gettext'
 
-            file_path = os.path.join(locale_folder, product['source_file'])
-            if os.path.isfile(file_path):
-                # Gettext files: check if msgfmt returns errors
-                if source_type == 'gettext':
+            for source_file in product['source_files']:
+                locale_file_name = os.path.join(locale_folder, source_file)
+                if os.path.isfile(locale_file_name):
+                    # Gettext files: check if msgfmt returns errors
+                    if source_type == 'gettext':
+                        try:
+                            translation_status = subprocess.check_output(
+                                ['msgfmt', '--statistics', locale_file_name,
+                                 '-o', os.devnull],
+                                stderr=subprocess.STDOUT,
+                                shell=False)
+                            print translation_status
+                        except:
+                            print 'Error running msgfmt on %s\n' % locale
+                            error_status = True
+                            string_total = 0
+                            complete = False
+                            error_message = 'Error extracting data with msgfmt --statistics'
+                else:
+                    print 'File does not exist'
+                    error_status = True
+                    error_message = 'File does not exist.\n'
+
+                if not error_status:
                     try:
-                        translation_status = subprocess.check_output(
-                            ['msgfmt', '--statistics', file_path,
-                             '-o', os.devnull],
-                            stderr=subprocess.STDOUT,
-                            shell=False)
-                        print translation_status
-                    except:
-                        print 'Error running msgfmt on %s\n' % locale
+                        # Gettext files
+                        if source_type == 'gettext':
+                            po_stats_cmd = os.path.join(
+                                webstatus_path, 'app', 'scripts', 'postats.sh')
+                            string_stats_json = subprocess.check_output(
+                                [po_stats_cmd, locale_file_name],
+                                stderr=subprocess.STDOUT,
+                                shell=False)
+                            string_stats = json.load(StringIO(string_stats_json))
+                            string_fuzzy += string_stats['fuzzy']
+                            string_translated += string_stats['translated']
+                            string_untranslated += string_stats['untranslated']
+                            string_total += string_stats['total']
+
+                        # Properties files
+                        if source_type == 'properties':
+                            try:
+                                compare_script = os.path.join(
+                                    webstatus_path, 'app',
+                                    'scripts', 'properties_compare.py')
+                                string_stats_json = subprocess.check_output(
+                                    [compare_script,
+                                     os.path.join(product_folder, 'en_US'),
+                                     os.path.join(product_folder, locale)
+                                     ],
+                                    stderr=subprocess.STDOUT,
+                                    shell=False)
+                            except subprocess.CalledProcessError as error:
+                                error_status = True
+                                string_total = 0
+                                complete = False
+                                error_message = 'Error extracting data: %s' % str(
+                                    error.output)
+                            except:
+                                error_status = True
+                                string_total = 0
+                                complete = False
+                                error_message = 'Error extracting data'
+                            string_stats = json.load(StringIO(string_stats_json))
+                            string_identical += string_stats['identical']
+                            string_missing += string_stats['missing']
+                            string_translated += string_stats['translated']
+                            string_total += string_stats['total']
+
+                        # Xliff files
+                        if source_type == 'xliff':
+                            try:
+                                compare_script = os.path.join(
+                                    webstatus_path, 'app',
+                                    'scripts', 'xliff_stats.py')
+                                reference_file_name = os.path.join(
+                                    product_folder, 'en-US', source_file)
+                                string_stats_json = subprocess.check_output(
+                                    [compare_script, reference_file_name,
+                                     locale_file_name],
+                                    stderr=subprocess.STDOUT,
+                                    shell=False)
+                            except subprocess.CalledProcessError as error:
+                                error_status = True
+                                string_total = 0
+                                complete = False
+                                error_message = 'Error extracting data: %s' % str(
+                                    error.output)
+                            except:
+                                error_status = True
+                                string_total = 0
+                                complete = False
+                                error_message = 'Error extracting data'
+                            string_stats = json.load(StringIO(string_stats_json))
+                            string_identical += string_stats['identical']
+                            string_missing += string_stats['missing']
+                            string_translated += string_stats['translated']
+                            string_untranslated += string_stats['untranslated']
+                            string_total += string_stats['total']
+                            if string_stats['errors'] != '':
+                                # For XLIFF I might have errors but still display
+                                # the available stats
+                                error_status = True
+                                complete = False
+                                error_message = 'Error extracting data: %s' % \
+                                    string_stats['errors']
+                    except Exception as e:
+                        print e
                         error_status = True
                         string_total = 0
                         complete = False
-                        error_message = 'Error extracting data with msgfmt --statistics'
+                        error_message = 'Error extracting stats'
+
+            # Run stats
+            if (string_fuzzy == 0 and
+                    string_missing == 0 and
+                    string_untranslated == 0):
+                # No untranslated, missing or fuzzy strings, locale is
+                # complete
+                complete = True
+                percentage = 100
+            elif (string_missing > 0):
+                complete = False
+                percentage = round(
+                    (float(string_translated) / (string_total + string_missing)) * 100, 1)
             else:
-                print 'File does not exist'
-                error_status = True
-                error_message = 'File does not exist.\n'
-
-            if not error_status:
-                try:
-                    # Gettext files
-                    if source_type == 'gettext':
-                        po_stats_cmd = os.path.join(
-                            webstatus_path, 'app', 'scripts', 'postats.sh')
-                        string_stats_json = subprocess.check_output(
-                            [po_stats_cmd, file_path],
-                            stderr=subprocess.STDOUT,
-                            shell=False)
-                        string_stats = json.load(StringIO(string_stats_json))
-                        string_fuzzy = string_stats['fuzzy']
-                        string_translated = string_stats['translated']
-                        string_untranslated = string_stats['untranslated']
-                        string_total = string_stats['total']
-
-                    # Properties files
-                    if source_type == 'properties':
-                        try:
-                            compare_script = os.path.join(
-                                webstatus_path, 'app',
-                                'scripts', 'properties_compare.py')
-                            string_stats_json = subprocess.check_output(
-                                [compare_script,
-                                 os.path.join(product_folder, 'en_US'),
-                                 os.path.join(product_folder, locale)
-                                 ],
-                                stderr=subprocess.STDOUT,
-                                shell=False)
-                        except subprocess.CalledProcessError as error:
-                            error_status = True
-                            string_total = 0
-                            complete = False
-                            error_message = 'Error extracting data: %s' % str(
-                                error.output)
-                        except:
-                            error_status = True
-                            string_total = 0
-                            complete = False
-                            error_message = 'Error extracting data'
-                        string_stats = json.load(StringIO(string_stats_json))
-                        string_identical = string_stats['identical']
-                        string_missing = string_stats['missing']
-                        string_translated = string_stats['translated']
-                        string_total = string_stats['total']
-
-                    # Xliff files
-                    if source_type == 'xliff':
-                        try:
-                            compare_script = os.path.join(
-                                webstatus_path, 'app',
-                                'scripts', 'xliff_stats.py')
-                            reference_file_name = os.path.join(
-                                product_folder, 'en-US', product['source_file'])
-                            locale_file_name = os.path.join(
-                                product_folder, locale, product['source_file'])
-                            string_stats_json = subprocess.check_output(
-                                [compare_script, reference_file_name,
-                                 locale_file_name],
-                                stderr=subprocess.STDOUT,
-                                shell=False)
-                        except subprocess.CalledProcessError as error:
-                            error_status = True
-                            string_total = 0
-                            complete = False
-                            error_message = 'Error extracting data: %s' % str(
-                                error.output)
-                        except:
-                            error_status = True
-                            string_total = 0
-                            complete = False
-                            error_message = 'Error extracting data'
-                        string_stats = json.load(StringIO(string_stats_json))
-                        string_identical = string_stats['identical']
-                        string_missing = string_stats['missing']
-                        string_translated = string_stats['translated']
-                        string_untranslated = string_stats['untranslated']
-                        string_total = string_stats['total']
-                        if string_stats['errors'] != '':
-                            # For XLIFF I might have errors but still display
-                            # the available stats
-                            error_status = True
-                            complete = False
-                            error_message = 'Error extracting data: %s' % \
-                                string_stats['errors']
-                    # Run stats
-                    if (string_fuzzy == 0 and
-                            string_missing == 0 and
-                            string_untranslated == 0):
-                        # No untranslated, missing or fuzzy strings, locale is
-                        # complete
-                        complete = True
-                        percentage = 100
-                    elif (string_missing > 0):
-                        complete = False
-                        percentage = round(
-                            (float(string_translated) / (string_total + string_missing)) * 100, 1)
-                    else:
-                        # Need to calculate the level of completeness
-                        complete = False
-                        percentage = round(
-                            (float(string_translated) / string_total) * 100, 1)
-                except Exception as e:
-                    print e
-                    error_status = True
-                    string_total = 0
-                    complete = False
-                    error_message = 'Error extracting stats'
+                # Need to calculate the level of completeness
+                complete = False
+                percentage = round(
+                    (float(string_translated) / string_total) * 100, 1)
 
             status_record = {
                 'complete': complete,

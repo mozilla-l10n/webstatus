@@ -7,7 +7,9 @@
         "repository_name": "affiliates",
         "repository_type": "svn",
         "repository_url": "http://svn.mozilla.org/projects/l10n-misc/trunk/affiliates/",
-        "source_file": "LC_MESSAGES/messages.po",
+        "source_files": [
+            "LC_MESSAGES/messages.po"
+        ],
         "source_type": "xliff"
     },
     "browserid": {
@@ -18,7 +20,9 @@
         "repository_name": "browserid",
         "repository_type": "svn",
         "repository_url": "http://svn.mozilla.org/projects/l10n-misc/trunk/browserid/",
-        "source_file": "LC_MESSAGES/messages.po",
+        "source_files": [
+            "LC_MESSAGES/messages.po"
+        ],
         "source_type": "properties"
     },
     "zippy": {
@@ -29,7 +33,9 @@
         "repository_name": "zippy",
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla/zippy",
-        "source_file": "LC_MESSAGES/messages.po",
+        "source_files": [
+            "LC_MESSAGES/messages.po"
+        ],
         "source_type": "gettext"
     }
 }
