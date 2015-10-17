@@ -10,7 +10,8 @@
         "source_files": [
             "LC_MESSAGES/messages.po"
         ],
-        "source_type": "gettext"
+        "source_type": "gettext",
+        "underscore_locales": true
     },
     "commbadge": {
         "displayed_name": "Marketplace CommBadge",
@@ -23,7 +24,8 @@
         "source_files": [
             "LC_MESSAGES/messages.po"
         ],
-        "source_type": "gettext"
+        "source_type": "gettext",
+        "underscore_locales": true
     },
     "findmydevice-client": {
         "displayed_name": "Find My Device",
@@ -37,7 +39,8 @@
             "LC_MESSAGES/client.po",
             "LC_MESSAGES/server.po"
         ],
-        "source_type": "gettext"
+        "source_type": "gettext",
+        "underscore_locales": true
     },
     "firefox-ios": {
         "displayed_name": "Firefox for iOS",
@@ -50,7 +53,8 @@
         "source_files": [
             "firefox-ios.xliff"
         ],
-        "source_type": "xliff"
+        "source_type": "xliff",
+        "underscore_locales": false
     },
     "fireplace": {
         "displayed_name": "Marketplace Fireplace",
@@ -63,7 +67,8 @@
         "source_files": [
             "LC_MESSAGES/messages.po"
         ],
-        "source_type": "gettext"
+        "source_type": "gettext",
+        "underscore_locales": true
     },
     "fundraising": {
         "displayed_name": "Fundraising",
@@ -79,7 +84,8 @@
             "messages.properties",
             "snippet.properties"
         ],
-        "source_type": "properties"
+        "source_type": "properties",
+        "underscore_locales": false
     },
     "fxaccount-l10n": {
         "displayed_name": "Firefox Account (client)",
@@ -97,7 +103,8 @@
             "LC_MESSAGES/client.po",
             "LC_MESSAGES/server.po"
         ],
-        "source_type": "gettext"
+        "source_type": "gettext",
+        "underscore_locales": true
     },
     "input": {
         "displayed_name": "Firefox Input",
@@ -110,7 +117,8 @@
         "source_files": [
             "LC_MESSAGES/django.po"
         ],
-        "source_type": "gettext"
+        "source_type": "gettext",
+        "underscore_locales": true
     },
     "loop-client-l10n": {
         "displayed_name": "Firefox Hello",
@@ -123,7 +131,8 @@
         "source_files": [
             "loop.properties"
         ],
-        "source_type": "properties"
+        "source_type": "properties",
+        "underscore_locales": true
     },
     "marketplace-stats": {
         "displayed_name": "Marketplace Stats",
@@ -136,7 +145,8 @@
         "source_files": [
             "LC_MESSAGES/messages.po"
         ],
-        "source_type": "gettext"
+        "source_type": "gettext",
+        "underscore_locales": true
     },
     "masterfirefoxos-l10n": {
         "displayed_name": "Master Firefox OS",
@@ -149,7 +159,8 @@
         "source_files": [
             "LC_MESSAGES/django.po"
         ],
-        "source_type": "gettext"
+        "source_type": "gettext",
+        "underscore_locales": true
     },
     "mdn": {
         "displayed_name": "MDN",
@@ -167,7 +178,8 @@
             "LC_MESSAGES/messages.po",
             "LC_MESSAGES/promote-mdn.po"
         ],
-        "source_type": "gettext"
+        "source_type": "gettext",
+        "underscore_locales": true
     },
     "mozillians": {
         "displayed_name": "Mozillians",
@@ -180,7 +192,8 @@
         "source_files": [
             "LC_MESSAGES/messages.po"
         ],
-        "source_type": "gettext"
+        "source_type": "gettext",
+        "underscore_locales": true
     },
     "olympia": {
         "displayed_name": "AMO (olympia)",
@@ -194,7 +207,8 @@
             "LC_MESSAGES/javascript.po",
             "LC_MESSAGES/messages.po"
         ],
-        "source_type": "gettext"
+        "source_type": "gettext",
+        "underscore_locales": true
     },
     "payments-l10n": {
         "displayed_name": "Firefox Accounts Payments",
@@ -207,7 +221,8 @@
         "source_files": [
             "LC_MESSAGES/payments-ui.po"
         ],
-        "source_type": "gettext"
+        "source_type": "gettext",
+        "underscore_locales": true
     },
     "socialapi-directory": {
         "displayed_name": "Social API Directory",
@@ -220,7 +235,8 @@
         "source_files": [
             "LC_MESSAGES/messages.po"
         ],
-        "source_type": "gettext"
+        "source_type": "gettext",
+        "underscore_locales": true
     },
     "spartacus": {
         "displayed_name": "Marketplace Spartacus",
@@ -233,7 +249,8 @@
         "source_files": [
             "LC_MESSAGES/messages.po"
         ],
-        "source_type": "gettext"
+        "source_type": "gettext",
+        "underscore_locales": true
     },
     "sumo": {
         "displayed_name": "SUMO",
@@ -251,7 +268,8 @@
             "LC_MESSAGES/messages.po",
             "LC_MESSAGES/yaocho.po"
         ],
-        "source_type": "gettext"
+        "source_type": "gettext",
+        "underscore_locales": true
     },
     "zamboni": {
         "displayed_name": "Marketplace",
@@ -265,7 +283,8 @@
             "LC_MESSAGES/javascript.po",
             "LC_MESSAGES/messages.po"
         ],
-        "source_type": "gettext"
+        "source_type": "gettext",
+        "underscore_locales": true
     },
     "zippy": {
         "displayed_name": "Marketplace Zippy",
@@ -278,6 +297,7 @@
         "source_files": [
             "LC_MESSAGES/messages.po"
         ],
-        "source_type": "gettext"
+        "source_type": "gettext",
+        "underscore_locales": true
     }
 }

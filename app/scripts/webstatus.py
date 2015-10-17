@@ -163,6 +163,12 @@ def main():
             product['repository_name'],
             product['locale_folder']
         )
+
+        if product['underscore_locales']:
+            reference_locale = 'en_US'
+        else:
+            reference_locale = 'en-US'
+
         for locale in sorted(os.listdir(product_folder)):
             locale_folder = os.path.join(product_folder, locale)
 
@@ -245,7 +251,7 @@ def main():
                                     'scripts', 'properties_compare.py')
                                 string_stats_json = subprocess.check_output(
                                     [compare_script,
-                                     os.path.join(product_folder, 'en_US'),
+                                     os.path.join(product_folder, reference_locale),
                                      os.path.join(product_folder, locale)
                                      ],
                                     stderr=subprocess.STDOUT,
@@ -274,7 +280,7 @@ def main():
                                     webstatus_path, 'app',
                                     'scripts', 'xliff_stats.py')
                                 reference_file_name = os.path.join(
-                                    product_folder, 'en-US', source_file)
+                                    product_folder, reference_locale, source_file)
                                 string_stats_json = subprocess.check_output(
                                     [compare_script, reference_file_name,
                                      locale_file_name],
