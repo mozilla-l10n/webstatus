@@ -164,19 +164,14 @@
     },
     "mdn": {
         "displayed_name": "MDN",
-        "excluded_folders": [
-            "x_testing",
-            "xx_testing",
-            "en_US"
-        ],
+        "excluded_folders": ["en_US"],
         "locale_folder": "locale",
         "product_name": "mdn",
-        "repository_name": "mdn",
-        "repository_type": "svn",
-        "repository_url": "http://svn.mozilla.org/projects/mdn/trunk/",
+        "repository_name": "kuma",
+        "repository_type": "git",
+        "repository_url": "https://github.com/mozilla/kuma/",
         "source_files": [
-            "LC_MESSAGES/messages.po",
-            "LC_MESSAGES/promote-mdn.po"
+            "LC_MESSAGES/messages.po"
         ],
         "source_type": "gettext",
         "underscore_locales": true
