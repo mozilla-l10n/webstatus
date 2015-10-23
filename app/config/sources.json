@@ -172,7 +172,8 @@
         "repository_url": "https://github.com/mozilla/kuma/",
         "source_files": [
             "LC_MESSAGES/django.po",
-            "LC_MESSAGES/javascript.po"
+            "LC_MESSAGES/javascript.po",
+            "LC_MESSAGES/promote-mdn.po"
         ],
         "source_type": "gettext",
         "underscore_locales": true
