@@ -1,13 +1,7 @@
 <?php
 namespace Webstatus;
 
-$webstatus = new Webstatus($webstatus_file, $sources_file);
-$available_locales = $webstatus->getAvailableLocales();
-$available_products =  $webstatus->getAvailableProducts();
-$webstatus_data = $webstatus->getWebstatusData();
-
 // Check if the requested product is available
-$requested_product = Utils::getQueryParam('product', '');
 if (! isset($available_products[$requested_product])) {
     // Product is not available
     http_response_code(400);

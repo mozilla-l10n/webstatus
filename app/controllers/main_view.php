@@ -1,15 +1,6 @@
 <?php
 namespace Webstatus;
 
-$webstatus = new Webstatus($webstatus_file, $sources_file);
-$available_locales = $webstatus->getAvailableLocales();
-$available_products =  $webstatus->getAvailableProducts();
-$webstatus_data = $webstatus->getWebstatusData();
-$webstatus_metadata = $webstatus->getWebstatusMetadata();
-
-$requested_locale = Utils::getQueryParam('locale', Utils::detectLocale($available_locales));
-$requested_product = Utils::getQueryParam('product', 'all');
-
 // Check if the requested product is supported
 $supported_product = (in_array($requested_product, array_keys($available_products))) ? true : false;
 if ($supported_product) {
@@ -126,21 +117,11 @@ if ($requested_locale == 'All locales') {
     $url_history .= "locale={$requested_locale}";
 }
 
-$last_update_local = date('Y-m-d H:i e (O)', strtotime($webstatus_metadata['creation_date']));
-
-// Add specific CSS and JS files
-array_push($default_css, 'main.css');
-array_push($default_js, 'main.js');
-
 print $twig->render(
     $template_name,
     [
-        'assets_folder'      => $assets_folder,
         'available_locales'  => $available_locales,
         'available_products' => $available_products,
-        'default_css'        => $default_css,
-        'default_js'         => $default_js,
-        'last_update'        => $last_update_local,
         'page_title'         => $page_title,
         'product_name'       => $product_name,
         'requested_locale'   => $requested_locale,

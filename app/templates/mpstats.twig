@@ -1,5 +1,13 @@
 {% extends 'default.twig' %}
 
+{% block extra_css %}
+    <link rel="stylesheet" href="{{ assets_folder }}/css/mpstats.css" type="text/css" media="all" />
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{{ assets_folder }}/js/mpstats.js"></script>
+{% endblock %}
+
 {% block body %}
     <h1>Marketplace Projects l10n Overview</h1>
     <table id="main_table" class="table table-bordered table-condensed">

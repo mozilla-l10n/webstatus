@@ -112,7 +112,7 @@ def main():
     check_environment(webstatus_path, settings)
 
     storage_path = settings['storage_path']
-    json_filename = os.path.join(webstatus_path, 'web_status.json')
+    json_filename = os.path.join(webstatus_path, 'web', 'web_status.json')
 
     # Read products from external Json file
     sources_file = open(os.path.join(

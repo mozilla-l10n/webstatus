@@ -1,25 +1,29 @@
 <?php
+namespace Webstatus;
 
 date_default_timezone_set('Europe/Paris');
 require __DIR__ . '/../../vendor/autoload.php';
 
-$root_folder = __DIR__ . '/../..';
+$root_folder = realpath(__DIR__ . '/../..');
 
 $config_file = "{$root_folder}/app/config/config.ini";
 $sources_file = "{$root_folder}/app/config/sources.json";
-$webstatus_file = "{$root_folder}/web_status.json";
+$webstatus_file = "{$root_folder}/web/web_status.json";
 
 // Store server config
 $server_config = parse_ini_file($config_file);
 $webroot_folder = isset($server_config['web_folder']) ? trim($server_config['web_folder']) : '';
-$assets_folder = $webroot_folder != '' ? "/{$webroot_folder}/web/assets" : '/web/assets';
+$assets_folder = $webroot_folder != '' ? "/{$webroot_folder}/assets" : '/assets';
 
-// Default CSS and JS files
-$default_css = ['bootstrap.min.css', 'bootstrap-theme.min.css', 'dataTables.bootstrap.css'];
-$default_js = ['jquery-1.11.3.min.js', 'jquery.dataTables.min.js', 'dataTables.bootstrap.min.js'];
+// Base variables
+$webstatus = new Webstatus($webstatus_file, $sources_file);
+$available_locales = $webstatus->getAvailableLocales();
+$available_products =  $webstatus->getAvailableProducts();
+$webstatus_data = $webstatus->getWebstatusData();
+$webstatus_metadata = $webstatus->getWebstatusMetadata();
+$requested_locale = Utils::getQueryParam('locale', Utils::detectLocale($available_locales));
+$requested_product = Utils::getQueryParam('product', 'all');
 
-$templates = new Twig_Loader_Filesystem(__DIR__ . '/../templates/');
-$options = [
-    'cache' => false,
-];
-$twig = new Twig_Environment($templates, $options);
+$last_update_local = date('Y-m-d H:i e (O)', strtotime($webstatus_metadata['creation_date']));
+
+require_once __DIR__ . '/twig_init.php';
