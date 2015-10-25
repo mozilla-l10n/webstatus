@@ -32,6 +32,8 @@ class Webstatus
     {
         if (file_exists($json_file)) {
             $this->webstatus_data = json_decode(file_get_contents($json_file), true);
+        } else {
+            die('JSON file is missing. Have you run app/scripts/webstatus.py at least once?');
         }
         if (file_exists($sources_file)) {
             $this->sources_data = json_decode(file_get_contents($sources_file), true);

@@ -3,4 +3,4 @@ app/libraries/silme
 composer.lock
 composer.phar
 vendor/
-web_status.json
+web/web_status.json

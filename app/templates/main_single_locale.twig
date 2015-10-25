@@ -1,5 +1,13 @@
 {% extends 'default.twig' %}
 
+{% block extra_css %}
+    <link rel="stylesheet" href="{{ assets_folder }}/css/main.css" type="text/css" media="all" />
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{{ assets_folder }}/js/main.js"></script>
+{% endblock %}
+
 {% block body %}
     {% include 'selectors.twig' %}
     {% if supported == false %}

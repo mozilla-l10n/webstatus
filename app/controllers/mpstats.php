@@ -1,12 +1,6 @@
 <?php
 namespace Webstatus;
 
-$webstatus = new Webstatus($webstatus_file, $sources_file);
-$available_locales = $webstatus->getAvailableLocales();
-$available_products =  $webstatus->getAvailableProducts();
-$webstatus_data = $webstatus->getWebstatusData();
-$webstatus_metadata = $webstatus->getWebstatusMetadata();
-
 $products = [
     'fireplace'         => '',
     'spartacus'         => '',
@@ -70,19 +64,9 @@ foreach ($locales as $locale) {
     array_push($table_rows, $row);
 }
 
-$last_update_local = date('Y-m-d H:i e (O)', strtotime($webstatus_metadata['creation_date']));
-
-// Add specific CSS and JS files
-array_push($default_css, 'mpstats.css');
-array_push($default_js, 'mpstats.js');
-
 print $twig->render(
     'mpstats.twig',
     [
-        'assets_folder'   => $assets_folder,
-        'default_css'     => $default_css,
-        'default_js'      => $default_js,
-        'last_update'     => $last_update_local,
         'page_title'      => 'Marketplace Status',
         'products_number' => count($products),
         'table_header'    => $table_header,

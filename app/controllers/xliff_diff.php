@@ -1,15 +1,10 @@
 <?php
 namespace Webstatus;
 
-$webstatus = new Webstatus($webstatus_file, $sources_file);
-$available_locales = $webstatus->getAvailableLocales();
-$available_products =  $webstatus->getAvailableProducts();
-
 $html_output = '';
 $error_messages = '';
 
 // Read locale and product
-$requested_locale = Utils::getQueryParam('locale', '');
 if ($requested_locale != '') {
     if (! in_array($requested_locale, $available_locales)) {
         $error_messages .= "<p>This locale is not supported.</p>\n";
@@ -18,7 +13,6 @@ if ($requested_locale != '') {
     $error_messages .= "<p>No locale requested.</p>\n";
 }
 
-$requested_product = Utils::getQueryParam('product', '');
 if ($requested_product != '') {
     if (! isset($available_products[$requested_product])) {
         $error_messages .= "<p>This product is not supported.</p>\n";
@@ -85,11 +79,8 @@ if ($error_messages != '') {
 }
 
 print $twig->render(
-    'default.twig',
+    'xliff_diff.twig',
     [
-        'assets_folder' => $assets_folder,
-        'default_css'   => $default_css,
-        'default_js'    => [], // Don't need JS files for this view
         'content_title' => $content_title,
         'main_content'  => $main_content,
         'page_title'    => 'Web Status - XLIFF Comparison',
