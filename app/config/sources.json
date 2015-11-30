@@ -74,7 +74,7 @@
         "displayed_name": "Fundraising",
         "excluded_folders": [
             "en-AU", "en-CA", "en-IN", "hi", "ka",
-            "lo", "mi-IN", "mr-IN", "te-IN"
+            "lo", "ml-IN", "mr-IN", "te-IN"
         ],
         "locale_folder": "locales",
         "product_name": "fundraising",
