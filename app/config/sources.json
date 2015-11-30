@@ -72,7 +72,10 @@
     },
     "fundraising": {
         "displayed_name": "Fundraising",
-        "excluded_folders": [],
+        "excluded_folders": [
+            "en-AU", "en-CA", "en-IN", "hi", "ka",
+            "lo", "mi-IN", "mr-IN", "te-IN"
+        ],
         "locale_folder": "locales",
         "product_name": "fundraising",
         "repository_name": "donate.mozilla.org",
