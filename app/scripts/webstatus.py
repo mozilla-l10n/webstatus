@@ -207,6 +207,7 @@ def main():
             for source_file in product['source_files']:
                 locale_file_name = os.path.join(locale_folder, source_file)
                 if os.path.isfile(locale_file_name):
+                    missing_file = False
                     # Gettext files: check if msgfmt returns errors
                     if source_type == 'gettext':
                         try:
@@ -224,9 +225,12 @@ def main():
                             error_record[
                                 'message'] = 'Error extracting data with msgfmt --statistics'
                 else:
-                    print 'File does not exist'
-                    error_record['status'] = True
-                    error_record['message'] = 'File does not exist.\n'
+                    missing_file = True
+                    if not source_type == 'properties':
+                        # I want to stop for all source types except properties
+                        print 'File does not exist'
+                        error_record['status'] = True
+                        error_record['message'] = 'File does not exist.\n'
 
                 if not error_record['status']:
                     try:
@@ -253,10 +257,15 @@ def main():
                                 compare_script = os.path.join(
                                     webstatus_path, 'app',
                                     'scripts', 'properties_compare.py')
+                                source_file_name = os.path.join(
+                                    product_folder, reference_locale, source_file)
+                                # If the localized file is missing, compare
+                                # source against itself
+                                if missing_file:
+                                    locale_file_name = source_file_name
                                 string_stats_json = subprocess.check_output(
                                     [compare_script,
-                                     os.path.join(
-                                         product_folder, reference_locale, source_file),
+                                     source_file_name,
                                      locale_file_name
                                      ],
                                     stderr=subprocess.STDOUT,
@@ -276,12 +285,20 @@ def main():
 
                             string_stats = json.load(
                                 StringIO(string_stats_json))
-                            string_count[
-                                'identical'] += string_stats['identical']
-                            string_count['missing'] += string_stats['missing']
-                            string_count[
-                                'translated'] += string_stats['translated']
-                            string_count['total'] += string_stats['total']
+                            if not missing_file:
+                                string_count[
+                                    'identical'] += string_stats['identical']
+                                string_count[
+                                    'missing'] += string_stats['missing']
+                                string_count[
+                                    'translated'] += string_stats['translated']
+                                string_count['total'] += string_stats['total']
+                            else:
+                                # File is missing, count all the strings as
+                                # missing
+                                string_count[
+                                    'missing'] += string_stats['total']
+                                string_count['total'] += string_stats['total']
 
                         # Xliff files
                         if source_type == 'xliff':
