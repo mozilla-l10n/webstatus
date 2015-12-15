@@ -265,8 +265,8 @@
         "repository_url": "http://svn.mozilla.org/projects/sumo/locales",
         "source_files": [
             "LC_MESSAGES/buddyup.po",
-            "LC_MESSAGES/javascript.po",
-            "LC_MESSAGES/messages.po",
+            "LC_MESSAGES/django.po",
+            "LC_MESSAGES/djangojs.po",
             "LC_MESSAGES/yaocho.po"
         ],
         "source_type": "gettext",
