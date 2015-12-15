@@ -11,7 +11,13 @@
     </p>
 </div>
 
-<h1>Current product: {{ product_name }}</h1>
+<h1>Current product:
+    {% if repository_url == '' %}
+        {{ product_name }}
+    {% else %}
+        <a href="{{ repository_url }}">{{ product_name }}</a>
+    {% endif %}
+</h1>
 <div class="list product_list">
     <p>Display localization status for a specific project<br/>
     {% for product_code, product in available_products %}

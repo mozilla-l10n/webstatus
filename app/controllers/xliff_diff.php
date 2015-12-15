@@ -79,7 +79,7 @@ if ($error_messages != '') {
 }
 
 print $twig->render(
-    'xliff_diff.twig',
+    'default.twig',
     [
         'content_title' => $content_title,
         'main_content'  => $main_content,
