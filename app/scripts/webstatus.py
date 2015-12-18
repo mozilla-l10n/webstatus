@@ -3,6 +3,7 @@
 import argparse
 import json
 import os
+import shutil
 import subprocess
 import sys
 from ConfigParser import SafeConfigParser
@@ -55,6 +56,26 @@ def check_environment(main_path, settings):
         sys.exit(0)
 
 
+def check_repo(storage_path, product):
+    repo_path = os.path.join(storage_path, product['repository_name'])
+    if os.path.isdir(repo_path):
+        # Folder exists, check if it's actually a repository
+        if os.path.isdir(os.path.join(repo_path, '.' + product['repository_type'])):
+            # Update existing repository
+            os.chdir(repo_path)
+            update_repo(product)
+        else:
+            # Delete folder and re-clone
+            print 'Removing folder (not a valid repository): %s' % repo_path
+            shutil.rmtree(repo_path)
+            os.chdir(storage_path)
+            clone_repo(product)
+    else:
+        # Repository doesn't exist, need to clone it
+        os.chdir(storage_path)
+        clone_repo(product)
+
+
 def update_repo(product):
     print 'Updating repository: %s' % product['displayed_name']
     if (product['repository_type'] == 'git'):
@@ -85,7 +106,8 @@ def clone_repo(product):
         # git repository
         try:
             cmd_status = subprocess.check_output(
-                ['git', 'clone', '--depth', '1', product['repository_url']],
+                ['git', 'clone', '--depth', '1',
+                 product['repository_url'], product['repository_name']],
                 stderr=subprocess.STDOUT,
                 shell=False)
             print cmd_status
@@ -96,7 +118,7 @@ def clone_repo(product):
         try:
             cmd_status = subprocess.check_output(
                 ['svn', 'co',
-                 product['repository_url'], product['product_name']],
+                 product['repository_url'], product['repository_name']],
                 stderr=subprocess.STDOUT,
                 shell=False)
             print cmd_status
@@ -144,15 +166,7 @@ def main():
 
     # Clone/update repositories
     for key, product in products.iteritems():
-        repo_path = os.path.join(storage_path, product['repository_name'])
-        if os.path.isdir(repo_path):
-            # Repo exists, just need to update it
-            os.chdir(repo_path)
-            update_repo(product)
-        else:
-            # Repo doesn't exist, need to clone it
-            os.chdir(storage_path)
-            clone_repo(product)
+        check_repo(storage_path, product)
 
     ignored_folders = ['.svn', '.git', '.g(config_file)it', 'dbg',
                        'db_LB', 'ja_JP_mac', 'templates',

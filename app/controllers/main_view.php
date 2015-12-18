@@ -45,6 +45,7 @@ if ($requested_product != 'all') {
     $page_title = "Web Status – {$product_name}";
     $supported = $supported_product;
     $template_name = 'main_single_product.twig';
+    $repository_url = $available_products[$requested_product]['repository_url'];
 
     if ($supported) {
         $template_meta['complete_locales'] = 0;
@@ -82,6 +83,7 @@ if ($requested_product != 'all') {
     $page_title = "Web Status – {$requested_locale}";
     $supported = in_array($requested_locale, $available_locales);
     $template_name = 'main_single_locale.twig';
+    $repository_url = '';
 
     if ($supported) {
         foreach ($available_products as $product_id => $product) {
@@ -125,6 +127,7 @@ print $twig->render(
         'page_title'         => $page_title,
         'product_name'       => $product_name,
         'requested_locale'   => $requested_locale,
+        'repository_url'     => $repository_url,
         'supported'          => $supported,
         'table_rows'         => $table_rows,
         'template_meta'      => $template_meta,
