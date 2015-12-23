@@ -46,7 +46,7 @@ class Webstatus extends atoum\test
             'displayed_name'   => 'Firefox Affiliates',
             'excluded_folders' => [],
             'locale_folder'    => 'locale',
-            'product_name'     => 'affiliates',
+            'product_id'       => 'affiliates',
             'repository_name'  => 'affiliates',
             'repository_type'  => 'svn',
             'repository_url'   => 'http://svn.mozilla.org/projects/l10n-misc/trunk/affiliates/',

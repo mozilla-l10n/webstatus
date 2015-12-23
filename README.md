@@ -80,7 +80,7 @@ Example at: https://l10n.mozilla-community.org/~flod/webstatus/web_status.json
         "excluded_folders": array of extra folders to exclude,
         "locale_folder": empty if folders for each locale are in the root of the repo
                          path if they're in a subfolder (typically 'locale'),
-        "product_name": webproject_id,
+        "product_id": webproject_id,
         "repository_name": name of the local folder used to store the clone,
         "repository_type": type of repository (svn, git),
         "repository_url": URL of the repository,

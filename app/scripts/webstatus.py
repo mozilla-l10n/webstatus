@@ -399,9 +399,9 @@ def main():
             # If the pretty_locale key does not exist, I create it
             if pretty_locale not in json_data['locales']:
                 json_data['locales'][pretty_locale] = {}
-            json_data['locales'][pretty_locale][product['product_name']] = {}
+            json_data['locales'][pretty_locale][product['product_id']] = {}
             json_data['locales'][pretty_locale][
-                product['product_name']] = status_record
+                product['product_id']] = status_record
 
     # Record some metadata, including the list of tracked products
     json_data['metadata'] = {
