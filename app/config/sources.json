@@ -27,7 +27,7 @@
         "source_type": "gettext",
         "underscore_locales": true
     },
-    "findmydevice-client": {
+    "findmydevice": {
         "displayed_name": "Find My Device",
         "excluded_folders": [],
         "locale_folder": "locale",
@@ -90,7 +90,7 @@
         "source_type": "properties",
         "underscore_locales": false
     },
-    "fxaccount-l10n": {
+    "fxaccount": {
         "displayed_name": "Firefox Account",
         "excluded_folders": [
             "linux",
