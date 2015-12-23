@@ -1,18 +1,4 @@
 {
-    "affiliates": {
-        "displayed_name": "Firefox Affiliates",
-        "excluded_folders": [],
-        "locale_folder": "locale",
-        "product_id": "affiliates",
-        "repository_name": "affiliates",
-        "repository_type": "svn",
-        "repository_url": "http://svn.mozilla.org/projects/l10n-misc/trunk/affiliates/",
-        "source_files": [
-            "LC_MESSAGES/messages.po"
-        ],
-        "source_type": "gettext",
-        "underscore_locales": true
-    },
     "commbadge": {
         "displayed_name": "Marketplace CommBadge",
         "excluded_folders": [],
@@ -147,20 +133,6 @@
         "repository_url": "https://github.com/mozilla/marketplace-stats",
         "source_files": [
             "LC_MESSAGES/messages.po"
-        ],
-        "source_type": "gettext",
-        "underscore_locales": true
-    },
-    "masterfirefoxos-l10n": {
-        "displayed_name": "Master Firefox OS",
-        "excluded_folders": ["xx"],
-        "locale_folder": "",
-        "product_id": "masterfirefoxos-l10n",
-        "repository_name": "masterfirefoxos-l10n",
-        "repository_type": "git",
-        "repository_url": "https://github.com/mozilla/masterfirefoxos-l10n",
-        "source_files": [
-            "LC_MESSAGES/django.po"
         ],
         "source_type": "gettext",
         "underscore_locales": true
