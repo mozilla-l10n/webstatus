@@ -11,23 +11,34 @@ namespace Webstatus;
  */
 class Utils
 {
-    /**
-     * Read GET parameter if set, or fallback
+    /*
+     * Return text to display in console with background color
+     * (useful for tests)
      *
-     * @param string $param    GET parameter to check
-     * @param string $fallback Optional fallback value
+     * @param   string  $text  Message to display
+     * @param   string  $color Background color
      *
-     * @return string Parameter value, or fallback
+     * @return  string         String with ASCII codes to display colored
+     *                         background.
      */
-    public static function getQueryParam($param, $fallback = '')
+    public static function colorizeOutput($text, $color)
     {
-        if (isset($_GET[$param])) {
-            return is_bool($fallback)
-                   ? true
-                   : self::secureText($_GET[$param]);
+        switch ($color) {
+            case 'green':
+                // White on green
+                $output = "\033[1;37m\033[42m{$text}";
+                break;
+            case 'red':
+                // White on red
+                $output = "\033[1;37m\033[41m{$text}";
+                break;
+            default:
+                $output = $text;
+                break;
         }
+        $output .=  "\033[0m\n";
 
-        return $fallback;
+        return $output;
     }
 
     /**
@@ -76,6 +87,25 @@ class Utils
         } else {
             return $intersection[0];
         }
+    }
+
+    /**
+     * Read GET parameter if set, or fallback
+     *
+     * @param string $param    GET parameter to check
+     * @param string $fallback Optional fallback value
+     *
+     * @return string Parameter value, or fallback
+     */
+    public static function getQueryParam($param, $fallback = '')
+    {
+        if (isset($_GET[$param])) {
+            return is_bool($fallback)
+                   ? true
+                   : self::secureText($_GET[$param]);
+        }
+
+        return $fallback;
     }
 
     /**
