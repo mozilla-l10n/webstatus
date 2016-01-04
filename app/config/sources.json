@@ -253,8 +253,8 @@
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla/zamboni",
         "source_files": [
-            "LC_MESSAGES/javascript.po",
-            "LC_MESSAGES/messages.po"
+            "LC_MESSAGES/django.po",
+            "LC_MESSAGES/djangojs.po"
         ],
         "source_type": "gettext",
         "underscore_locales": true
