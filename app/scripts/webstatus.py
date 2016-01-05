@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import argparse
+import glob
 import json
 import os
 import shutil
@@ -56,14 +57,15 @@ def check_environment(main_path, settings):
         sys.exit(0)
 
 
-def check_repo(storage_path, product):
+def check_repo(storage_path, product, noupdate):
     repo_path = os.path.join(storage_path, product['repository_name'])
     if os.path.isdir(repo_path):
         # Folder exists, check if it's actually a repository
         if os.path.isdir(os.path.join(repo_path, '.' + product['repository_type'])):
-            # Update existing repository
-            os.chdir(repo_path)
-            update_repo(product)
+            # Update existing repository if needed
+            if not noupdate:
+                os.chdir(repo_path)
+                update_repo(product)
         else:
             # Delete folder and re-clone
             print 'Removing folder (not a valid repository): %s' % repo_path
@@ -146,6 +148,10 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('product_code', nargs='?',
                         help='Code of the single product to update')
+    parser.add_argument('--pretty', action='store_true',
+                        help='export indented and more readable JSON')
+    parser.add_argument('--noupdate', action='store_true',
+                        help='don\'t update local repositories (but clone them if missing)')
     args = parser.parse_args()
 
     if (args.product_code):
@@ -166,7 +172,7 @@ def main():
 
     # Clone/update repositories
     for key, product in products.iteritems():
-        check_repo(storage_path, product)
+        check_repo(storage_path, product, args.noupdate)
 
     ignored_folders = ['.svn', '.git', '.g(config_file)it', 'dbg',
                        'db_LB', 'ja_JP_mac', 'templates',
@@ -219,8 +225,20 @@ def main():
             else:
                 source_type = 'gettext'
 
+            # Get a list of all files, since source_files can include a
+            # wildcard
+            source_files = []
             for source_file in product['source_files']:
-                locale_file_name = os.path.join(locale_folder, source_file)
+                source_files += glob.glob(os.path.join(locale_folder,
+                                                       source_file))
+
+            for locale_file_name in source_files:
+                if reference_locale != '':
+                    reference_file_name = locale_file_name.replace(
+                        '/%s/' % locale,
+                        '/%s/' % reference_locale
+                    )
+
                 if os.path.isfile(locale_file_name):
                     missing_file = False
                     # Gettext files: check if msgfmt returns errors
@@ -272,15 +290,13 @@ def main():
                                 compare_script = os.path.join(
                                     webstatus_path, 'app',
                                     'scripts', 'properties_compare.py')
-                                source_file_name = os.path.join(
-                                    product_folder, reference_locale, source_file)
                                 # If the localized file is missing, compare
                                 # source against itself
                                 if missing_file:
-                                    locale_file_name = source_file_name
+                                    locale_file_name = reference_file_name
                                 string_stats_json = subprocess.check_output(
                                     [compare_script,
-                                     source_file_name,
+                                     reference_file_name,
                                      locale_file_name
                                      ],
                                     stderr=subprocess.STDOUT,
@@ -321,8 +337,6 @@ def main():
                                 compare_script = os.path.join(
                                     webstatus_path, 'app',
                                     'scripts', 'xliff_stats.py')
-                                reference_file_name = os.path.join(
-                                    product_folder, reference_locale, source_file)
                                 string_stats_json = subprocess.check_output(
                                     [compare_script, reference_file_name,
                                      locale_file_name],
@@ -419,7 +433,10 @@ def main():
 
     # Write back updated json data
     json_file = open(json_filename, 'w')
-    json_file.write(json.dumps(json_data, sort_keys=True))
+    if args.pretty:
+        json_file.write(json.dumps(json_data, sort_keys=True, indent=2))
+    else:
+        json_file.write(json.dumps(json_data, sort_keys=True))
     json_file.close()
 
 if __name__ == '__main__':

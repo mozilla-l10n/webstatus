@@ -8,7 +8,7 @@
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla/commbadge",
         "source_files": [
-            "LC_MESSAGES/messages.po"
+            "LC_MESSAGES/*.po"
         ],
         "source_type": "gettext"
     },
@@ -21,8 +21,7 @@
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla-services/FindMyDevice-l10n",
         "source_files": [
-            "LC_MESSAGES/client.po",
-            "LC_MESSAGES/server.po"
+            "LC_MESSAGES/*.po"
         ],
         "source_type": "gettext"
     },
@@ -36,7 +35,7 @@
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla-l10n/firefoxios-l10n",
         "source_files": [
-            "firefox-ios.xliff"
+            "*.xliff"
         ],
         "source_type": "xliff"
     },
@@ -49,7 +48,7 @@
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla/fireplace",
         "source_files": [
-            "LC_MESSAGES/messages.po"
+            "LC_MESSAGES/*.po"
         ],
         "source_type": "gettext"
     },
@@ -66,10 +65,7 @@
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla/donate.mozilla.org",
         "source_files": [
-            "assets.properties",
-            "email.properties",
-            "messages.properties",
-            "snippet.properties"
+            "*.properties"
         ],
         "source_type": "properties"
     },
@@ -86,8 +82,7 @@
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla/fxa-content-server-l10n",
         "source_files": [
-            "LC_MESSAGES/client.po",
-            "LC_MESSAGES/server.po"
+            "LC_MESSAGES/*.po"
         ],
         "source_type": "gettext"
     },
@@ -100,7 +95,7 @@
         "repository_type": "svn",
         "repository_url": "http://svn.mozilla.org/projects/l10n-misc/trunk/input/",
         "source_files": [
-            "LC_MESSAGES/django.po"
+            "LC_MESSAGES/*.po"
         ],
         "source_type": "gettext"
     },
@@ -114,7 +109,7 @@
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla/loop-client-l10n",
         "source_files": [
-            "loop.properties"
+            "*.properties"
         ],
         "source_type": "properties"
     },
@@ -127,7 +122,7 @@
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla/marketplace-stats",
         "source_files": [
-            "LC_MESSAGES/messages.po"
+            "LC_MESSAGES/*.po"
         ],
         "source_type": "gettext"
     },
@@ -140,9 +135,7 @@
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla/kuma/",
         "source_files": [
-            "LC_MESSAGES/django.po",
-            "LC_MESSAGES/javascript.po",
-            "LC_MESSAGES/promote-mdn.po"
+            "LC_MESSAGES/*.po"
         ],
         "source_type": "gettext"
     },
@@ -155,7 +148,7 @@
         "repository_type": "svn",
         "repository_url": "http://svn.mozilla.org/projects/l10n-misc/trunk/mozillians/",
         "source_files": [
-            "LC_MESSAGES/messages.po"
+            "LC_MESSAGES/*.po"
         ],
         "source_type": "gettext"
     },
@@ -168,8 +161,7 @@
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla/olympia",
         "source_files": [
-            "LC_MESSAGES/javascript.po",
-            "LC_MESSAGES/messages.po"
+            "LC_MESSAGES/*.po"
         ],
         "source_type": "gettext"
     },
@@ -182,7 +174,7 @@
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla/payments-l10n",
         "source_files": [
-            "LC_MESSAGES/payments-ui.po"
+            "LC_MESSAGES/*.po"
         ],
         "source_type": "gettext"
     },
@@ -195,7 +187,7 @@
         "repository_type": "git",
         "repository_url": "https://github.com/mixedpuppy/socialapi-directory",
         "source_files": [
-            "LC_MESSAGES/messages.po"
+            "LC_MESSAGES/*.po"
         ],
         "source_type": "gettext"
     },
@@ -208,7 +200,7 @@
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla/spartacus",
         "source_files": [
-            "LC_MESSAGES/messages.po"
+            "LC_MESSAGES/*.po"
         ],
         "source_type": "gettext"
     },
@@ -224,10 +216,7 @@
         "repository_type": "svn",
         "repository_url": "http://svn.mozilla.org/projects/sumo/locales",
         "source_files": [
-            "LC_MESSAGES/buddyup.po",
-            "LC_MESSAGES/django.po",
-            "LC_MESSAGES/djangojs.po",
-            "LC_MESSAGES/yaocho.po"
+            "LC_MESSAGES/*.po"
         ],
         "source_type": "gettext"
     },
@@ -240,8 +229,7 @@
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla/zamboni",
         "source_files": [
-            "LC_MESSAGES/django.po",
-            "LC_MESSAGES/djangojs.po"
+            "LC_MESSAGES/*.po"
         ],
         "source_type": "gettext"
     },
@@ -254,7 +242,7 @@
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla/zippy",
         "source_files": [
-            "LC_MESSAGES/messages.po"
+            "LC_MESSAGES/*.po"
         ],
         "source_type": "gettext"
     }
