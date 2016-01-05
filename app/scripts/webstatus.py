@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 import argparse
+import glob
 import json
 import os
 import shutil
@@ -221,8 +222,18 @@ def main():
             else:
                 source_type = 'gettext'
 
+            # Get a list of all files, since source_files can include a wildcard
+            source_files = []
             for source_file in product['source_files']:
-                locale_file_name = os.path.join(locale_folder, source_file)
+                source_files += glob.glob(os.path.join(locale_folder, source_file))
+
+            for locale_file_name in source_files:
+                if reference_locale != '':
+                    reference_file_name = locale_file_name.replace(
+                        '/%s/' % locale,
+                        '/%s/' % reference_locale
+                    )
+
                 if os.path.isfile(locale_file_name):
                     missing_file = False
                     # Gettext files: check if msgfmt returns errors
@@ -274,15 +285,13 @@ def main():
                                 compare_script = os.path.join(
                                     webstatus_path, 'app',
                                     'scripts', 'properties_compare.py')
-                                source_file_name = os.path.join(
-                                    product_folder, reference_locale, source_file)
                                 # If the localized file is missing, compare
                                 # source against itself
                                 if missing_file:
-                                    locale_file_name = source_file_name
+                                    locale_file_name = reference_file_name
                                 string_stats_json = subprocess.check_output(
                                     [compare_script,
-                                     source_file_name,
+                                     reference_file_name,
                                      locale_file_name
                                      ],
                                     stderr=subprocess.STDOUT,
@@ -323,8 +332,6 @@ def main():
                                 compare_script = os.path.join(
                                     webstatus_path, 'app',
                                     'scripts', 'xliff_stats.py')
-                                reference_file_name = os.path.join(
-                                    product_folder, reference_locale, source_file)
                                 string_stats_json = subprocess.check_output(
                                     [compare_script, reference_file_name,
                                      locale_file_name],
