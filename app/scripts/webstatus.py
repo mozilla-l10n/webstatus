@@ -146,6 +146,8 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('product_code', nargs='?',
                         help='Code of the single product to update')
+    parser.add_argument('--pretty', action='store_true',
+                   help='export indented and more readable JSON')
     args = parser.parse_args()
 
     if (args.product_code):
@@ -419,7 +421,10 @@ def main():
 
     # Write back updated json data
     json_file = open(json_filename, 'w')
-    json_file.write(json.dumps(json_data, sort_keys=True))
+    if args.pretty:
+        json_file.write(json.dumps(json_data, sort_keys=True, indent=2))
+    else:
+        json_file.write(json.dumps(json_data, sort_keys=True))
     json_file.close()
 
 if __name__ == '__main__':
