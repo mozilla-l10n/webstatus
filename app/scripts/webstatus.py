@@ -178,10 +178,11 @@ def main():
             product['locale_folder']
         )
 
-        if product['underscore_locales']:
-            reference_locale = 'en_US'
+        # Reference locale is not defined in gettext projects
+        if 'reference_locale' in product:
+            reference_locale = product['reference_locale']
         else:
-            reference_locale = 'en-US'
+            reference_locale = ''
 
         for locale in sorted(os.listdir(product_folder)):
             locale_folder = os.path.join(product_folder, locale)

@@ -10,8 +10,7 @@
         "source_files": [
             "LC_MESSAGES/messages.po"
         ],
-        "source_type": "gettext",
-        "underscore_locales": true
+        "source_type": "gettext"
     },
     "findmydevice": {
         "displayed_name": "Find My Device",
@@ -25,22 +24,21 @@
             "LC_MESSAGES/client.po",
             "LC_MESSAGES/server.po"
         ],
-        "source_type": "gettext",
-        "underscore_locales": true
+        "source_type": "gettext"
     },
     "firefox-ios": {
         "displayed_name": "Firefox for iOS",
         "excluded_folders": [],
         "locale_folder": "",
         "product_id": "firefox-ios",
+        "reference_locale": "en-US",
         "repository_name": "firefox-ios",
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla-l10n/firefoxios-l10n",
         "source_files": [
             "firefox-ios.xliff"
         ],
-        "source_type": "xliff",
-        "underscore_locales": false
+        "source_type": "xliff"
     },
     "fireplace": {
         "displayed_name": "Marketplace Fireplace",
@@ -53,8 +51,7 @@
         "source_files": [
             "LC_MESSAGES/messages.po"
         ],
-        "source_type": "gettext",
-        "underscore_locales": true
+        "source_type": "gettext"
     },
     "fundraising": {
         "displayed_name": "Fundraising",
@@ -64,6 +61,7 @@
         ],
         "locale_folder": "locales",
         "product_id": "fundraising",
+        "reference_locale": "en-US",
         "repository_name": "donate.mozilla.org",
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla/donate.mozilla.org",
@@ -73,8 +71,7 @@
             "messages.properties",
             "snippet.properties"
         ],
-        "source_type": "properties",
-        "underscore_locales": false
+        "source_type": "properties"
     },
     "fxaccount": {
         "displayed_name": "Firefox Account",
@@ -92,8 +89,7 @@
             "LC_MESSAGES/client.po",
             "LC_MESSAGES/server.po"
         ],
-        "source_type": "gettext",
-        "underscore_locales": true
+        "source_type": "gettext"
     },
     "input": {
         "displayed_name": "Firefox Input",
@@ -106,22 +102,21 @@
         "source_files": [
             "LC_MESSAGES/django.po"
         ],
-        "source_type": "gettext",
-        "underscore_locales": true
+        "source_type": "gettext"
     },
     "loop-client-l10n": {
         "displayed_name": "Firefox Hello",
         "excluded_folders": [],
         "locale_folder": "l10n",
         "product_id": "loop-client-l10n",
+        "reference_locale": "templates",
         "repository_name": "loop-client-l10n",
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla/loop-client-l10n",
         "source_files": [
             "loop.properties"
         ],
-        "source_type": "properties",
-        "underscore_locales": true
+        "source_type": "properties"
     },
     "marketplace-stats": {
         "displayed_name": "Marketplace Stats",
@@ -134,8 +129,7 @@
         "source_files": [
             "LC_MESSAGES/messages.po"
         ],
-        "source_type": "gettext",
-        "underscore_locales": true
+        "source_type": "gettext"
     },
     "mdn": {
         "displayed_name": "MDN",
@@ -150,8 +144,7 @@
             "LC_MESSAGES/javascript.po",
             "LC_MESSAGES/promote-mdn.po"
         ],
-        "source_type": "gettext",
-        "underscore_locales": true
+        "source_type": "gettext"
     },
     "mozillians": {
         "displayed_name": "Mozillians",
@@ -164,8 +157,7 @@
         "source_files": [
             "LC_MESSAGES/messages.po"
         ],
-        "source_type": "gettext",
-        "underscore_locales": true
+        "source_type": "gettext"
     },
     "olympia": {
         "displayed_name": "AMO (olympia)",
@@ -179,8 +171,7 @@
             "LC_MESSAGES/javascript.po",
             "LC_MESSAGES/messages.po"
         ],
-        "source_type": "gettext",
-        "underscore_locales": true
+        "source_type": "gettext"
     },
     "payments-l10n": {
         "displayed_name": "Firefox Accounts Payments",
@@ -193,8 +184,7 @@
         "source_files": [
             "LC_MESSAGES/payments-ui.po"
         ],
-        "source_type": "gettext",
-        "underscore_locales": true
+        "source_type": "gettext"
     },
     "socialapi-directory": {
         "displayed_name": "Social API Directory",
@@ -207,8 +197,7 @@
         "source_files": [
             "LC_MESSAGES/messages.po"
         ],
-        "source_type": "gettext",
-        "underscore_locales": true
+        "source_type": "gettext"
     },
     "spartacus": {
         "displayed_name": "Marketplace Spartacus",
@@ -221,8 +210,7 @@
         "source_files": [
             "LC_MESSAGES/messages.po"
         ],
-        "source_type": "gettext",
-        "underscore_locales": true
+        "source_type": "gettext"
     },
     "sumo": {
         "displayed_name": "SUMO",
@@ -241,8 +229,7 @@
             "LC_MESSAGES/djangojs.po",
             "LC_MESSAGES/yaocho.po"
         ],
-        "source_type": "gettext",
-        "underscore_locales": true
+        "source_type": "gettext"
     },
     "zamboni": {
         "displayed_name": "Marketplace",
@@ -256,8 +243,7 @@
             "LC_MESSAGES/django.po",
             "LC_MESSAGES/djangojs.po"
         ],
-        "source_type": "gettext",
-        "underscore_locales": true
+        "source_type": "gettext"
     },
     "zippy": {
         "displayed_name": "Marketplace Zippy",
@@ -270,7 +256,6 @@
         "source_files": [
             "LC_MESSAGES/messages.po"
         ],
-        "source_type": "gettext",
-        "underscore_locales": true
+        "source_type": "gettext"
     }
 }
