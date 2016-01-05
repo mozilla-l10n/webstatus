@@ -57,14 +57,15 @@ def check_environment(main_path, settings):
         sys.exit(0)
 
 
-def check_repo(storage_path, product):
+def check_repo(storage_path, product, noupdate):
     repo_path = os.path.join(storage_path, product['repository_name'])
     if os.path.isdir(repo_path):
         # Folder exists, check if it's actually a repository
         if os.path.isdir(os.path.join(repo_path, '.' + product['repository_type'])):
-            # Update existing repository
-            os.chdir(repo_path)
-            update_repo(product)
+            # Update existing repository if needed
+            if not noupdate:
+                os.chdir(repo_path)
+                update_repo(product)
         else:
             # Delete folder and re-clone
             print 'Removing folder (not a valid repository): %s' % repo_path
@@ -148,7 +149,9 @@ def main():
     parser.add_argument('product_code', nargs='?',
                         help='Code of the single product to update')
     parser.add_argument('--pretty', action='store_true',
-                   help='export indented and more readable JSON')
+                        help='export indented and more readable JSON')
+    parser.add_argument('--noupdate', action='store_true',
+                        help='don\'t update local repositories (but clone them if missing)')
     args = parser.parse_args()
 
     if (args.product_code):
@@ -169,7 +172,7 @@ def main():
 
     # Clone/update repositories
     for key, product in products.iteritems():
-        check_repo(storage_path, product)
+        check_repo(storage_path, product, args.noupdate)
 
     ignored_folders = ['.svn', '.git', '.g(config_file)it', 'dbg',
                        'db_LB', 'ja_JP_mac', 'templates',
@@ -222,10 +225,12 @@ def main():
             else:
                 source_type = 'gettext'
 
-            # Get a list of all files, since source_files can include a wildcard
+            # Get a list of all files, since source_files can include a
+            # wildcard
             source_files = []
             for source_file in product['source_files']:
-                source_files += glob.glob(os.path.join(locale_folder, source_file))
+                source_files += glob.glob(os.path.join(locale_folder,
+                                                       source_file))
 
             for locale_file_name in source_files:
                 if reference_locale != '':
