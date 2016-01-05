@@ -85,7 +85,8 @@ Example at: https://l10n.mozilla-community.org/~flod/webstatus/web_status.json
         "repository_name": name of the local folder used to store the clone,
         "repository_type": type of repository (svn, git),
         "repository_url": URL of the repository,
-        "source_files": array of file names (typically 'LC_MESSAGES/messages.po'),
+        "source_files": array of file names (typically 'LC_MESSAGES/messages.po')
+                        support also wildcards (e.g. '*.properties'),
         "source_type": source type (gettext, properties, xliff)
     },
 ```
