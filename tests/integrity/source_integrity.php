@@ -15,6 +15,15 @@ foreach ($sources_json_data as $product_id => $product_data) {
     }
 }
 
+// Check if reference_locale is defined for non gettext projects
+foreach ($sources_json_data as $product_id => $product_data) {
+    if ($product_data['source_type'] != 'gettext') {
+        if (! isset($product_data['reference_locale'])) {
+            $errors[] = "'reference_locale' is mandatory for non Gettext projects ('{$product_id}')";
+        }
+    }
+}
+
 if (! empty($errors)) {
     echo Utils::colorizeOutput('Detected errors during source integrity checks: ' . count($errors), 'red');
     echo implode("\n", $errors);
