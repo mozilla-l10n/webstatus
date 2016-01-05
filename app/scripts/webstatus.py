@@ -231,6 +231,7 @@ def main():
             for source_file in product['source_files']:
                 source_files += glob.glob(os.path.join(locale_folder,
                                                        source_file))
+            source_files.sort()
 
             for locale_file_name in source_files:
                 if reference_locale != '':
@@ -378,8 +379,14 @@ def main():
                         complete = False
                         error_record['message'] = 'Error extracting stats'
 
-            # Run stats
-            if (string_count['fuzzy'] == 0 and
+            # Calculate stats
+            if (string_count['total'] == 0 and
+                    not error_record['status']):
+                # This locale has 0 strings (it might happen for a project with
+                # .properties files and an empty folder)
+                complete = False
+                percentage = 0
+            elif (string_count['fuzzy'] == 0 and
                     string_count['missing'] == 0 and
                     string_count['untranslated'] == 0):
                 # No untranslated, missing or fuzzy strings, locale is
