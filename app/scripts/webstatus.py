@@ -11,14 +11,61 @@ from ConfigParser import SafeConfigParser
 from StringIO import StringIO
 from datetime import datetime
 
+def analyze_gettext(locale, product_folder, source_files, script_path, string_count, error_record):
+    # Analyze gettext (po) files
+
+    # Get a list of all files in the locale folder, I don't use a
+    # reference file for gettext
+    locale_files = []
+    for source_file in source_files:
+        locale_files += glob.glob(os.path.join(product_folder, locale, source_file))
+    locale_files.sort()
+
+    errors = False
+    for locale_file in locale_files:
+        # Check if msgfmt returns errors
+        try:
+            translation_status = subprocess.check_output(
+                ['msgfmt', '--statistics', locale_file,
+                 '-o', os.devnull],
+                stderr=subprocess.STDOUT,
+                shell=False)
+        except:
+            print 'Error running msgfmt on %s\n' % locale
+            errors = True
+            error_record[
+                'message'] = 'Error extracting data with msgfmt --statistics'
+
+        if not errors:
+            try:
+                po_stats_cmd = os.path.join(script_path, 'postats.sh')
+                string_stats_json = subprocess.check_output(
+                    [po_stats_cmd, locale_file],
+                    stderr=subprocess.STDOUT,
+                    shell=False)
+                script_output = json.load(StringIO(string_stats_json))
+                string_count['fuzzy'] += script_output['fuzzy']
+                string_count['translated'] += script_output['translated']
+                string_count['untranslated'] += script_output['untranslated']
+                string_count['total'] += script_output['total']
+            except Exception as e:
+                print e
+                errors = True
+                error_record['message'] = 'Error extracting stats'
+
+    if errors:
+        error_record['status'] = True
+        complete = False
+
+
 def analyze_xliff(locale, reference_locale, product_folder, source_files, script_path, string_count, error_record):
     # Analyze XLIFF files
 
+    errors = False
     for source_file in source_files:
         # source_file can include wildcards, e.g. *.xliff
         # xliff_stats.py supports wildcards, no need to pass one file
         # at the time.
-        errors = False
         try:
             try:
                 compare_script = os.path.join(script_path, 'xliff_stats.py')
@@ -53,9 +100,10 @@ def analyze_xliff(locale, reference_locale, product_folder, source_files, script
             errors = True
             error_record['message'] = 'Error extracting stats'
 
-        if errors:
-            error_record['status'] = True
-            complete = False
+    if errors:
+        error_record['status'] = True
+        complete = False
+
 
 def check_environment(main_path, settings):
     env_errors = False
@@ -236,6 +284,8 @@ def main():
         else:
             reference_locale = ''
 
+        print "Analyzing: %s" % product['displayed_name']
+
         for locale in sorted(os.listdir(product_folder)):
             locale_folder = os.path.join(product_folder, locale)
 
@@ -247,7 +297,7 @@ def main():
                 continue
 
             pretty_locale = locale.replace('_', '-')
-            print 'Locale: %s' % pretty_locale
+            print pretty_locale,
 
             if 'source_type' in product:
                 source_type = product['source_type']
@@ -276,6 +326,12 @@ def main():
                     product_folder, product['source_files'], script_path,
                     string_count, error_record
                 )
+            elif source_type == 'gettext':
+                analyze_gettext(
+                    locale,
+                    product_folder, product['source_files'], script_path,
+                    string_count, error_record
+                )
             else:
                 # Get a list of all files, since source_files can use wildcards
                 source_files = []
@@ -293,22 +349,6 @@ def main():
 
                     if os.path.isfile(locale_file_name):
                         missing_file = False
-                        # Gettext files: check if msgfmt returns errors
-                        if source_type == 'gettext':
-                            try:
-                                translation_status = subprocess.check_output(
-                                    ['msgfmt', '--statistics', locale_file_name,
-                                     '-o', os.devnull],
-                                    stderr=subprocess.STDOUT,
-                                    shell=False)
-                                print translation_status
-                            except:
-                                print 'Error running msgfmt on %s\n' % locale
-                                error_record['status'] = True
-                                string_count['total'] = 0
-                                complete = False
-                                error_record[
-                                    'message'] = 'Error extracting data with msgfmt --statistics'
                     else:
                         missing_file = True
                         if not source_type == 'properties':
@@ -319,23 +359,6 @@ def main():
 
                     if not error_record['status']:
                         try:
-                            # Gettext files
-                            if source_type == 'gettext':
-                                po_stats_cmd = os.path.join(
-                                    webstatus_path, 'app', 'scripts', 'postats.sh')
-                                string_stats_json = subprocess.check_output(
-                                    [po_stats_cmd, locale_file_name],
-                                    stderr=subprocess.STDOUT,
-                                    shell=False)
-                                string_stats = json.load(
-                                    StringIO(string_stats_json))
-                                string_count['fuzzy'] += string_stats['fuzzy']
-                                string_count[
-                                    'translated'] += string_stats['translated']
-                                string_count[
-                                    'untranslated'] += string_stats['untranslated']
-                                string_count['total'] += string_stats['total']
-
                             # Properties files
                             if source_type == 'properties':
                                 try:
