@@ -63,28 +63,18 @@ def analyze_gettext(locale, product_folder, source_files, script_path, string_co
 def analyze_properties(locale, reference_locale, product_folder, source_files, script_path, string_count, error_record):
     # Analyze properties files
 
-    # Get a list of all files in the locale folder
-    locale_files = []
-    for source_file in source_files:
-        locale_files += glob.glob(os.path.join(product_folder,
-                                               locale, source_file))
-    locale_files.sort()
-
     errors = False
-    for locale_file in locale_files:
+    for source_file in source_files:
+        # source_file can include wildcards, e.g. *.properties
+        # properties_compare.py supports wildcards, no need to pass one file
+        # at the time.
         try:
             try:
                 compare_script = os.path.join(
                     script_path, 'properties_compare.py')
-                reference_file = locale_file.replace(
-                    '/%s/' % locale,
-                    '/%s/' % reference_locale
-                )
                 string_stats_json = subprocess.check_output(
-                    [compare_script,
-                     reference_file,
-                     locale_file
-                     ],
+                    [compare_script, product_folder,
+                     source_file, reference_locale, locale],
                     stderr=subprocess.STDOUT,
                     shell=False)
             except subprocess.CalledProcessError as error:
@@ -96,11 +86,11 @@ def analyze_properties(locale, reference_locale, product_folder, source_files, s
                 error_record['message'] = 'Error extracting data'
 
             script_output = json.load(StringIO(string_stats_json))
-
-            string_count['identical'] += script_output['identical']
-            string_count['missing'] += script_output['missing']
-            string_count['translated'] += script_output['translated']
-            string_count['total'] += script_output['total']
+            for file_name, file_data in script_output.iteritems():
+                string_count['identical'] += file_data['identical']
+                string_count['missing'] += file_data['missing']
+                string_count['translated'] += file_data['translated']
+                string_count['total'] += file_data['total']
 
         except Exception as e:
             print e

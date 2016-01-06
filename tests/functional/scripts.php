@@ -117,18 +117,24 @@ $compare_results[] = compare_json(
 
 // Test .properties files
 $script_name = SCRIPTS . 'properties_compare.py';
-$source_file = TESTFILES . 'properties/en/test.properties';
-$target_file = TESTFILES . 'properties/fr/test.properties';
+$repo_folder = TESTFILES . 'properties/';
 
 echo "\nTesting .properties file...\n";
 $compare_results[] = compare_json(
     '{
+    "test.properties": {
         "identical": 1,
         "translated": 6,
         "total": 7,
-        "missing": 1
-     }',
-    shell_exec("{$script_name} {$source_file} {$target_file}")
+        "missing": 1,
+        "missing_strings": [
+            "status_error"
+        ],
+        "obsolete": 0,
+        "obsolete_strings": []
+     }
+}',
+    shell_exec("{$script_name} {$repo_folder} *.properties en fr")
 );
 
 $test_failed = 0;
