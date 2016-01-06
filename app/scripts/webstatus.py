@@ -33,8 +33,7 @@ def analyze_gettext(locale, product_folder, source_files, script_path, string_co
         except:
             print 'Error running msgfmt on %s\n' % locale
             errors = True
-            error_record[
-                'message'] = 'Error extracting data with msgfmt --statistics'
+            error_record['message'] = 'Error extracting data with msgfmt --statistics'
 
         if not errors:
             try:
@@ -52,6 +51,56 @@ def analyze_gettext(locale, product_folder, source_files, script_path, string_co
                 print e
                 errors = True
                 error_record['message'] = 'Error extracting stats'
+
+    if errors:
+        error_record['status'] = True
+        complete = False
+
+
+def analyze_properties(locale, reference_locale, product_folder, source_files, script_path, string_count, error_record):
+    # Analyze properties files
+
+    # Get a list of all files in the locale folder
+    locale_files = []
+    for source_file in source_files:
+        locale_files += glob.glob(os.path.join(product_folder, locale, source_file))
+    locale_files.sort()
+
+    errors = False
+    for locale_file in locale_files:
+        try:
+            try:
+                compare_script = os.path.join(script_path, 'properties_compare.py')
+                reference_file = locale_file.replace(
+                    '/%s/' % locale,
+                    '/%s/' % reference_locale
+                )
+                string_stats_json = subprocess.check_output(
+                    [compare_script,
+                     reference_file,
+                     locale_file
+                     ],
+                    stderr=subprocess.STDOUT,
+                    shell=False)
+            except subprocess.CalledProcessError as error:
+                errors = True
+                error_record['message'] = 'Error extracting data: %s' % str(
+                    error.output)
+            except:
+                errors = True
+                error_record['message'] = 'Error extracting data'
+
+            script_output = json.load(StringIO(string_stats_json))
+
+            string_count['identical'] += script_output['identical']
+            string_count['missing'] += script_output['missing']
+            string_count['translated'] += script_output['translated']
+            string_count['total'] += script_output['total']
+
+        except Exception as e:
+            print e
+            errors = True
+            error_record['message'] = 'Error extracting stats'
 
     if errors:
         error_record['status'] = True
@@ -284,7 +333,7 @@ def main():
         else:
             reference_locale = ''
 
-        print "Analyzing: %s" % product['displayed_name']
+        print "\n--------\nAnalyzing: %s" % product['displayed_name']
 
         for locale in sorted(os.listdir(product_folder)):
             locale_folder = os.path.join(product_folder, locale)
@@ -320,8 +369,15 @@ def main():
             }
             percentage = 0
 
+            # Analyze file
             if source_type == 'xliff':
                 analyze_xliff(
+                    locale, reference_locale,
+                    product_folder, product['source_files'], script_path,
+                    string_count, error_record
+                )
+            elif source_type == 'properties':
+                analyze_properties(
                     locale, reference_locale,
                     product_folder, product['source_files'], script_path,
                     string_count, error_record
@@ -332,86 +388,6 @@ def main():
                     product_folder, product['source_files'], script_path,
                     string_count, error_record
                 )
-            else:
-                # Get a list of all files, since source_files can use wildcards
-                source_files = []
-                for source_file in product['source_files']:
-                    source_files += glob.glob(os.path.join(locale_folder,
-                                                           source_file))
-                source_files.sort()
-
-                for locale_file_name in source_files:
-                    if reference_locale != '':
-                        reference_file_name = locale_file_name.replace(
-                            '/%s/' % locale,
-                            '/%s/' % reference_locale
-                        )
-
-                    if os.path.isfile(locale_file_name):
-                        missing_file = False
-                    else:
-                        missing_file = True
-                        if not source_type == 'properties':
-                            # I want to stop for all source types except properties
-                            print 'File does not exist'
-                            error_record['status'] = True
-                            error_record['message'] = 'File does not exist.\n'
-
-                    if not error_record['status']:
-                        try:
-                            # Properties files
-                            if source_type == 'properties':
-                                try:
-                                    compare_script = os.path.join(
-                                        webstatus_path, 'app',
-                                        'scripts', 'properties_compare.py')
-                                    # If the localized file is missing, compare
-                                    # source against itself
-                                    if missing_file:
-                                        locale_file_name = reference_file_name
-                                    string_stats_json = subprocess.check_output(
-                                        [compare_script,
-                                         reference_file_name,
-                                         locale_file_name
-                                         ],
-                                        stderr=subprocess.STDOUT,
-                                        shell=False)
-                                except subprocess.CalledProcessError as error:
-                                    error_record['status'] = True
-                                    string_count['total'] = 0
-                                    complete = False
-                                    error_record['message'] = 'Error extracting data: %s' % str(
-                                        error.output)
-                                except:
-                                    error_record['status'] = True
-                                    string_count['total'] = 0
-                                    complete = False
-                                    error_record[
-                                        'message'] = 'Error extracting data'
-
-                                string_stats = json.load(
-                                    StringIO(string_stats_json))
-                                if not missing_file:
-                                    string_count[
-                                        'identical'] += string_stats['identical']
-                                    string_count[
-                                        'missing'] += string_stats['missing']
-                                    string_count[
-                                        'translated'] += string_stats['translated']
-                                    string_count['total'] += string_stats['total']
-                                else:
-                                    # File is missing, count all the strings as
-                                    # missing
-                                    string_count[
-                                        'missing'] += string_stats['total']
-                                    string_count['total'] += string_stats['total']
-
-                        except Exception as e:
-                            print e
-                            error_record['status'] = True
-                            string_count['total'] = 0
-                            complete = False
-                            error_record['message'] = 'Error extracting stats'
 
             # Calculate stats
             if (string_count['total'] == 0 and
