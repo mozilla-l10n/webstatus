@@ -116,7 +116,7 @@ $compare_results[] = compare_json(
 );
 
 // Test .properties files
-$script_name = SCRIPTS . 'properties_compare.py';
+$script_name = SCRIPTS . 'properties_stats.py';
 $repo_folder = TESTFILES . 'properties/';
 
 echo "\nTesting .properties file...\n";

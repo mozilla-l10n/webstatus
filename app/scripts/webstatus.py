@@ -66,12 +66,12 @@ def analyze_properties(locale, reference_locale, product_folder, source_files, s
     errors = False
     for source_file in source_files:
         # source_file can include wildcards, e.g. *.properties
-        # properties_compare.py supports wildcards, no need to pass one file
+        # properties_stats.py supports wildcards, no need to pass one file
         # at the time.
         try:
             try:
                 compare_script = os.path.join(
-                    script_path, 'properties_compare.py')
+                    script_path, 'properties_stats.py')
                 string_stats_json = subprocess.check_output(
                     [compare_script, product_folder,
                      source_file, reference_locale, locale],

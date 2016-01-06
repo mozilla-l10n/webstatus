@@ -41,17 +41,17 @@
                             {% endif %}
                         </td>
                         <td class="number">{{ row.product_data.translated }}</td>
-                        {% if row.product_data.source_type == 'xliff' and row.product_data.untranslated > 0 %}
+                        {% if row.product_data.source_type in ['xliff', 'properties'] and row.product_data.untranslated > 0 %}
                             <td class="number">
-                                <a href="views/xliff_diff.php?product={{ row.product_id }}&amp;locale={{ requested_locale }}" title="Show untranslated strings">{{ row.product_data.untranslated }}</a>
+                                <a href="views/product_diff.php?product={{ row.product_id }}&amp;locale={{ requested_locale }}" title="Show untranslated strings">{{ row.product_data.untranslated }}</a>
                             </td>
                         {% else %}
                             <td class="number">{{ row.product_data.untranslated }}</td>
                         {% endif %}
                         <td class="number">{{ row.product_data.identical }}</td>
-                        {% if row.product_data.source_type == 'xliff' and row.product_data.missing > 0 %}
+                        {% if row.product_data.source_type in ['xliff', 'properties'] and row.product_data.missing > 0 %}
                             <td class="number">
-                                <a href="views/xliff_diff.php?product={{ row.product_id }}&amp;locale={{ requested_locale }}" title="Show missing and obsolete strings">{{ row.product_data.missing }}</a>
+                                <a href="views/product_diff.php?product={{ row.product_id }}&amp;locale={{ requested_locale }}" title="Show missing and obsolete strings">{{ row.product_data.missing }}</a>
                             </td>
                         {% else %}
                             <td class="number">{{ row.product_data.missing }}</td>
