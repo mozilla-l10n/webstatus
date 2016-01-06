@@ -11,6 +11,7 @@ from ConfigParser import SafeConfigParser
 from StringIO import StringIO
 from datetime import datetime
 
+
 def analyze_gettext(locale, product_folder, source_files, script_path, string_count, error_record):
     # Analyze gettext (po) files
 
@@ -18,7 +19,8 @@ def analyze_gettext(locale, product_folder, source_files, script_path, string_co
     # reference file for gettext
     locale_files = []
     for source_file in source_files:
-        locale_files += glob.glob(os.path.join(product_folder, locale, source_file))
+        locale_files += glob.glob(os.path.join(product_folder,
+                                               locale, source_file))
     locale_files.sort()
 
     errors = False
@@ -33,7 +35,8 @@ def analyze_gettext(locale, product_folder, source_files, script_path, string_co
         except:
             print 'Error running msgfmt on %s\n' % locale
             errors = True
-            error_record['message'] = 'Error extracting data with msgfmt --statistics'
+            error_record[
+                'message'] = 'Error extracting data with msgfmt --statistics'
 
         if not errors:
             try:
@@ -63,14 +66,16 @@ def analyze_properties(locale, reference_locale, product_folder, source_files, s
     # Get a list of all files in the locale folder
     locale_files = []
     for source_file in source_files:
-        locale_files += glob.glob(os.path.join(product_folder, locale, source_file))
+        locale_files += glob.glob(os.path.join(product_folder,
+                                               locale, source_file))
     locale_files.sort()
 
     errors = False
     for locale_file in locale_files:
         try:
             try:
-                compare_script = os.path.join(script_path, 'properties_compare.py')
+                compare_script = os.path.join(
+                    script_path, 'properties_compare.py')
                 reference_file = locale_file.replace(
                     '/%s/' % locale,
                     '/%s/' % reference_locale
