@@ -73,19 +73,18 @@ def main():
                 '/%s/' % args.locale
             )
             entities_reference = ioclient.get_entitylist(source_file)
+            # Store reference strings
+            reference_strings = {}
+            for entity in entities_reference:
+                reference_strings[entity] = entities_reference[
+                    entity].get_value()
 
+            locale_strings = {}
             if os.path.isfile(locale_file):
                 # Locale file exists
                 entities_locale = ioclient.get_entitylist(locale_file)
 
-                # Store reference strings
-                reference_strings = {}
-                for entity in entities_reference:
-                    reference_strings[entity] = entities_reference[
-                        entity].get_value()
-
                 # Store translations
-                locale_strings = {}
                 for entity in entities_locale:
                     locale_strings[entity] = entities_locale[
                         entity].get_value()
@@ -101,8 +100,6 @@ def main():
                 # Locale file doesn't exist, count all reference strings as
                 # missing
                 missing += len(entities_reference)
-                reference_strings = []
-                locale_strings = []
 
         except Exception as e:
             print e
