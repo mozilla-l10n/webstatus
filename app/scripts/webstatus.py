@@ -138,7 +138,7 @@ def main():
     storage_path = settings['storage_path']
     json_filename = os.path.join(webstatus_path, 'web', 'web_status.json')
 
-    # Read products from external Json file
+    # Read products from external JSON file
     sources_file = open(os.path.join(
         webstatus_path, 'app', 'config', 'sources.json'))
     all_products = json.load(sources_file)
@@ -200,7 +200,6 @@ def main():
                     or locale in product['excluded_folders']):
                 continue
 
-            print locale_folder
             error_record = {
                 'status': False,
                 'message': ''
@@ -225,8 +224,7 @@ def main():
             else:
                 source_type = 'gettext'
 
-            # Get a list of all files, since source_files can include a
-            # wildcard
+            # Get a list of all files, since source_files can use wildcards
             source_files = []
             for source_file in product['source_files']:
                 source_files += glob.glob(os.path.join(locale_folder,
@@ -334,13 +332,14 @@ def main():
 
                         # Xliff files
                         if source_type == 'xliff':
+                            xliff_file_name = os.path.basename(locale_file_name)
                             try:
                                 compare_script = os.path.join(
                                     webstatus_path, 'app',
                                     'scripts', 'xliff_stats.py')
                                 string_stats_json = subprocess.check_output(
-                                    [compare_script, reference_file_name,
-                                     locale_file_name],
+                                    [compare_script, product_folder,
+                                     xliff_file_name, reference_locale, locale],
                                     stderr=subprocess.STDOUT,
                                     shell=False)
                             except subprocess.CalledProcessError as error:
@@ -356,7 +355,7 @@ def main():
                                 error_record[
                                     'message'] = 'Error extracting data'
                             string_stats = json.load(
-                                StringIO(string_stats_json))
+                                StringIO(string_stats_json))[xliff_file_name]
                             string_count[
                                 'identical'] += string_stats['identical']
                             string_count['missing'] += string_stats['missing']

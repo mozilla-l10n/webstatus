@@ -2,7 +2,9 @@
 # -*- coding: utf-8 -*-
 
 import argparse
+import glob
 import json
+import os
 import sys
 from xml.dom import minidom
 
@@ -102,11 +104,11 @@ def analyze_file(file_path, string_list, untranslated_strings):
 
     total = translated + untranslated
     file_stats = {
-        "errors": ' - '.join(errors),
-        "identical": identical,
-        "total": total,
-        "translated": translated,
-        "untranslated": untranslated
+        'errors': ' - '.join(errors),
+        'identical': identical,
+        'total': total,
+        'translated': translated,
+        'untranslated': untranslated
     }
 
     return file_stats
@@ -119,35 +121,75 @@ def diff(a, b):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('reference_file', help='Path to reference XLIFF file')
-    parser.add_argument('locale_file', help='Path to localized XLIFF file')
+    parser.add_argument('repo_folder', help='Path to repository')
+    parser.add_argument(
+        'source_file', help='Source file (wildcards are supported)')
+    parser.add_argument('reference', help='Reference locale code')
+    parser.add_argument('locale', help='Locale code to analyze')
+    parser.add_argument('--pretty', action='store_true',
+                        help='export indented and more readable JSON')
     args = parser.parse_args()
 
-    reference_strings = []
-    reference_stats = analyze_file(
-        args.reference_file,
-        reference_strings,
-        []
+    # Get a list of all reference files, since source_files can use wildcards
+    source_files = glob.glob(
+        os.path.join(args.repo_folder, args.reference, args.source_file)
     )
+    source_files.sort()
 
-    locale_strings = []
-    untranslated_strings = []
-    locale_stats = analyze_file(
-        args.locale_file,
-        locale_strings,
-        untranslated_strings
-    )
+    global_stats = {}
+    for source_file in source_files:
+        reference_strings = []
+        reference_stats = analyze_file(
+            source_file,
+            reference_strings,
+            []
+        )
 
-    # Check missing/obsolete strings
-    missing_strings = diff(reference_strings, locale_strings)
-    obsolete_strings = diff(locale_strings, reference_strings)
-    locale_stats['missing'] = len(missing_strings)
-    locale_stats['obsolete'] = len(obsolete_strings)
-    locale_stats['missing_strings'] = missing_strings
-    locale_stats['obsolete_strings'] = obsolete_strings
-    locale_stats['untranslated_strings'] = untranslated_strings
+        locale_strings = []
+        untranslated_strings = []
+        locale_file = source_file.replace(
+            '/%s/' % args.reference,
+            '/%s/' % args.locale
+        )
 
-    print json.dumps(locale_stats)
+        if os.path.isfile(locale_file):
+            locale_stats = analyze_file(
+                locale_file,
+                locale_strings,
+                untranslated_strings
+            )
+        else:
+            locale_stats = {
+                'errors': 'File is missing',
+                'identical': 0,
+                'total': 0,
+                'translated': 0,
+                'untranslated': 0
+            }
+
+        # Check missing/obsolete strings
+        missing_strings = diff(reference_strings, locale_strings)
+        obsolete_strings = diff(locale_strings, reference_strings)
+
+        source_index = os.path.basename(source_file)
+        global_stats[source_index] = {
+            'errors': locale_stats['errors'],
+            'identical': locale_stats['identical'],
+            'missing': len(missing_strings),
+            'missing_strings': missing_strings,
+            'obsolete': len(obsolete_strings),
+            'obsolete_strings': obsolete_strings,
+            'total': locale_stats['total'],
+            'translated': locale_stats['translated'],
+            'untranslated': locale_stats['untranslated'],
+            'untranslated_strings': untranslated_strings
+        }
+
+    if args.pretty:
+        print json.dumps(global_stats, sort_keys=True, indent=2)
+    else:
+        print json.dumps(global_stats)
+
 
 if __name__ == '__main__':
     main()

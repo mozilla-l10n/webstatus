@@ -31,10 +31,9 @@ if ($error_messages == '') {
     if (! isset($server_config['storage_path'])) {
         $error_messages .= "<p>Missing or broken app/config/config.ini file.</p>\n";
     } else {
-        $base_path = $server_config['storage_path'] . DIRECTORY_SEPARATOR .
-                     $product_data['repository_name'] . DIRECTORY_SEPARATOR;
+        $base_path = "{$server_config['storage_path']}/{$product_data['repository_name']}/";
         if ($product_data['locale_folder'] != '') {
-            $base_path .= $product_data['locale_folder'] . DIRECTORY_SEPARATOR;
+            $base_path .= "{$product_data['locale_folder']}/";
         }
 
         $display_strings = function ($title, $empty_message, $string_list) {
@@ -54,18 +53,17 @@ if ($error_messages == '') {
         };
 
         foreach ($product_data['source_files'] as $source_file) {
-            $reference_file = $base_path . 'en-US' . DIRECTORY_SEPARATOR . $source_file;
-            $locale_file = $base_path .  $requested_locale . DIRECTORY_SEPARATOR .
-                           $source_file;
             $script_path = __DIR__ . '/../scripts/xliff_stats.py';
-            $command = "python {$script_path} {$reference_file} {$locale_file}";
+            $command = "python {$script_path} {$base_path} {$source_file} {$product_data['reference_locale']} {$requested_locale}";
 
             $json_data = json_decode(shell_exec($command), true);
 
-            $html_output .= "<h1>File: {$source_file}</h1>";
-            $html_output .= $display_strings('Missing strings', 'No missing strings', $json_data['missing_strings']);
-            $html_output .= $display_strings('Obsolete strings', 'No obsolete strings', $json_data['obsolete_strings']);
-            $html_output .= $display_strings('Untranslated strings', 'No untranslated strings', $json_data['untranslated_strings']);
+            foreach ($json_data as $file_name => $file_data) {
+                $html_output .= "<h1>File: {$file_name}</h1>";
+                $html_output .= $display_strings('Missing strings', 'No missing strings', $file_data['missing_strings']);
+                $html_output .= $display_strings('Obsolete strings', 'No obsolete strings', $file_data['obsolete_strings']);
+                $html_output .= $display_strings('Untranslated strings', 'No untranslated strings', $file_data['untranslated_strings']);
+            }
         }
     }
 }
