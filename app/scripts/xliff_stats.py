@@ -160,7 +160,7 @@ def main():
             )
         else:
             locale_stats = {
-                'errors': 'File is missing',
+                'errors': 'File %s is missing' % os.path.basename(locale_file),
                 'identical': 0,
                 'total': 0,
                 'translated': 0,
