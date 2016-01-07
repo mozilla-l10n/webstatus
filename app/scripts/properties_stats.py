@@ -82,6 +82,7 @@ def main():
             locale_strings = {}
             if os.path.isfile(locale_file):
                 # Locale file exists
+                missing_file = False
                 entities_locale = ioclient.get_entitylist(locale_file)
 
                 # Store translations
@@ -100,6 +101,7 @@ def main():
                 # Locale file doesn't exist, count all reference strings as
                 # missing
                 missing += len(entities_reference)
+                missing_file = True
 
         except Exception as e:
             print e
@@ -114,6 +116,7 @@ def main():
         global_stats[source_index] = {
             'identical': identical,
             'missing': missing,
+            'missing_file': missing_file,
             'missing_strings': missing_strings,
             'obsolete': len(obsolete_strings),
             'obsolete_strings': obsolete_strings,
