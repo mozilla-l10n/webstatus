@@ -58,7 +58,7 @@
                         {% endif %}
                         <td class="number">{{ row.product_data.fuzzy }}</td>
                         <td class="number">{{ row.product_data.total }}</td>
-                        <td>{{ row.product_data.error_message }}</td>
+                        <td>{{ row.product_data.error_message|replace({'\n': '<br>'})|raw }}</td>
                     </tr>
                 {% endfor %}
             </tbody>

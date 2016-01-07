@@ -20,7 +20,11 @@ $calculate_row_style = function ($product_data) {
     // I consider also the number of identical strings
     $percentage = $product_data['percentage'];
     if ($product_data['source_type'] == 'properties') {
-        $perc_identical = $product_data['identical'] / $product_data['total'] * 100;
+        if ($product_data['total'] > 0) {
+            $perc_identical = $product_data['identical'] / $product_data['total'] * 100;
+        } else {
+            $perc_identical = 0;
+        }
         if ($perc_identical > 20) {
             $percentage = $percentage - $perc_identical;
         }
