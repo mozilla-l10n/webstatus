@@ -406,7 +406,8 @@ def main():
                 continue
 
             pretty_locale = locale.replace('_', '-')
-            print pretty_locale,
+            sys.stdout.write(pretty_locale + ' ')
+            sys.stdout.flush()
 
             # Analyze file
             status_record = file_analysis.analyze_pattern(
