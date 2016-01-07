@@ -127,6 +127,7 @@ $compare_results[] = compare_json(
         "translated": 6,
         "total": 7,
         "missing": 1,
+        "missing_file": false,
         "missing_strings": [
             "status_error"
         ],
