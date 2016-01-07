@@ -1,0 +1,39 @@
+{% extends 'default.twig' %}
+
+{% block body %}
+    {% if error_messages is empty %}
+        <h1>{{ content_title }}</h1>
+        {% for file_name, file_data in comparison_data %}
+            <h3>File: {{ file_name }}</h3>
+            {% if not file_data.missing_strings is empty %}
+                <h4>Missing strings</h4>
+                <ul>
+                    {% for missing_string in file_data.missing_strings %}
+                        <li>{{ missing_string|raw }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            {% if not file_data.obsolete_strings is empty %}
+                <h4>Obsolete strings</h4>
+                <ul>
+                    {% for obsolete_string in file_data.obsolete_strings %}
+                        <li>{{ obsolete_string|raw }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            {% if not file_data.untranslated_strings is empty %}
+                <h4>Untranslated strings</h4>
+                <ul>
+                    {% for untranslated_string in file_data.untranslated_strings %}
+                        <li>{{ untranslated_string|raw }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        <h1>Error</h1>
+        {% for error in error_messages %}
+            <p>{{ error }}</p>
+        {% endfor %}
+    {% endif %}
+{% endblock %}

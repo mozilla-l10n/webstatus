@@ -1,61 +1,39 @@
 <?php
 namespace Webstatus;
 
-$html_output = '';
-$error_messages = '';
+$error_messages = [];
+$content_title = '';
+$comparison_data = [];
 
-// Read locale and product
-if ($requested_locale != '') {
-    if (! in_array($requested_locale, $available_locales)) {
-        $error_messages .= "<p>This locale is not supported.</p>\n";
-    }
-} else {
-    $error_messages .= "<p>No locale requested.</p>\n";
+/* Read locale and product: if locale is missing it defaults to the
+ * browser's locale, if product is missing it defaults to 'all'
+ */
+if (! in_array($requested_locale, $available_locales)) {
+    $error_messages[] = 'This locale is not supported.';
 }
 
-if ($requested_product != '') {
+if ($requested_product != 'all') {
     $source_type = $webstatus->getSourceType($requested_product);
     if (! isset($available_products[$requested_product])) {
-        $error_messages .= "<p>This product is not supported.</p>\n";
+        $error_messages[] = 'This product is not supported';
     } elseif (! in_array($source_type, ['xliff', 'properties'])) {
-        $error_messages .= "<p>This product doesn't use XLIFF or PROPERTIES files.</p>\n";
-        $error = true;
+        $error_messages[] = 'This product doesn’t use XLIFF or PROPERTIES files.';
     }
 } else {
-    $error_messages .= "<p>No product requested.</p>\n";
-    $error = true;
+    $error_messages[] = 'No product requested.';
 }
 
-// Run the specific compare script
-if ($error_messages == '') {
+// Run the compare script specific for this format
+if (empty($error_messages)) {
     $product_data = $webstatus->getSingleProductData($requested_product);
+    $content_title = "{$product_data['displayed_name']} - Comparison for {$requested_locale}";
     if (! isset($server_config['storage_path'])) {
-        $error_messages .= "<p>Missing or broken app/config/config.ini file.</p>\n";
+        $error_messages[] = 'Missing or broken app/config/config.ini file.';
     } else {
         $base_path = "{$server_config['storage_path']}/{$product_data['repository_name']}/";
         if ($product_data['locale_folder'] != '') {
             $base_path .= "{$product_data['locale_folder']}/";
         }
-
-        $display_strings = function ($title, $empty_message, $string_list) use ($source_type){
-            $local_output = '';
-            if (count($string_list) == 0) {
-                $local_output .= "<h3>{$title}</h3>\n<p>{$empty_message}</p>\n";
-            } else {
-                $local_output .= "<h3>{$title} (" . count($string_list) . ")</h3>\n<ul>\n";
-                foreach ($string_list as $value) {
-                    $elements = explode(':', $value);
-                    if ($source_type == 'xliff') {
-                        $local_output .= "<li>{$elements[0]}: {$elements[1]}</li>\n";
-                    } else {
-                        $local_output .= "<li>{$elements[0]}</li>\n";
-                    }
-                }
-                $local_output .= "</ul>\n";
-            }
-
-            return $local_output;
-        };
 
         foreach ($product_data['source_files'] as $source_file) {
             /* Scripts are called xliff_stats.py, properties_stats.py and have
@@ -63,35 +41,28 @@ if ($error_messages == '') {
              */
             $script_path = __DIR__ . "/../scripts/{$source_type}_stats.py";
             $command = "python {$script_path} {$base_path} {$source_file} {$product_data['reference_locale']} {$requested_locale}";
+            $comparison_data += json_decode(shell_exec($command), true);
+        }
+    }
 
-            $json_data = json_decode(shell_exec($command), true);
-
-            foreach ($json_data as $file_name => $file_data) {
-                $html_output .= "<h2>File: {$file_name}</h2>";
-
-                $html_output .= $display_strings('Missing strings', 'No missing strings', $file_data['missing_strings']);
-                $html_output .= $display_strings('Obsolete strings', 'No obsolete strings', $file_data['obsolete_strings']);
-                if ($source_type == 'xliff') {
-                    $html_output .= $display_strings('Untranslated strings', 'No untranslated strings', $file_data['untranslated_strings']);
-                }
-            }
+    // Remove complete files
+    foreach ($comparison_data as $file_name => $file_data) {
+        $incomplete = $file_data['obsolete'] + $file_data['missing'];
+        if ($source_type == 'xliff') {
+            $incomplete += $file_data['untranslated'];
+        }
+        if ($incomplete == 0) {
+            unset($comparison_data[$file_name]);
         }
     }
 }
 
-if ($error_messages != '') {
-    $content_title = "Error";
-    $main_content = $error_messages;
-} else {
-    $content_title = "{$product_data['displayed_name']} - Comparison for {$requested_locale}";
-    $main_content = $html_output;
-}
-
 print $twig->render(
-    'default.twig',
+    'product_diff.twig',
     [
-        'content_title' => $content_title,
-        'main_content'  => $main_content,
-        'page_title'    => 'Web Status - Strings Comparison',
+        'content_title'   => $content_title,
+        'error_messages'  => $error_messages,
+        'comparison_data' => $comparison_data,
+        'page_title'      => 'Web Status - Strings Comparison',
     ]
 );
