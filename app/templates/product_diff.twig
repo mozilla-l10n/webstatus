@@ -1,0 +1,92 @@
+{% extends 'default.twig' %}
+
+{% block extra_js %}
+    <script src="{{ assets_folder }}/js/bootstrap.min.js"></script>
+{% endblock %}
+
+{% block body %}
+    {% if error_messages is empty %}
+        <h1>{{ content_title }}</h1>
+        {% if comparison_data is empty %}
+            <p>No differences to display.</p>
+        {% else %}
+            <p><small>Sections can be collapsed by clicking on the title (“Missing strings”, “Obsolete strings”, etc.).</small></p>
+        {% endif %}
+        {% for file_name, file_data in comparison_data %}
+            {% set section_id = file_name|replace({'.': '_'}) %}
+            <h3>File: {{ file_name }}</h3>
+            {% if not file_data.missing_strings is empty %}
+                <div class="panel-group">
+                    {% if file_data.missing_file %}
+                        <div class="panel panel-danger">
+                    {% else %}
+                        <div class="panel panel-default">
+                    {% endif %}
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" href="#{{ section_id }}_missing">
+                                    Missing strings
+                                    {% if file_data.missing_file %}
+                                        (missing file)
+                                    {% endif %}
+                                </a>
+                                <span class="badge">{{ file_data.missing_strings|length }}</span>
+
+                            </h4>
+                        </div>
+                        <div id="{{ section_id }}_missing" class="panel-collapse collapse in">
+                            <ul class="list-group">
+                                {% for missing_string in file_data.missing_strings %}
+                                    <li class="list-group-item">{{ missing_string|raw }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            {% if not file_data.untranslated_strings is empty %}
+                <div class="panel-group">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" href="#{{ section_id }}_untranslated">Untranslated strings</a>
+                                <span class="badge">{{ file_data.untranslated_strings|length }}</span>
+                            </h4>
+                        </div>
+                        <div id="{{ section_id }}_untranslated" class="panel-collapse collapse in">
+                            <ul class="list-group">
+                                {% for untranslated_string in file_data.untranslated_strings %}
+                                    <li class="list-group-item">{{ untranslated_string|raw }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            {% if not file_data.obsolete_strings is empty %}
+                <div class="panel-group">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" href="#{{ section_id }}_obsolete">Obsolete strings</a>
+                                <span class="badge">{{ file_data.obsolete_strings|length }}</span>
+                            </h4>
+                        </div>
+                        <div id="{{ section_id }}_obsolete" class="panel-collapse collapse in">
+                            <ul class="list-group">
+                                {% for obsolete_string in file_data.obsolete_strings %}
+                                    <li class="list-group-item">{{ obsolete_string|raw }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        <h1>Error</h1>
+        {% for error in error_messages %}
+            <p>{{ error }}</p>
+        {% endfor %}
+    {% endif %}
+{% endblock %}
