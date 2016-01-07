@@ -12,141 +12,197 @@ from StringIO import StringIO
 from datetime import datetime
 
 
-def analyze_gettext(locale, product_folder, source_files, script_path, string_count, error_record):
-    # Analyze gettext (po) files
+class FileAnalysis():
+    '''Class used to analyze a source file pattern'''
 
-    # Get a list of all files in the locale folder, I don't use a
-    # reference file for gettext
-    locale_files = []
-    for source_file in source_files:
-        locale_files += glob.glob(os.path.join(product_folder,
-                                               locale, source_file))
-    locale_files.sort()
+    def __init__(self, source_type, reference_locale, product_folder, script_path):
+        '''Initialize object setting parameters that remain identical across an entire product'''
 
-    errors = False
-    for locale_file in locale_files:
-        # Check if msgfmt returns errors
-        try:
-            translation_status = subprocess.check_output(
-                ['msgfmt', '--statistics', locale_file,
-                 '-o', os.devnull],
-                stderr=subprocess.STDOUT,
-                shell=False)
-        except:
-            print 'Error running msgfmt on %s\n' % locale
-            errors = True
-            error_record[
-                'message'] = 'Error extracting data with msgfmt --statistics'
+        self.source_type = source_type
+        self.reference_locale = reference_locale
+        self.product_folder = product_folder
+        self.script_path = script_path
 
-        if not errors:
+    def analyze_pattern(self, locale, source_files):
+        '''Initialize internal stats and call the specific method to perform the actual analysis'''
+
+        # Initialize stats
+        self.__initialize_stats()
+        # Pick the correct analysis based on source_type
+        if self.source_type == 'xliff':
+            self.__analyze_xliff(locale, source_files)
+        elif self.source_type == 'properties':
+            self.__analyze_properties(locale, source_files)
+        elif self.source_type == 'gettext':
+            self.__analyze_gettext(locale, source_files)
+
+        return self.__calculate_stats()
+
+    def __analyze_gettext(self, locale, source_files):
+        '''Analyze gettext (.po) files'''
+
+        # Get a list of all files in the locale folder, I don't use a
+        # reference file for gettext projects
+        locale_files = []
+        for source_file in source_files:
+            locale_files += glob.glob(
+                os.path.join(self.product_folder, locale, source_file))
+        locale_files.sort()
+
+        for locale_file in locale_files:
+            # Check first if msgfmt returns errors
             try:
-                po_stats_cmd = os.path.join(script_path, 'postats.sh')
-                string_stats_json = subprocess.check_output(
-                    [po_stats_cmd, locale_file],
-                    stderr=subprocess.STDOUT,
-                    shell=False)
-                script_output = json.load(StringIO(string_stats_json))
-                string_count['fuzzy'] += script_output['fuzzy']
-                string_count['translated'] += script_output['translated']
-                string_count['untranslated'] += script_output['untranslated']
-                string_count['total'] += script_output['total']
-            except Exception as e:
-                print e
-                errors = True
-                error_record['message'] = 'Error extracting stats'
+                translation_status = subprocess.check_output(
+                    ['msgfmt', '--statistics', locale_file, '-o', os.devnull],
+                    stderr=subprocess.STDOUT, shell=False)
+            except:
+                print '\nError running msgfmt on %s\n' % locale
+                self.error_record['messages'] = 'Error extracting data with msgfmt'
 
-    if errors:
-        error_record['status'] = True
-        complete = False
+            if not self.error_record['messages']:
+                try:
+                    compare_script = os.path.join(
+                        self.script_path, 'postats.sh')
+                    string_stats_json = subprocess.check_output(
+                        [compare_script, locale_file],
+                        stderr=subprocess.STDOUT, shell=False)
+                    script_output = json.load(StringIO(string_stats_json))
+                    self.string_count['fuzzy'] += script_output['fuzzy']
+                    self.string_count[
+                        'translated'] += script_output['translated']
+                    self.string_count[
+                        'untranslated'] += script_output['untranslated']
+                    self.string_count['total'] += script_output['total']
+                except Exception as e:
+                    print "\n", e
+                    self.error_record['messages'] = 'Error extracting stats with postats.sh'
 
+        if self.error_record['messages']:
+            self.error_record['status'] = True
 
-def analyze_properties(locale, reference_locale, product_folder, source_files, script_path, string_count, error_record):
-    # Analyze properties files
+    def __analyze_properties(self, locale, source_files):
+        ''' Analyze properties files '''
 
-    errors = False
-    for source_file in source_files:
-        # source_file can include wildcards, e.g. *.properties
-        # properties_stats.py supports wildcards, no need to pass one file
-        # at the time.
-        try:
+        for source_file in source_files:
+            # source_file can include wildcards, e.g. *.properties
+            # properties_stats.py supports wildcards, no need to pass one file
+            # at the time.
             try:
                 compare_script = os.path.join(
-                    script_path, 'properties_stats.py')
+                    self.script_path, 'properties_stats.py')
                 string_stats_json = subprocess.check_output(
-                    [compare_script, product_folder,
-                     source_file, reference_locale, locale],
-                    stderr=subprocess.STDOUT,
-                    shell=False)
-            except subprocess.CalledProcessError as error:
-                errors = True
-                error_record['message'] = 'Error extracting data: %s' % str(
-                    error.output)
-            except:
-                errors = True
-                error_record['message'] = 'Error extracting data'
+                    [compare_script, self.product_folder,
+                     source_file, self.reference_locale, locale],
+                    stderr=subprocess.STDOUT, shell=False)
+                script_output = json.load(StringIO(string_stats_json))
+                for file_name, file_data in script_output.iteritems():
+                    self.string_count['identical'] += file_data['identical']
+                    self.string_count['missing'] += file_data['missing']
+                    self.string_count['translated'] += file_data['translated']
+                    self.string_count['total'] += file_data['total']
+            except subprocess.CalledProcessError as e:
+                print "\n", e
+                self.error_record['messages'] = 'Error extracting stats: %s\n' % str(e.output)
+            except Exception as e:
+                print "\n", e
+                self.error_record['messages'] = 'Generic error extracting stats.\n'
 
-            script_output = json.load(StringIO(string_stats_json))
-            for file_name, file_data in script_output.iteritems():
-                string_count['identical'] += file_data['identical']
-                string_count['missing'] += file_data['missing']
-                string_count['translated'] += file_data['translated']
-                string_count['total'] += file_data['total']
+        if self.error_record['messages']:
+            self.error_record['status'] = True
 
-        except Exception as e:
-            print e
-            errors = True
-            error_record['message'] = 'Error extracting stats'
+    def __analyze_xliff(self, locale, source_files):
+        ''' Analyze XLIFF files '''
 
-    if errors:
-        error_record['status'] = True
-        complete = False
-
-
-def analyze_xliff(locale, reference_locale, product_folder, source_files, script_path, string_count, error_record):
-    # Analyze XLIFF files
-
-    errors = False
-    for source_file in source_files:
-        # source_file can include wildcards, e.g. *.xliff
-        # xliff_stats.py supports wildcards, no need to pass one file
-        # at the time.
-        try:
+        for source_file in source_files:
+            # source_file can include wildcards, e.g. *.xliff
+            # xliff_stats.py supports wildcards, no need to pass one file
+            # at the time.
             try:
-                compare_script = os.path.join(script_path, 'xliff_stats.py')
+                compare_script = os.path.join(
+                    self.script_path, 'xliff_stats.py')
                 string_stats_json = subprocess.check_output(
-                    [compare_script, product_folder,
-                     source_file, reference_locale, locale],
-                    stderr=subprocess.STDOUT,
-                    shell=False)
-            except subprocess.CalledProcessError as error:
-                errors = True
-                error_record['message'] = 'Error extracting data: %s' % str(
-                    error.output)
-            except:
-                errors = True
-                error_record['message'] = 'Error extracting data'
+                    [compare_script, self.product_folder,
+                     source_file, self.reference_locale, locale],
+                    stderr=subprocess.STDOUT, shell=False)
+                script_output = json.load(StringIO(string_stats_json))
+                for file_name, file_data in script_output.iteritems():
+                    self.string_count['identical'] += file_data['identical']
+                    self.string_count['missing'] += file_data['missing']
+                    self.string_count['translated'] += file_data['translated']
+                    self.string_count[
+                        'untranslated'] += file_data['untranslated']
+                    self.string_count['total'] += file_data['total']
+                    if file_data['errors'] != '':
+                        self.error_record['messages'] = 'Error extracting stats: %s\n' % file_data['errors']
+            except subprocess.CalledProcessError as e:
+                print "\n", e
+                self.error_record['messages'] = 'Error extracting stats: %s\n' % str(e.output)
+            except Exception as e:
+                print "\n", e
+                self.error_record['messages'] = 'Generic error extracting stats.\n'
 
-            script_output = json.load(StringIO(string_stats_json))
-            for file_name, file_data in script_output.iteritems():
-                string_count['identical'] += file_data['identical']
-                string_count['missing'] += file_data['missing']
-                string_count['translated'] += file_data['translated']
-                string_count['untranslated'] += file_data['untranslated']
-                string_count['total'] += file_data['total']
-                if file_data['errors'] != '':
-                    # For XLIFF I might have errors but still display
-                    # the available stats
-                    errors = True
-                    error_record['message'] = 'Error extracting data: %s' % \
-                        file_data['errors']
-        except Exception as e:
-            print e
-            errors = True
-            error_record['message'] = 'Error extracting stats'
+        if self.error_record['messages']:
+            self.error_record['status'] = True
 
-    if errors:
-        error_record['status'] = True
-        complete = False
+    def __calculate_stats(self):
+        ''' Generate a full status record with stats '''
+
+        percentage = 0
+
+        # Calculate stats
+        if (self.string_count['total'] == 0 and not self.error_record['status']):
+            # This locale has 0 strings (it might happen for a project with
+            # .properties files and an empty folder)
+            complete = False
+            percentage = 0
+        elif (self.string_count['fuzzy'] == 0 and
+                self.string_count['missing'] == 0 and
+                self.string_count['untranslated'] == 0):
+            # No untranslated, missing or fuzzy strings, locale is complete
+            complete = True
+            percentage = 100
+        elif self.string_count['missing'] > 0:
+            complete = False
+            percentage = round((float(self.string_count['translated']) / (
+                self.string_count['total'] + self.string_count['missing'])) * 100, 1)
+        else:
+            # Need to calculate the level of completeness
+            complete = False
+            percentage = round(
+                (float(self.string_count['translated']) / self.string_count['total']) * 100, 1)
+
+        return {
+            'complete': complete,
+            'error_message': self.error_record['messages'],
+            'error_status': self.error_record['status'],
+            'fuzzy': self.string_count['fuzzy'],
+            'identical': self.string_count['identical'],
+            'missing': self.string_count['missing'],
+            'percentage': percentage,
+            'total': self.string_count['total'],
+            'translated': self.string_count['translated'],
+            'source_type': self.source_type,
+            'untranslated': self.string_count['untranslated']
+        }
+
+    def __initialize_stats(self):
+        '''Initialize error status and stats'''
+
+        # Initialize error status
+        self.error_record = {
+            'status': False,
+            'messages': ''
+        }
+
+        # Initialize string counters
+        self.string_count = {
+            'fuzzy': 0,
+            'identical': 0,
+            'missing': 0,
+            'translated': 0,
+            'untranslated': 0,
+            'total': 0
+        }
 
 
 def check_environment(main_path, settings):
@@ -295,12 +351,15 @@ def main():
     if (args.product_code):
         product_code = args.product_code
         if not product_code in all_products:
-            print "The requested product code (%s) is not available." \
+            print 'The requested product code (%s) is not available.' \
                   % product_code
             sys.exit(1)
         # Use only the requested product
         products[product_code] = all_products[product_code]
         # Load the existing JSON data
+        if not os.path.isfile(json_filename):
+            print '%s is not available, you need to run an update for all products first.' % json_filename
+            sys.exit(1)
         json_data = json.load(open(json_filename))
     else:
         # No product code, need to update everything and start from scratch
@@ -322,14 +381,19 @@ def main():
             product['locale_folder']
         )
 
-        # Reference locale is not defined in gettext projects
+        # Reference locale could be not defined in gettext projects
         if 'reference_locale' in product:
             reference_locale = product['reference_locale']
         else:
             reference_locale = ''
 
-        print "\n--------\nAnalyzing: %s" % product['displayed_name']
+        # Determine source type only once for product, create a FileAnalysis
+        # object
+        source_type = product.get('source_type', 'gettext')
+        file_analysis = FileAnalysis(
+            source_type, reference_locale, product_folder, script_path)
 
+        print '\n--------\nAnalyzing: %s' % product['displayed_name']
         for locale in sorted(os.listdir(product_folder)):
             locale_folder = os.path.join(product_folder, locale)
 
@@ -343,85 +407,10 @@ def main():
             pretty_locale = locale.replace('_', '-')
             print pretty_locale,
 
-            if 'source_type' in product:
-                source_type = product['source_type']
-            else:
-                source_type = 'gettext'
-
-            error_record = {
-                'status': False,
-                'message': ''
-            }
-
-            # Initialize string counters
-            string_count = {
-                'fuzzy': 0,
-                'identical': 0,
-                'missing': 0,
-                'translated': 0,
-                'untranslated': 0,
-                'total': 0
-            }
-            percentage = 0
-
             # Analyze file
-            if source_type == 'xliff':
-                analyze_xliff(
-                    locale, reference_locale,
-                    product_folder, product['source_files'], script_path,
-                    string_count, error_record
-                )
-            elif source_type == 'properties':
-                analyze_properties(
-                    locale, reference_locale,
-                    product_folder, product['source_files'], script_path,
-                    string_count, error_record
-                )
-            elif source_type == 'gettext':
-                analyze_gettext(
-                    locale,
-                    product_folder, product['source_files'], script_path,
-                    string_count, error_record
-                )
-
-            # Calculate stats
-            if (string_count['total'] == 0 and
-                    not error_record['status']):
-                # This locale has 0 strings (it might happen for a project with
-                # .properties files and an empty folder)
-                complete = False
-                percentage = 0
-            elif (string_count['fuzzy'] == 0 and
-                    string_count['missing'] == 0 and
-                    string_count['untranslated'] == 0):
-                # No untranslated, missing or fuzzy strings, locale is
-                # complete
-                complete = True
-                percentage = 100
-            elif (string_count['missing'] > 0):
-                complete = False
-                percentage = round(
-                    (float(string_count['translated']) / (string_count['total'] + string_count['missing'])) * 100, 1)
-            else:
-                # Need to calculate the level of completeness
-                complete = False
-                percentage = round(
-                    (float(string_count['translated']) / string_count['total']) * 100, 1)
-
-            status_record = {
-                'complete': complete,
-                'error_message': error_record['message'],
-                'error_status': error_record['status'],
-                'fuzzy': string_count['fuzzy'],
-                'identical': string_count['identical'],
-                'missing': string_count['missing'],
-                'name': product['displayed_name'],
-                'percentage': percentage,
-                'total': string_count['total'],
-                'translated': string_count['translated'],
-                'source_type': source_type,
-                'untranslated': string_count['untranslated']
-            }
+            status_record = file_analysis.analyze_pattern(
+                locale, product['source_files'])
+            status_record['name'] = product['displayed_name']
 
             # If the pretty_locale key does not exist, I create it
             if pretty_locale not in json_data['locales']:

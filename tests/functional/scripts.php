@@ -77,7 +77,7 @@ $compare_results[] = compare_json(
     '{
     "test.xliff": {
         "identical": 0,
-        "errors": "Trans unit \u201cCancel\u201d in file \u201dClient\/ClearPrivateData.strings\u201d is missing a <source> element - Trans unit \u201cClear Everything\u201d in file \u201dClient\/ClearPrivateData.strings\u201d has multiple <source> elements - Trans unit \u201cOpen in Safari\u201d in file \u201dClient\/ErrorPages.strings\u201d has multiple <target> elements - Trans unit \u201cTry again\u201d in file \u201dClient\/ErrorPages.strings\u201d has a malformed or empty <source> element",
+        "errors": "Trans unit \u201cCancel\u201d in file \u201dClient\/ClearPrivateData.strings\u201d is missing a <source> element\nTrans unit \u201cClear Everything\u201d in file \u201dClient\/ClearPrivateData.strings\u201d has multiple <source> elements\nTrans unit \u201cOpen in Safari\u201d in file \u201dClient\/ErrorPages.strings\u201d has multiple <target> elements\nTrans unit \u201cTry again\u201d in file \u201dClient\/ErrorPages.strings\u201d has a malformed or empty <source> element",
         "missing": 0,
         "untranslated_strings": [],
         "untranslated": 0,

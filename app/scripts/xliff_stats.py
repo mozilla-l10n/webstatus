@@ -104,7 +104,7 @@ def analyze_file(file_path, string_list, untranslated_strings):
 
     total = translated + untranslated
     file_stats = {
-        'errors': ' - '.join(errors),
+        'errors': '\n'.join(errors),
         'identical': identical,
         'total': total,
         'translated': translated,

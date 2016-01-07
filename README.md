@@ -45,7 +45,7 @@ Example at: https://l10n.mozilla-community.org/~flod/webstatus/web_status.json
     "locale_code": {
         "product_id": {
             "complete": true/false,
-            "error_message": "",
+            "error_message": error messages (string),
             "error_status": true/false,
             "fuzzy": number of fuzzy strings,
             "identical": number of identical strings,
