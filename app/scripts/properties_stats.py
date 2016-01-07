@@ -37,22 +37,20 @@ def diff(a, b):
     return [aa for aa in a if aa not in b]
 
 
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('repo_folder', help='Path to repository')
-    parser.add_argument(
-        'source_file', help='Source file (wildcards are supported)')
-    parser.add_argument('reference', help='Reference locale code')
-    parser.add_argument('locale', help='Locale code to analyze')
-    parser.add_argument('--pretty', action='store_true',
-                        help='export indented and more readable JSON')
-    args = parser.parse_args()
+def create_file_list(repo_folder, reference, source_pattern):
+    ''' Search for files to analyze '''
 
-    # Get a list of all reference files, since source_files can use wildcards
+    # Get a list of all reference files, since source_pattern can use wildcards
     source_files = glob.glob(
-        os.path.join(args.repo_folder, args.reference, args.source_file)
+        os.path.join(repo_folder, reference, source_pattern)
     )
     source_files.sort()
+
+    return source_files
+
+
+def analyze_files(repo_folder, locale, reference, source_pattern):
+    ''' Analyze files, returning an array with stats and errors '''
 
     try:
         silme.format.Manager.register('properties')
@@ -62,6 +60,9 @@ def main():
         sys.exit(1)
 
     global_stats = {}
+
+    # Get a list of all files for the reference locale
+    source_files = create_file_list(repo_folder, reference, source_pattern)
     for source_file in source_files:
         translated = 0
         missing = 0
@@ -69,8 +70,8 @@ def main():
         total = 0
         try:
             locale_file = source_file.replace(
-                '/%s/' % args.reference,
-                '/%s/' % args.locale
+                '/%s/' % reference,
+                '/%s/' % locale
             )
             entities_reference = ioclient.get_entitylist(source_file)
             # Store reference strings
@@ -123,6 +124,24 @@ def main():
             'total': total,
             'translated': translated
         }
+
+    return global_stats
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('repo_folder', help='Path to repository')
+    parser.add_argument(
+        'source_pattern', help='Source file pattern (wildcards are supported)')
+    parser.add_argument('reference', help='Reference locale code')
+    parser.add_argument('locale', help='Locale code to analyze')
+    parser.add_argument('--pretty', action='store_true',
+                        help='export indented and more readable JSON')
+    args = parser.parse_args()
+
+    global_stats = analyze_files(
+        args.repo_folder, args.locale,
+        args.reference, args.source_pattern)
 
     if args.pretty:
         print json.dumps(global_stats, sort_keys=True, indent=2)

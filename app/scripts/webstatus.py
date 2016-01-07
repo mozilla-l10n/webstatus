@@ -11,6 +11,10 @@ from ConfigParser import SafeConfigParser
 from StringIO import StringIO
 from datetime import datetime
 
+# Import local files
+import xliff_stats
+import properties_stats
+
 
 class FileAnalysis():
     '''Class used to analyze a source file pattern'''
@@ -57,7 +61,8 @@ class FileAnalysis():
                     stderr=subprocess.STDOUT, shell=False)
             except:
                 print '\nError running msgfmt on %s\n' % locale
-                self.error_record['messages'] = 'Error extracting data with msgfmt'
+                self.error_record[
+                    'messages'] = 'Error extracting data with msgfmt'
 
             if not self.error_record['messages']:
                 try:
@@ -75,7 +80,8 @@ class FileAnalysis():
                     self.string_count['total'] += script_output['total']
                 except Exception as e:
                     print "\n", e
-                    self.error_record['messages'] = 'Error extracting stats with postats.sh'
+                    self.error_record[
+                        'messages'] = 'Error extracting stats with postats.sh'
 
         if self.error_record['messages']:
             self.error_record['status'] = True
@@ -88,24 +94,23 @@ class FileAnalysis():
             # properties_stats.py supports wildcards, no need to pass one file
             # at the time.
             try:
-                compare_script = os.path.join(
-                    self.script_path, 'properties_stats.py')
-                string_stats_json = subprocess.check_output(
-                    [compare_script, self.product_folder,
-                     source_file, self.reference_locale, locale],
-                    stderr=subprocess.STDOUT, shell=False)
-                script_output = json.load(StringIO(string_stats_json))
-                for file_name, file_data in script_output.iteritems():
+                string_stats_json = properties_stats.analyze_files(
+                    self.product_folder, locale,
+                    self.reference_locale, source_file
+                )
+                for file_name, file_data in string_stats_json.iteritems():
                     self.string_count['identical'] += file_data['identical']
                     self.string_count['missing'] += file_data['missing']
                     self.string_count['translated'] += file_data['translated']
                     self.string_count['total'] += file_data['total']
             except subprocess.CalledProcessError as e:
                 print "\n", e
-                self.error_record['messages'] = 'Error extracting stats: %s\n' % str(e.output)
+                self.error_record[
+                    'messages'] = 'Error extracting stats: %s\n' % str(e.output)
             except Exception as e:
                 print "\n", e
-                self.error_record['messages'] = 'Generic error extracting stats.\n'
+                self.error_record[
+                    'messages'] = 'Generic error extracting stats.\n'
 
         if self.error_record['messages']:
             self.error_record['status'] = True
@@ -118,14 +123,11 @@ class FileAnalysis():
             # xliff_stats.py supports wildcards, no need to pass one file
             # at the time.
             try:
-                compare_script = os.path.join(
-                    self.script_path, 'xliff_stats.py')
-                string_stats_json = subprocess.check_output(
-                    [compare_script, self.product_folder,
-                     source_file, self.reference_locale, locale],
-                    stderr=subprocess.STDOUT, shell=False)
-                script_output = json.load(StringIO(string_stats_json))
-                for file_name, file_data in script_output.iteritems():
+                string_stats_json = xliff_stats.analyze_files(
+                    self.product_folder, locale,
+                    self.reference_locale, source_file
+                )
+                for file_name, file_data in string_stats_json.iteritems():
                     self.string_count['identical'] += file_data['identical']
                     self.string_count['missing'] += file_data['missing']
                     self.string_count['translated'] += file_data['translated']
@@ -133,13 +135,12 @@ class FileAnalysis():
                         'untranslated'] += file_data['untranslated']
                     self.string_count['total'] += file_data['total']
                     if file_data['errors'] != '':
-                        self.error_record['messages'] = 'Error extracting stats: %s\n' % file_data['errors']
-            except subprocess.CalledProcessError as e:
-                print "\n", e
-                self.error_record['messages'] = 'Error extracting stats: %s\n' % str(e.output)
+                        self.error_record[
+                            'messages'] = 'Error extracting stats: %s\n' % file_data['errors']
             except Exception as e:
                 print "\n", e
-                self.error_record['messages'] = 'Generic error extracting stats.\n'
+                self.error_record[
+                    'messages'] = 'Generic error extracting stats.\n'
 
         if self.error_record['messages']:
             self.error_record['status'] = True
@@ -405,7 +406,8 @@ def main():
                 continue
 
             pretty_locale = locale.replace('_', '-')
-            print pretty_locale,
+            sys.stdout.write(pretty_locale + ' ')
+            sys.stdout.flush()
 
             # Analyze file
             status_record = file_analysis.analyze_pattern(
