@@ -36,14 +36,14 @@ def analyze_file(file_path, string_list, untranslated_strings):
             file_element_name = trans_unit.parentNode.parentNode.attributes[
                 'original'].value
             # Store the string ID
-            string_id = '%s:%s' % \
-                        (file_element_name, trans_unit.attributes['id'].value)
+            string_id = u'{0}:{1}'.format(
+                file_element_name, trans_unit.attributes['id'].value)
             string_list.append(string_id)
 
             # Check if we have at least one source
             if not source:
-                error_msg = u'Trans unit “%s” in file ”%s” is missing a <source> element' \
-                            % (trans_unit.attributes['id'].value, file_element_name)
+                error_msg = u'Trans unit “{0}” in file ”{1}” is missing a <source> element'.format(
+                    trans_unit.attributes['id'].value, file_element_name)
                 errors.append(error_msg)
                 continue
 
@@ -55,8 +55,8 @@ def analyze_file(file_path, string_list, untranslated_strings):
                     if source_element.parentNode.tagName != 'alt-trans':
                         source_count += 1
                 if source_count > 1:
-                    error_msg = u'Trans unit “%s” in file ”%s” has multiple <source> elements' \
-                                % (trans_unit.attributes['id'].value, file_element_name)
+                    error_msg = u'Trans unit “{0}” in file ”{1}” has multiple <source> elements'.format(
+                        trans_unit.attributes['id'].value, file_element_name)
                     errors.append(error_msg)
             if len(target) > 1:
                 target_count = 0
@@ -64,16 +64,16 @@ def analyze_file(file_path, string_list, untranslated_strings):
                     if target_element.parentNode.tagName != 'alt-trans':
                         target_count += 1
                 if target_count > 1:
-                    error_msg = u'Trans unit “%s” in file ”%s” has multiple <target> elements' \
-                                % (trans_unit.attributes['id'].value, file_element_name)
+                    error_msg = u'Trans unit “{0}” in file ”{1}” has multiple <target> elements'.format(
+                        trans_unit.attributes['id'].value, file_element_name)
                     errors.append(error_msg)
 
             # Compare strings
             try:
                 source_string = source[0].firstChild.data
             except:
-                error_msg = u'Trans unit “%s” in file ”%s” has a malformed or empty <source> element' \
-                            % (trans_unit.attributes['id'].value, file_element_name)
+                error_msg = u'Trans unit “{0}” in file ”{1}” has a malformed or empty <source> element'.format(
+                    trans_unit.attributes['id'].value, file_element_name)
                 errors.append(error_msg)
                 continue
             if target:
@@ -95,8 +95,8 @@ def analyze_file(file_path, string_list, untranslated_strings):
             if len(file_elements) > 0:
                 file_element = file_elements[0]
                 if 'target-language' not in file_element.attributes.keys():
-                    error_msg = u'File “%s” is missing target-language attribute' \
-                                % file_element.attributes['original'].value
+                    error_msg = u'File “{0}” is missing target-language attribute'.format(
+                        file_element.attributes['original'].value)
                     errors.append(error_msg)
     except Exception as e:
         print e
@@ -149,8 +149,8 @@ def analyze_files(repo_folder, locale, reference, source_pattern):
         locale_strings = []
         untranslated_strings = []
         locale_file = source_file.replace(
-            '/%s/' % reference,
-            '/%s/' % locale
+            '/{0}/'.format(reference),
+            '/{0}/'.format(locale)
         )
 
         if os.path.isfile(locale_file):
@@ -161,7 +161,7 @@ def analyze_files(repo_folder, locale, reference, source_pattern):
             )
         else:
             locale_stats = {
-                'errors': 'File %s is missing' % os.path.basename(locale_file),
+                'errors': 'File {0} is missing'.format(os.path.basename(locale_file)),
                 'identical': 0,
                 'total': 0,
                 'translated': 0,
