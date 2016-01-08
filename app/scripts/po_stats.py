@@ -17,9 +17,10 @@ if not os.path.isdir(polib_path):
     try:
         print 'Cloning polib...'
         cmd_status = subprocess.check_output(
-            'hg clone https://bitbucket.org/izi/polib/ %s -u 1.0.7' % polib_path,
+            ['hg', 'clone', 'https://bitbucket.org/izi/polib',
+                polib_path, '-u', '1.0.7'],
             stderr=subprocess.STDOUT,
-            shell=True)
+            shell=False)
         print cmd_status
     except Exception as e:
         print e
@@ -66,7 +67,8 @@ def analyze_files(repo_folder, locale, source_pattern):
             # I need to exclude obsolete strings
             fuzzy = len(diff(po.fuzzy_entries(), obsolete_strings))
             translated = len(diff(po.translated_entries(), obsolete_strings))
-            untranslated = len(diff(po.untranslated_entries(), obsolete_strings))
+            untranslated = len(
+                diff(po.untranslated_entries(), obsolete_strings))
         except Exception as e:
             print e
             sys.exit(1)

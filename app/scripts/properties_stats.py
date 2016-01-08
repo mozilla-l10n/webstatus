@@ -17,9 +17,10 @@ if not os.path.isdir(silme_path):
     try:
         print 'Cloning silme...'
         cmd_status = subprocess.check_output(
-            'hg clone https://hg.mozilla.org/l10n/silme %s -u silme-0.8.0' % silme_path,
+            ['hg', 'clone', 'https://hg.mozilla.org/l10n/silme',
+                silme_path, '-u', 'silme-0.8.0'],
             stderr=subprocess.STDOUT,
-            shell=True)
+            shell=False)
         print cmd_status
     except Exception as e:
         print e
@@ -71,8 +72,8 @@ def analyze_files(repo_folder, locale, reference, source_pattern):
         total = 0
         try:
             locale_file = source_file.replace(
-                '/%s/' % reference,
-                '/%s/' % locale
+                '/{0}/'.format(reference),
+                '/{0}/'.format(locale)
             )
             entities_reference = ioclient.get_entitylist(source_file)
             # Store reference strings

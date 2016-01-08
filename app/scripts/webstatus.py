@@ -84,7 +84,7 @@ class FileAnalysis():
             except subprocess.CalledProcessError as e:
                 print '\n', e
                 self.error_record[
-                    'messages'] = 'Error extracting stats: %s\n' % str(e.output)
+                    'messages'] = 'Error extracting stats: {0!s}\n'.format(e.output)
             except Exception as e:
                 print '\n', e
                 self.error_record[
@@ -114,7 +114,7 @@ class FileAnalysis():
                     self.string_count['total'] += file_data['total']
                     if file_data['errors'] != '':
                         self.error_record[
-                            'messages'] = 'Error extracting stats: %s\n' % file_data['errors']
+                            'messages'] = 'Error extracting stats: {0!s}\n'.format(e.output)
             except Exception as e:
                 print '\n', e
                 self.error_record[
@@ -203,14 +203,14 @@ class Repositories():
         if os.path.isdir(self.path):
             # Folder exists, check if it's actually a repository by searching
             # for .git, .hg, .svn in the root
-            hidden_folder = '.%s' % self.type
+            hidden_folder = '.{0}'.format(self.type)
             if os.path.isdir(os.path.join(self.path, hidden_folder)):
                 # Update existing repository, only if needed
                 if not self.updates_disabled:
                     self.__update_repo()
             else:
                 # It's not a repository: delete folder and re-clone
-                print 'Removing folder (not a valid repository): %s' % self.path
+                print 'Removing folder (not a valid repository): {0}'.format(self.path)
                 shutil.rmtree(self.path)
                 self.__clone_repo()
         else:
@@ -222,7 +222,7 @@ class Repositories():
 
         # Move in the main storage path
         os.chdir(self.storage_path)
-        print 'Cloning repository: %s' % self.url
+        print 'Cloning repository: {0}'.format(self.url)
         if (self.type == 'git'):
             # git repository
             try:
@@ -258,7 +258,7 @@ class Repositories():
 
         # Move in the repository folder
         os.chdir(self.path)
-        print 'Updating repository: %s' % self.displayed_name
+        print 'Updating repository: {0}'.format(self.displayed_name)
         if (self.type == 'git'):
             # git repository
             try:
@@ -295,8 +295,7 @@ def check_environment(main_path, settings):
             parser.readfp(open(config_file))
             settings['storage_path'] = parser.get('config', 'storage_path')
             if not os.path.isdir(settings['storage_path']):
-                print 'Folder specified in config.ini is missing (%s).' \
-                    % settings['storage_path']
+                print 'Folder specified in config.ini is missing ({0}).'.format(settings['storage_path'])
                 print 'Script will try to create it.'
                 try:
                     os.makedirs(settings['storage_path'])
@@ -318,7 +317,7 @@ def check_environment(main_path, settings):
                 stderr=devnull
             ).communicate()
         except OSError as e:
-            print '%s command not available.' % command
+            print '{0} command not available.'.format(command)
             env_errors = True
 
     if not env_errors:
@@ -332,9 +331,10 @@ def check_environment(main_path, settings):
             try:
                 print 'Cloning silme...'
                 cmd_status = subprocess.check_output(
-                    'hg clone https://hg.mozilla.org/l10n/silme %s -u silme-0.8.0' % silme_path,
+                    ['hg', 'clone', 'https://hg.mozilla.org/l10n/silme',
+                        silme_path, '-u', 'silme-0.8.0'],
                     stderr=subprocess.STDOUT,
-                    shell=True)
+                    shell=False)
                 print cmd_status
             except Exception as e:
                 print e
@@ -345,9 +345,10 @@ def check_environment(main_path, settings):
             try:
                 print 'Cloning polib...'
                 cmd_status = subprocess.check_output(
-                    'hg clone https://bitbucket.org/izi/polib/ %s -u 1.0.7' % polib_path,
+                    ['hg', 'clone', 'https://bitbucket.org/izi/polib',
+                        polib_path, '-u', '1.0.7'],
                     stderr=subprocess.STDOUT,
-                    shell=True)
+                    shell=False)
                 print cmd_status
             except Exception as e:
                 print e
@@ -387,14 +388,13 @@ def main():
     if (args.product_code):
         product_code = args.product_code
         if not product_code in all_products:
-            print 'The requested product code (%s) is not available.' \
-                  % product_code
+            print 'The requested product code ({0}) is not available.'.format(product_code)
             sys.exit(1)
         # Use only the requested product
         products[product_code] = all_products[product_code]
         # Load the existing JSON data
         if not os.path.isfile(json_filename):
-            print '%s is not available, you need to run an update for all products first.' % json_filename
+            print '{0} is not available, you need to run an update for all products first.'.format(json_filename)
             sys.exit(1)
         json_data = json.load(open(json_filename))
     else:
@@ -430,7 +430,7 @@ def main():
         file_analysis = FileAnalysis(
             source_type, reference_locale, product_folder, script_path)
 
-        print '\n--------\nAnalyzing: %s' % product['displayed_name']
+        print '\n--------\nAnalyzing: {0}'.format(product['displayed_name'])
         for locale in sorted(os.listdir(product_folder)):
             locale_folder = os.path.join(product_folder, locale)
 
