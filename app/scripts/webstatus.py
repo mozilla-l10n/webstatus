@@ -330,7 +330,7 @@ def check_environment(main_path, settings):
             print e
 
     # Check if all necessary commands are available
-    commands = ['msgfmt', 'git', 'svn']
+    commands = ['msgfmt', 'git', 'hg', 'svn']
     for command in commands:
         try:
             devnull = open(os.devnull)
@@ -342,6 +342,37 @@ def check_environment(main_path, settings):
         except OSError as e:
             print '%s command not available.' % command
             env_errors = True
+
+    if not env_errors:
+        # Check libraries, only if there are no previous env_errors since
+        # I need Mercurial to checkout libraries.
+        library_path = os.path.join(main_path, 'app', 'libraries')
+
+        # Silme (for .properties files)
+        silme_path = os.path.join(library_path, 'silme')
+        if not os.path.isdir(silme_path):
+            try:
+                print 'Cloning silme...'
+                cmd_status = subprocess.check_output(
+                    'hg clone https://hg.mozilla.org/l10n/silme %s -u silme-0.8.0' % silme_path,
+                    stderr=subprocess.STDOUT,
+                    shell=True)
+                print cmd_status
+            except Exception as e:
+                print e
+
+        # Polib (for gettext files)
+        polib_path = os.path.join(library_path, 'polib')
+        if not os.path.isdir(polib_path):
+            try:
+                print 'Cloning polib...'
+                cmd_status = subprocess.check_output(
+                    'hg clone https://bitbucket.org/izi/polib/ %s -u 1.0.7' % polib_path,
+                    stderr=subprocess.STDOUT,
+                    shell=True)
+                print cmd_status
+            except Exception as e:
+                print e
 
     if env_errors:
         print '\nPlease fix these errors and try again.'
