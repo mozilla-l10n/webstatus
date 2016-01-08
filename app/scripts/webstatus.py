@@ -361,7 +361,7 @@ def check_environment(main_path, settings):
             except Exception as e:
                 print e
 
-        # Polib (for gettext files)
+        # polib (for gettext files)
         polib_path = os.path.join(library_path, 'polib')
         if not os.path.isdir(polib_path):
             try:

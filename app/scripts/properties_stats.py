@@ -8,11 +8,11 @@ import subprocess
 import sys
 
 # Import local libraries
-app_folder = os.path.abspath(os.path.join(
-    os.path.dirname(__file__), os.pardir))
+library_path = os.path.abspath(os.path.join(
+    os.path.dirname(__file__), os.pardir, 'libraries'))
 
 # Silme library (http://hg.mozilla.org/l10n/silme/)
-silme_path = os.path.join(app_folder, 'libraries', 'silme')
+silme_path = os.path.join(library_path, 'silme')
 if not os.path.isdir(silme_path):
     try:
         print 'Cloning silme...'
