@@ -12,8 +12,9 @@ from StringIO import StringIO
 from datetime import datetime
 
 # Import local files
-import xliff_stats
+import po_stats
 import properties_stats
+import xliff_stats
 
 
 class FileAnalysis():
@@ -42,46 +43,23 @@ class FileAnalysis():
 
         return self.__calculate_stats()
 
-    def __analyze_gettext(self, locale, source_files):
+    def __analyze_gettext(self, locale, locale_files):
         '''Analyze gettext (.po) files'''
 
-        # Get a list of all files in the locale folder, I don't use a
-        # reference file for gettext projects
-        locale_files = []
-        for source_file in source_files:
-            locale_files += glob.glob(
-                os.path.join(self.product_folder, locale, source_file))
-        locale_files.sort()
-
         for locale_file in locale_files:
-            # Check first if msgfmt returns errors
             try:
-                translation_status = subprocess.check_output(
-                    ['msgfmt', '--statistics', locale_file, '-o', os.devnull],
-                    stderr=subprocess.STDOUT, shell=False)
-            except:
-                print '\nError running msgfmt on %s\n' % locale
+                string_stats_json = po_stats.analyze_files(
+                    self.product_folder, locale, locale_file)
+                for file_name, file_data in string_stats_json.iteritems():
+                    self.string_count['fuzzy'] += file_data['fuzzy']
+                    self.string_count['translated'] += file_data['translated']
+                    self.string_count[
+                        'untranslated'] += file_data['untranslated']
+                    self.string_count['total'] += file_data['total']
+            except Exception as e:
+                print '\n', e
                 self.error_record[
-                    'messages'] = 'Error extracting data with msgfmt'
-
-            if not self.error_record['messages']:
-                try:
-                    compare_script = os.path.join(
-                        self.script_path, 'postats.sh')
-                    string_stats_json = subprocess.check_output(
-                        [compare_script, locale_file],
-                        stderr=subprocess.STDOUT, shell=False)
-                    script_output = json.load(StringIO(string_stats_json))
-                    self.string_count['fuzzy'] += script_output['fuzzy']
-                    self.string_count[
-                        'translated'] += script_output['translated']
-                    self.string_count[
-                        'untranslated'] += script_output['untranslated']
-                    self.string_count['total'] += script_output['total']
-                except Exception as e:
-                    print '\n', e
-                    self.error_record[
-                        'messages'] = 'Error extracting stats with postats.sh'
+                    'messages'] = 'Error extracting stats with postats.sh'
 
         if self.error_record['messages']:
             self.error_record['status'] = True
@@ -330,7 +308,7 @@ def check_environment(main_path, settings):
             print e
 
     # Check if all necessary commands are available
-    commands = ['msgfmt', 'git', 'hg', 'svn']
+    commands = ['git', 'hg', 'svn']
     for command in commands:
         try:
             devnull = open(os.devnull)
