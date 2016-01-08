@@ -7,29 +7,30 @@ import os
 import subprocess
 import sys
 
-# Import Silme library (http://hg.mozilla.org/l10n/silme/)
-silmepath = os.path.join(
-    os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir)),
-    'libraries',
-    'silme'
-)
+# Import local libraries
+app_folder = os.path.abspath(os.path.join(
+    os.path.dirname(__file__), os.pardir))
 
-if not os.path.isdir(silmepath):
+# Silme library (http://hg.mozilla.org/l10n/silme/)
+silme_path = os.path.join(app_folder, 'libraries', 'silme')
+if not os.path.isdir(silme_path):
     try:
         print 'Cloning silme...'
         cmd_status = subprocess.check_output(
-            'hg clone http://hg.mozilla.org/l10n/silme %s -u silme-0.8.0' % silmepath,
+            'hg clone https://hg.mozilla.org/l10n/silme %s -u silme-0.8.0' % silme_path,
             stderr=subprocess.STDOUT,
             shell=True)
         print cmd_status
     except Exception as e:
         print e
-
-sys.path.append(os.path.join(silmepath, 'lib'))
-
-import silme.core
-import silme.io
-import silme.format
+sys.path.append(os.path.join(silme_path, 'lib'))
+try:
+    import silme.core
+    import silme.io
+    import silme.format
+except ImportError:
+    print 'Error importing Silme library'
+    sys.exit(1)
 
 
 def diff(a, b):
