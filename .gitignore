@@ -1,5 +1,6 @@
 *.pyc
 app/config/config.ini
+app/libraries/polib
 app/libraries/silme
 composer.lock
 composer.phar
