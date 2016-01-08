@@ -31,6 +31,11 @@ except ImportError:
     sys.exit(1)
 
 
+def diff(a, b):
+    b = set(b)
+    return [aa for aa in a if aa not in b]
+
+
 def create_file_list(repo_folder, locale, source_pattern):
     ''' Search for files to analyze '''
 
@@ -57,9 +62,11 @@ def analyze_files(repo_folder, locale, source_pattern):
         untranslated = 0
         try:
             po = polib.pofile(locale_file)
-            fuzzy = len(po.fuzzy_entries())
-            translated = len(po.translated_entries())
-            untranslated = len(po.untranslated_entries())
+            obsolete_strings = po.obsolete_entries()
+            # I need to exclude obsolete strings
+            fuzzy = len(diff(po.fuzzy_entries(), obsolete_strings))
+            translated = len(diff(po.translated_entries(), obsolete_strings))
+            untranslated = len(diff(po.untranslated_entries(), obsolete_strings))
         except Exception as e:
             print e
             sys.exit(1)
