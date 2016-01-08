@@ -36,18 +36,20 @@ function compare_json($reference, $result)
 $compare_results = [];
 
 // Test .po files
-$script_name = SCRIPTS . 'postats.sh';
-$target_file = TESTFILES . 'gettext/it.po';
+$script_name = SCRIPTS . 'po_stats.py';
+$repo_folder = TESTFILES . 'gettext';
 
 echo "\nTesting .po file...\n";
 $compare_results[] = compare_json(
     '{
+    "django.po": {
         "fuzzy": 1,
         "translated": 174,
         "total": 176,
         "untranslated": 1
-    }',
-    shell_exec("{$script_name} {$target_file}")
+    }
+}',
+    shell_exec("{$script_name} {$repo_folder} *.po it")
 );
 
 // Test .xliff files

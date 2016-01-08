@@ -12,8 +12,9 @@ before_install:
 install:
   ## Install Composer dependencies
   - composer install --no-interaction --prefer-source
-  ## Clone Silme
-  - hg clone http://hg.mozilla.org/l10n/silme app/libraries/silme -u silme-0.8.0
+  ## Clone libraries
+  - hg clone https://bitbucket.org/izi/polib app/libraries/polib -u 1.0.7
+  - hg clone https://hg.mozilla.org/l10n/silme app/libraries/silme -u silme-0.8.0
 script:
   - vendor/atoum/atoum/bin/atoum -d tests/units/
   - php tests/functional/scripts.php
