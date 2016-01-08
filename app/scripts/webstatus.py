@@ -79,7 +79,7 @@ class FileAnalysis():
                         'untranslated'] += script_output['untranslated']
                     self.string_count['total'] += script_output['total']
                 except Exception as e:
-                    print "\n", e
+                    print '\n', e
                     self.error_record[
                         'messages'] = 'Error extracting stats with postats.sh'
 
@@ -104,11 +104,11 @@ class FileAnalysis():
                     self.string_count['translated'] += file_data['translated']
                     self.string_count['total'] += file_data['total']
             except subprocess.CalledProcessError as e:
-                print "\n", e
+                print '\n', e
                 self.error_record[
                     'messages'] = 'Error extracting stats: %s\n' % str(e.output)
             except Exception as e:
-                print "\n", e
+                print '\n', e
                 self.error_record[
                     'messages'] = 'Generic error extracting stats.\n'
 
@@ -138,7 +138,7 @@ class FileAnalysis():
                         self.error_record[
                             'messages'] = 'Error extracting stats: %s\n' % file_data['errors']
             except Exception as e:
-                print "\n", e
+                print '\n', e
                 self.error_record[
                     'messages'] = 'Generic error extracting stats.\n'
 
@@ -206,6 +206,103 @@ class FileAnalysis():
         }
 
 
+class Repositories():
+    '''Class used to manage repositories'''
+
+    def __init__(self, storage_path, noupdates):
+        '''
+            Initialize object parameters like storage path and if
+            repositories need to be updated.
+        '''
+
+        self.storage_path = storage_path
+        self.updates_disabled = noupdates
+
+    def check_repo(self, product):
+        ''' Clone or update the repository for the current product '''
+
+        self.__set_product(product)
+        if os.path.isdir(self.path):
+            # Folder exists, check if it's actually a repository by searching
+            # for .git, .hg, .svn in the root
+            hidden_folder = '.%s' % self.type
+            if os.path.isdir(os.path.join(self.path, hidden_folder)):
+                # Update existing repository, only if needed
+                if not self.updates_disabled:
+                    self.__update_repo()
+            else:
+                # It's not a repository: delete folder and re-clone
+                print 'Removing folder (not a valid repository): %s' % self.path
+                shutil.rmtree(self.path)
+                self.__clone_repo()
+        else:
+            # Repository doesn't exist, need to clone it
+            self.__clone_repo()
+
+    def __clone_repo(self):
+        ''' Clone product's repository '''
+
+        # Move in the main storage path
+        os.chdir(self.storage_path)
+        print 'Cloning repository: %s' % self.url
+        if (self.type == 'git'):
+            # git repository
+            try:
+                cmd_status = subprocess.check_output(
+                    ['git', 'clone', '--depth', '1', self.url, self.name],
+                    stderr=subprocess.STDOUT,
+                    shell=False)
+                print cmd_status
+            except Exception as e:
+                print e
+        else:
+            # svn repository
+            try:
+                cmd_status = subprocess.check_output(
+                    ['svn', 'co', self.url, self.name],
+                    stderr=subprocess.STDOUT,
+                    shell=False)
+                print cmd_status
+            except Exception as e:
+                print e
+
+    def __set_product(self, product):
+        ''' Set product information '''
+
+        self.displayed_name = product['displayed_name']
+        self.name = product['repository_name']
+        self.path = os.path.join(self.storage_path, self.name)
+        self.type = product['repository_type']
+        self.url = product['repository_url']
+
+    def __update_repo(self):
+        ''' Update existing product's repository '''
+
+        # Move in the repository folder
+        os.chdir(self.path)
+        print 'Updating repository: %s' % self.displayed_name
+        if (self.type == 'git'):
+            # git repository
+            try:
+                cmd_status = subprocess.check_output(
+                    ['git', 'pull'],
+                    stderr=subprocess.STDOUT,
+                    shell=False)
+                print cmd_status
+            except Exception as e:
+                print e
+        else:
+            # svn repository
+            try:
+                cmd_status = subprocess.check_output(
+                    ['svn', 'up'],
+                    stderr=subprocess.STDOUT,
+                    shell=False)
+                print cmd_status
+            except Exception as e:
+                print e
+
+
 def check_environment(main_path, settings):
     env_errors = False
 
@@ -249,77 +346,6 @@ def check_environment(main_path, settings):
     if env_errors:
         print '\nPlease fix these errors and try again.'
         sys.exit(0)
-
-
-def check_repo(storage_path, product, noupdate):
-    repo_path = os.path.join(storage_path, product['repository_name'])
-    if os.path.isdir(repo_path):
-        # Folder exists, check if it's actually a repository
-        if os.path.isdir(os.path.join(repo_path, '.' + product['repository_type'])):
-            # Update existing repository if needed
-            if not noupdate:
-                os.chdir(repo_path)
-                update_repo(product)
-        else:
-            # Delete folder and re-clone
-            print 'Removing folder (not a valid repository): %s' % repo_path
-            shutil.rmtree(repo_path)
-            os.chdir(storage_path)
-            clone_repo(product)
-    else:
-        # Repository doesn't exist, need to clone it
-        os.chdir(storage_path)
-        clone_repo(product)
-
-
-def clone_repo(product):
-    print 'Cloning repository: %s' % product['repository_url']
-    if (product['repository_type'] == 'git'):
-        # git repository
-        try:
-            cmd_status = subprocess.check_output(
-                ['git', 'clone', '--depth', '1',
-                 product['repository_url'], product['repository_name']],
-                stderr=subprocess.STDOUT,
-                shell=False)
-            print cmd_status
-        except Exception as e:
-            print e
-    else:
-        # svn repository
-        try:
-            cmd_status = subprocess.check_output(
-                ['svn', 'co',
-                 product['repository_url'], product['repository_name']],
-                stderr=subprocess.STDOUT,
-                shell=False)
-            print cmd_status
-        except Exception as e:
-            print e
-
-
-def update_repo(product):
-    print 'Updating repository: %s' % product['displayed_name']
-    if (product['repository_type'] == 'git'):
-        # git repository
-        try:
-            cmd_status = subprocess.check_output(
-                ['git', 'pull'],
-                stderr=subprocess.STDOUT,
-                shell=False)
-            print cmd_status
-        except Exception as e:
-            print e
-    else:
-        # svn repository
-        try:
-            cmd_status = subprocess.check_output(
-                ['svn', 'up'],
-                stderr=subprocess.STDOUT,
-                shell=False)
-            print cmd_status
-        except Exception as e:
-            print e
 
 
 def main():
@@ -369,8 +395,9 @@ def main():
         json_data['locales'] = {}
 
     # Clone/update repositories
+    repository = Repositories(storage_path, args.noupdate)
     for key, product in products.iteritems():
-        check_repo(storage_path, product, args.noupdate)
+        repository.check_repo(product)
 
     ignored_folders = ['.svn', '.git', '.g(config_file)it', 'dbg',
                        'db_LB', 'ja_JP_mac', 'templates',
@@ -441,6 +468,9 @@ def main():
     else:
         json_file.write(json.dumps(json_data, sort_keys=True))
     json_file.close()
+
+    print '\nAnalysis completed.'
+
 
 if __name__ == '__main__':
     main()
