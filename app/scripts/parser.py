@@ -264,6 +264,10 @@ class XliffParser(Parser):
         # Reference folder/locale for this product
         self.reference = reference
 
+        # Store reference data to read them only once
+        self.reference_strings = {}
+        self.reference_files = []
+
     def set_locale(self, locale):
         ''' Set current locale '''
 
@@ -274,20 +278,37 @@ class XliffParser(Parser):
 
         global_stats = {}
 
-        # Get a list of all files for the reference locale
-        source_files = self.create_file_list(
-            self.repo_folder, self.reference, self.search_patterns)
-        for source_file in source_files:
-            reference_strings = []
-            reference_stats = self.parse_xliff(
-                source_file,
-                reference_strings,
-                []
-            )
+        # Create a list of reference files, and store reference data only once.
+        # Object has the following structure:
+        #
+        # {
+        #     'filename': {
+        #         'entity1': 'value1',
+        #         ...
+        #     },
+        #     'filename2': {
+        #         'entity1': 'value1',
+        #         ...
+        #     },
+        #     ...
+        # }
+        if not self.reference_files:
+            # Store the list of files
+            self.reference_files = self.create_file_list(self.repo_folder, self.reference, self.search_patterns)
+            for reference_file in self.reference_files:
+                file_index = os.path.basename(reference_file)
+                self.reference_strings[file_index] = []
+                reference_stats = self.parse_xliff(
+                    reference_file,
+                    self.reference_strings[file_index],
+                    []
+                )
 
+        for reference_file in self.reference_files:
+            file_index = os.path.basename(reference_file)
             locale_strings = []
             untranslated_strings = []
-            locale_file = source_file.replace(
+            locale_file = reference_file.replace(
                 '/{0}/'.format(self.reference),
                 '/{0}/'.format(self.locale)
             )
@@ -300,7 +321,7 @@ class XliffParser(Parser):
                 )
             else:
                 locale_stats = {
-                    'errors': 'File {0} is missing'.format(os.path.basename(locale_file)),
+                    'errors': 'File {0} is missing'.format(file_index),
                     'identical': 0,
                     'total': 0,
                     'translated': 0,
@@ -308,12 +329,10 @@ class XliffParser(Parser):
                 }
 
             # Check missing/obsolete strings
-            missing_strings = self.list_diff(reference_strings, locale_strings)
-            obsolete_strings = self.list_diff(
-                locale_strings, reference_strings)
+            missing_strings = self.list_diff(self.reference_strings[file_index], locale_strings)
+            obsolete_strings = self.list_diff(locale_strings, self.reference_strings[file_index])
 
-            source_index = os.path.basename(source_file)
-            global_stats[source_index] = {
+            global_stats[file_index] = {
                 'errors': locale_stats['errors'],
                 'identical': locale_stats['identical'],
                 'missing': len(missing_strings),
