@@ -52,17 +52,20 @@ class FileAnalysis():
         # Pick the correct analysis based on source_type
         if self.source_type == 'gettext':
             if self.file_parser is None:
-                self.file_parser = parser.GettextParser(self.product_folder, self.search_patterns)
+                self.file_parser = parser.GettextParser(
+                    self.product_folder, self.search_patterns)
             self.file_parser.set_locale(self.locale)
             self.__analyze_gettext()
         elif self.source_type == 'properties':
             if self.file_parser is None:
-                self.file_parser = parser.PropertiesParser(self.product_folder, self.search_patterns, self.reference)
+                self.file_parser = parser.PropertiesParser(
+                    self.product_folder, self.search_patterns, self.reference)
             self.file_parser.set_locale(self.locale)
             self.__analyze_properties()
         elif self.source_type == 'xliff':
             if self.file_parser is None:
-                self.file_parser = parser.XliffParser(self.product_folder, self.search_patterns, self.reference)
+                self.file_parser = parser.XliffParser(
+                    self.product_folder, self.search_patterns, self.reference)
             self.file_parser.set_locale(self.locale)
             self.__analyze_xliff()
 
@@ -456,7 +459,7 @@ def main():
             sys.stdout.flush()
 
             # Analyze files for this locale
-            file_analysis.set_locale(locale);
+            file_analysis.set_locale(locale)
             status_record = file_analysis.analyze_pattern()
             status_record['name'] = product['displayed_name']
 

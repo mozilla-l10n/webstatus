@@ -183,13 +183,15 @@ class PropertiesParser(Parser):
         # }
         if not self.reference_files:
             # Store the list of files
-            self.reference_files = self.create_file_list(self.repo_folder, self.reference, self.search_patterns)
+            self.reference_files = self.create_file_list(
+                self.repo_folder, self.reference, self.search_patterns)
             for reference_file in self.reference_files:
                 reference_entities = ioclient.get_entitylist(reference_file)
                 file_index = os.path.basename(reference_file)
                 self.reference_strings[file_index] = {}
                 for entity in reference_entities:
-                    self.reference_strings[file_index][entity] = reference_entities[entity].get_value()
+                    self.reference_strings[file_index][
+                        entity] = reference_entities[entity].get_value()
 
         for reference_file in self.reference_files:
             file_index = os.path.basename(reference_file)
@@ -231,8 +233,10 @@ class PropertiesParser(Parser):
                 sys.exit(1)
 
             # Check missing/obsolete strings
-            missing_strings = self.list_diff(self.reference_strings[file_index], locale_strings)
-            obsolete_strings = self.list_diff(locale_strings, self.reference_strings[file_index])
+            missing_strings = self.list_diff(
+                self.reference_strings[file_index], locale_strings)
+            obsolete_strings = self.list_diff(
+                locale_strings, self.reference_strings[file_index])
 
             total = translated + missing
             global_stats[file_index] = {
@@ -294,7 +298,8 @@ class XliffParser(Parser):
         # }
         if not self.reference_files:
             # Store the list of files
-            self.reference_files = self.create_file_list(self.repo_folder, self.reference, self.search_patterns)
+            self.reference_files = self.create_file_list(
+                self.repo_folder, self.reference, self.search_patterns)
             for reference_file in self.reference_files:
                 file_index = os.path.basename(reference_file)
                 self.reference_strings[file_index] = []
@@ -329,8 +334,10 @@ class XliffParser(Parser):
                 }
 
             # Check missing/obsolete strings
-            missing_strings = self.list_diff(self.reference_strings[file_index], locale_strings)
-            obsolete_strings = self.list_diff(locale_strings, self.reference_strings[file_index])
+            missing_strings = self.list_diff(
+                self.reference_strings[file_index], locale_strings)
+            obsolete_strings = self.list_diff(
+                locale_strings, self.reference_strings[file_index])
 
             global_stats[file_index] = {
                 'errors': locale_stats['errors'],
