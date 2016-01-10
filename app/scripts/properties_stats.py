@@ -7,6 +7,9 @@ import os
 import subprocess
 import sys
 
+# Import local shared functions
+import shared_functions
+
 # Import local libraries
 library_path = os.path.abspath(os.path.join(
     os.path.dirname(__file__), os.pardir, 'libraries'))
@@ -34,23 +37,6 @@ except ImportError:
     sys.exit(1)
 
 
-def diff(a, b):
-    b = set(b)
-    return [aa for aa in a if aa not in b]
-
-
-def create_file_list(repo_folder, reference, source_pattern):
-    ''' Search for files to analyze '''
-
-    # Get a list of all reference files, since source_pattern can use wildcards
-    source_files = glob.glob(
-        os.path.join(repo_folder, reference, source_pattern)
-    )
-    source_files.sort()
-
-    return source_files
-
-
 def analyze_files(repo_folder, locale, reference, source_pattern):
     ''' Analyze files, returning an array with stats and errors '''
 
@@ -64,7 +50,8 @@ def analyze_files(repo_folder, locale, reference, source_pattern):
     global_stats = {}
 
     # Get a list of all files for the reference locale
-    source_files = create_file_list(repo_folder, reference, source_pattern)
+    source_files = shared_functions.create_file_list(
+        repo_folder, reference, source_pattern)
     for source_file in source_files:
         translated = 0
         missing = 0
@@ -111,8 +98,10 @@ def analyze_files(repo_folder, locale, reference, source_pattern):
             sys.exit(1)
 
         # Check missing/obsolete strings
-        missing_strings = diff(reference_strings, locale_strings)
-        obsolete_strings = diff(locale_strings, reference_strings)
+        missing_strings = shared_functions.list_diff(
+            reference_strings, locale_strings)
+        obsolete_strings = shared_functions.list_diff(
+            locale_strings, reference_strings)
 
         total = translated + missing
         source_index = os.path.basename(source_file)

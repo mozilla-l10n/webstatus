@@ -7,6 +7,9 @@ import os
 import subprocess
 import sys
 
+# Import local shared functions
+import shared_functions
+
 # Import local libraries
 library_path = os.path.abspath(os.path.join(
     os.path.dirname(__file__), os.pardir, 'libraries'))
@@ -32,30 +35,14 @@ except ImportError:
     sys.exit(1)
 
 
-def diff(a, b):
-    b = set(b)
-    return [aa for aa in a if aa not in b]
-
-
-def create_file_list(repo_folder, locale, source_pattern):
-    ''' Search for files to analyze '''
-
-    # Get a list of all reference files, since source_pattern can use wildcards
-    locale_files = glob.glob(
-        os.path.join(repo_folder, locale, source_pattern)
-    )
-    locale_files.sort()
-
-    return locale_files
-
-
 def analyze_files(repo_folder, locale, source_pattern):
     ''' Analyze files, returning an array with stats and errors '''
 
     global_stats = {}
 
     # Get a list of all files for the reference locale
-    locale_files = create_file_list(repo_folder, locale, source_pattern)
+    locale_files = shared_functions.create_file_list(
+        repo_folder, locale, source_pattern)
     for locale_file in locale_files:
         fuzzy = 0
         total = 0
@@ -65,10 +52,12 @@ def analyze_files(repo_folder, locale, source_pattern):
             po = polib.pofile(locale_file)
             obsolete_strings = po.obsolete_entries()
             # I need to exclude obsolete strings
-            fuzzy = len(diff(po.fuzzy_entries(), obsolete_strings))
-            translated = len(diff(po.translated_entries(), obsolete_strings))
+            fuzzy = len(shared_functions.list_diff(
+                po.fuzzy_entries(), obsolete_strings))
+            translated = len(shared_functions.list_diff(
+                po.translated_entries(), obsolete_strings))
             untranslated = len(
-                diff(po.untranslated_entries(), obsolete_strings))
+                shared_functions.list_diff(po.untranslated_entries(), obsolete_strings))
         except Exception as e:
             print e
             sys.exit(1)

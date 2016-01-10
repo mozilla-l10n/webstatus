@@ -8,6 +8,9 @@ import os
 import sys
 from xml.dom import minidom
 
+# Import local shared functions
+import shared_functions
+
 
 def analyze_file(file_path, string_list, untranslated_strings):
     # This function parses a XLIFF file
@@ -114,30 +117,14 @@ def analyze_file(file_path, string_list, untranslated_strings):
     return file_stats
 
 
-def diff(a, b):
-    b = set(b)
-    return [aa for aa in a if aa not in b]
-
-
-def create_file_list(repo_folder, reference, source_pattern):
-    ''' Search for files to analyze '''
-
-    # Get a list of all reference files, since source_pattern can use wildcards
-    source_files = glob.glob(
-        os.path.join(repo_folder, reference, source_pattern)
-    )
-    source_files.sort()
-
-    return source_files
-
-
 def analyze_files(repo_folder, locale, reference, source_pattern):
     ''' Analyze files, returning an array with stats and errors '''
 
     global_stats = {}
 
     # Get a list of all files for the reference locale
-    source_files = create_file_list(repo_folder, reference, source_pattern)
+    source_files = shared_functions.create_file_list(
+        repo_folder, reference, source_pattern)
     for source_file in source_files:
         reference_strings = []
         reference_stats = analyze_file(
@@ -169,8 +156,10 @@ def analyze_files(repo_folder, locale, reference, source_pattern):
             }
 
         # Check missing/obsolete strings
-        missing_strings = diff(reference_strings, locale_strings)
-        obsolete_strings = diff(locale_strings, reference_strings)
+        missing_strings = shared_functions.list_diff(
+            reference_strings, locale_strings)
+        obsolete_strings = shared_functions.list_diff(
+            locale_strings, reference_strings)
 
         source_index = os.path.basename(source_file)
         global_stats[source_index] = {
