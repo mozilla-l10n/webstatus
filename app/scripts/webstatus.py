@@ -26,18 +26,18 @@ class FileAnalysis():
         self.product_folder = product_folder
         self.script_path = script_path
 
-    def analyze_pattern(self, locale, source_files):
+    def analyze_pattern(self, locale, search_patterns):
         '''Initialize internal stats and call the specific method to perform the actual analysis'''
 
         # Initialize stats
         self.__initialize_stats()
         # Pick the correct analysis based on source_type
         if self.source_type == 'xliff':
-            self.__analyze_xliff(locale, source_files)
+            self.__analyze_xliff(locale, search_patterns)
         elif self.source_type == 'properties':
-            self.__analyze_properties(locale, source_files)
+            self.__analyze_properties(locale, search_patterns)
         elif self.source_type == 'gettext':
-            self.__analyze_gettext(locale, source_files)
+            self.__analyze_gettext(locale, search_patterns)
 
         return self.__calculate_stats()
 
