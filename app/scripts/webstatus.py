@@ -44,21 +44,20 @@ class FileAnalysis():
     def __analyze_gettext(self, locale, search_patterns):
         '''Analyze gettext (.po) files'''
 
-        for search_pattern in search_patterns:
-            try:
-                po_file = parser.GettextParser(
-                    self.product_folder, search_pattern, locale)
-                string_stats_json = po_file.analyze_files()
-                for file_name, file_data in string_stats_json.iteritems():
-                    self.string_count['fuzzy'] += file_data['fuzzy']
-                    self.string_count['translated'] += file_data['translated']
-                    self.string_count[
-                        'untranslated'] += file_data['untranslated']
-                    self.string_count['total'] += file_data['total']
-            except Exception as e:
-                print '\n', e
-                self.error_record[
-                    'messages'] = 'Generic error extracting stats.\n'
+        try:
+            po_file = parser.GettextParser(
+                self.product_folder, search_patterns, locale)
+            string_stats_json = po_file.analyze_files()
+            for file_name, file_data in string_stats_json.iteritems():
+                self.string_count['fuzzy'] += file_data['fuzzy']
+                self.string_count['translated'] += file_data['translated']
+                self.string_count[
+                    'untranslated'] += file_data['untranslated']
+                self.string_count['total'] += file_data['total']
+        except Exception as e:
+            print '\n', e
+            self.error_record[
+                'messages'] = 'Generic error extracting stats.\n'
 
         if self.error_record['messages']:
             self.error_record['status'] = True
@@ -66,24 +65,23 @@ class FileAnalysis():
     def __analyze_properties(self, locale, search_patterns):
         ''' Analyze properties files '''
 
-        for search_pattern in search_patterns:
-            try:
-                properties_file = parser.PropertiesParser(
-                    self.product_folder, search_pattern, self.reference_locale, locale)
-                string_stats_json = properties_file.analyze_files()
-                for file_name, file_data in string_stats_json.iteritems():
-                    self.string_count['identical'] += file_data['identical']
-                    self.string_count['missing'] += file_data['missing']
-                    self.string_count['translated'] += file_data['translated']
-                    self.string_count['total'] += file_data['total']
-            except subprocess.CalledProcessError as e:
-                print '\n', e
-                self.error_record[
-                    'messages'] = 'Error extracting stats: {0!s}\n'.format(e.output)
-            except Exception as e:
-                print '\n', e
-                self.error_record[
-                    'messages'] = 'Generic error extracting stats.\n'
+        try:
+            properties_file = parser.PropertiesParser(
+                self.product_folder, search_patterns, self.reference_locale, locale)
+            string_stats_json = properties_file.analyze_files()
+            for file_name, file_data in string_stats_json.iteritems():
+                self.string_count['identical'] += file_data['identical']
+                self.string_count['missing'] += file_data['missing']
+                self.string_count['translated'] += file_data['translated']
+                self.string_count['total'] += file_data['total']
+        except subprocess.CalledProcessError as e:
+            print '\n', e
+            self.error_record[
+                'messages'] = 'Error extracting stats: {0!s}\n'.format(e.output)
+        except Exception as e:
+            print '\n', e
+            self.error_record[
+                'messages'] = 'Generic error extracting stats.\n'
 
         if self.error_record['messages']:
             self.error_record['status'] = True
@@ -91,25 +89,24 @@ class FileAnalysis():
     def __analyze_xliff(self, locale, search_patterns):
         ''' Analyze XLIFF files '''
 
-        for search_pattern in search_patterns:
-            try:
-                xliff_file = parser.XliffParser(
-                    self.product_folder, search_pattern, self.reference_locale, locale)
-                string_stats_json = xliff_file.analyze_files()
-                for file_name, file_data in string_stats_json.iteritems():
-                    self.string_count['identical'] += file_data['identical']
-                    self.string_count['missing'] += file_data['missing']
-                    self.string_count['translated'] += file_data['translated']
-                    self.string_count[
-                        'untranslated'] += file_data['untranslated']
-                    self.string_count['total'] += file_data['total']
-                    if file_data['errors'] != '':
-                        self.error_record[
-                            'messages'] = 'Error extracting stats: {0!s}\n'.format(e.output)
-            except Exception as e:
-                print '\n', e
-                self.error_record[
-                    'messages'] = 'Generic error extracting stats.\n'
+        try:
+            xliff_file = parser.XliffParser(
+                self.product_folder, search_patterns, self.reference_locale, locale)
+            string_stats_json = xliff_file.analyze_files()
+            for file_name, file_data in string_stats_json.iteritems():
+                self.string_count['identical'] += file_data['identical']
+                self.string_count['missing'] += file_data['missing']
+                self.string_count['translated'] += file_data['translated']
+                self.string_count[
+                    'untranslated'] += file_data['untranslated']
+                self.string_count['total'] += file_data['total']
+                if file_data['errors'] != '':
+                    self.error_record[
+                        'messages'] = 'Error extracting stats: {0!s}\n'.format(e.output)
+        except Exception as e:
+            print '\n', e
+            self.error_record[
+                'messages'] = 'Generic error extracting stats.\n'
 
         if self.error_record['messages']:
             self.error_record['status'] = True

@@ -57,13 +57,15 @@ except ImportError:
 class Parser():
     '''Generic class used to analyze a source file pattern'''
 
-    def create_file_list(self, repo_folder, locale, search_pattern):
+    def create_file_list(self, repo_folder, locale, search_patterns):
         ''' Create a list of all files to analyze '''
 
         # Get a list of all files to analyze, since pattern can use wildcards
-        locale_files = glob.glob(
-            os.path.join(repo_folder, locale, search_pattern)
-        )
+        locale_files = []
+        for search_pattern in search_patterns:
+            locale_files += glob.glob(
+                os.path.join(repo_folder, locale, search_pattern)
+            )
         locale_files.sort()
 
         return locale_files
@@ -78,7 +80,7 @@ class Parser():
 class GettextParser(Parser):
     ''' Class to parse gettext files (.po) '''
 
-    def __init__(self, repo_folder, search_pattern, locale):
+    def __init__(self, repo_folder, search_patterns, locale):
         ''' Initialize parameters '''
         # Locale I'm analyzing
         self.locale = locale
@@ -87,7 +89,7 @@ class GettextParser(Parser):
         self.repo_folder = repo_folder
 
         # Search pattern
-        self.search_pattern = search_pattern
+        self.search_patterns = search_patterns
 
     def analyze_files(self):
         ''' Analyze files, returning an array with stats and errors '''
@@ -96,7 +98,7 @@ class GettextParser(Parser):
 
         # Get a list of all files for the reference locale
         locale_files = self.create_file_list(
-            self.repo_folder, self.locale, self.search_pattern)
+            self.repo_folder, self.locale, self.search_patterns)
 
         for locale_file in locale_files:
             fuzzy = 0
@@ -132,13 +134,13 @@ class GettextParser(Parser):
 class PropertiesParser(Parser):
     ''' Class to parse properties files (.properties) '''
 
-    def __init__(self, repo_folder, search_pattern, reference, locale):
+    def __init__(self, repo_folder, search_patterns, reference, locale):
         ''' Initialize parameters '''
         # Path to the repository
         self.repo_folder = repo_folder
 
         # Search pattern
-        self.search_pattern = search_pattern
+        self.search_patterns = search_patterns
 
         # Reference folder/locale for this product
         self.reference = reference
@@ -160,7 +162,7 @@ class PropertiesParser(Parser):
 
         # Get a list of all files for the reference locale
         reference_files = self.create_file_list(
-            self.repo_folder, self.reference, self.search_pattern)
+            self.repo_folder, self.reference, self.search_patterns)
         for reference_file in reference_files:
             translated = 0
             missing = 0
@@ -230,14 +232,14 @@ class PropertiesParser(Parser):
 class XliffParser(Parser):
     ''' Class to parse XLIFF files (.xliff) '''
 
-    def __init__(self, repo_folder, search_pattern, reference, locale):
+    def __init__(self, repo_folder, search_patterns, reference, locale):
         ''' Initialize parameters '''
 
         # Path to the repository
         self.repo_folder = repo_folder
 
         # Search pattern
-        self.search_pattern = search_pattern
+        self.search_patterns = search_patterns
 
         # Reference folder/locale for this product
         self.reference = reference
@@ -252,7 +254,7 @@ class XliffParser(Parser):
 
         # Get a list of all files for the reference locale
         source_files = self.create_file_list(
-            self.repo_folder, self.reference, self.search_pattern)
+            self.repo_folder, self.reference, self.search_patterns)
         for source_file in source_files:
             reference_strings = []
             reference_stats = self.parse_xliff(
