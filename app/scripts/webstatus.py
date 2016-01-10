@@ -13,7 +13,6 @@ from datetime import datetime
 
 # Import local libraries
 import parser
-import xliff_stats
 
 
 class FileAnalysis():
@@ -87,18 +86,13 @@ class FileAnalysis():
         if self.error_record['messages']:
             self.error_record['status'] = True
 
-    def __analyze_xliff(self, locale, source_files):
+    def __analyze_xliff(self, locale, search_patterns):
         ''' Analyze XLIFF files '''
 
-        for source_file in source_files:
-            # source_file can include wildcards, e.g. *.xliff
-            # xliff_stats.py supports wildcards, no need to pass one file
-            # at the time.
+        for search_pattern in search_patterns:
             try:
-                string_stats_json = xliff_stats.analyze_files(
-                    self.product_folder, locale,
-                    self.reference_locale, source_file
-                )
+                xliff_file = parser.XliffParser(self.product_folder, search_pattern, self.reference_locale, locale)
+                string_stats_json = xliff_file.analyze_files()
                 for file_name, file_data in string_stats_json.iteritems():
                     self.string_count['identical'] += file_data['identical']
                     self.string_count['missing'] += file_data['missing']
