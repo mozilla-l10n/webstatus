@@ -18,9 +18,9 @@ def main():
                            help='export indented and more readable JSON')
     args = cl_parser.parse_args()
 
-    po_file = parser.GettextParser(
-        args.repo_folder, args.search_pattern, args.locale)
-    global_stats = po_file.analyze_files()
+    file_parser = parser.GettextParser(args.repo_folder, [args.search_pattern])
+    file_parser.set_locale(args.locale)
+    global_stats = file_parser.analyze_files()
 
     if args.pretty:
         print json.dumps(global_stats, sort_keys=True, indent=2)

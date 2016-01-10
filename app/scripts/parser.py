@@ -80,16 +80,17 @@ class Parser():
 class GettextParser(Parser):
     ''' Class to parse gettext files (.po) '''
 
-    def __init__(self, repo_folder, search_patterns, locale):
-        ''' Initialize parameters '''
-        # Locale I'm analyzing
-        self.locale = locale
-
+    def __init__(self, repo_folder, search_patterns):
         # Path to the repository
         self.repo_folder = repo_folder
 
         # Search pattern
         self.search_patterns = search_patterns
+
+    def set_locale(self, locale):
+        ''' Set current locale '''
+
+        self.locale = locale
 
     def analyze_files(self):
         ''' Analyze files, returning an array with stats and errors '''
@@ -134,7 +135,7 @@ class GettextParser(Parser):
 class PropertiesParser(Parser):
     ''' Class to parse properties files (.properties) '''
 
-    def __init__(self, repo_folder, search_patterns, reference, locale):
+    def __init__(self, repo_folder, search_patterns, reference):
         ''' Initialize parameters '''
         # Path to the repository
         self.repo_folder = repo_folder
@@ -145,7 +146,9 @@ class PropertiesParser(Parser):
         # Reference folder/locale for this product
         self.reference = reference
 
-        # Locale I'm analyzing
+    def set_locale(self, locale):
+        ''' Set current locale '''
+
         self.locale = locale
 
     def analyze_files(self):
@@ -232,7 +235,7 @@ class PropertiesParser(Parser):
 class XliffParser(Parser):
     ''' Class to parse XLIFF files (.xliff) '''
 
-    def __init__(self, repo_folder, search_patterns, reference, locale):
+    def __init__(self, repo_folder, search_patterns, reference):
         ''' Initialize parameters '''
 
         # Path to the repository
@@ -244,7 +247,9 @@ class XliffParser(Parser):
         # Reference folder/locale for this product
         self.reference = reference
 
-        # Locale I'm analyzing
+    def set_locale(self, locale):
+        ''' Set current locale '''
+
         self.locale = locale
 
     def analyze_files(self):

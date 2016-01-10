@@ -19,9 +19,9 @@ def main():
                            help='export indented and more readable JSON')
     args = cl_parser.parse_args()
 
-    xliff_file = parser.XliffParser(
-        args.repo_folder, args.search_pattern, args.reference, args.locale)
-    global_stats = xliff_file.analyze_files()
+    file_parser = parser.XliffParser(args.repo_folder, [args.search_pattern], args.reference)
+    file_parser.set_locale(args.locale)
+    global_stats = file_parser.analyze_files()
 
     if args.pretty:
         print json.dumps(global_stats, sort_keys=True, indent=2)
