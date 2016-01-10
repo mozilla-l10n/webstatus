@@ -13,7 +13,6 @@ from datetime import datetime
 
 # Import local libraries
 import parser
-import properties_stats
 import xliff_stats
 
 
@@ -48,7 +47,7 @@ class FileAnalysis():
 
         for search_pattern in search_patterns:
             try:
-                po_file = parser.GettextParser(self.product_folder, locale, search_pattern)
+                po_file = parser.GettextParser(self.product_folder, search_pattern, locale)
                 string_stats_json = po_file.analyze_files()
                 for file_name, file_data in string_stats_json.iteritems():
                     self.string_count['fuzzy'] += file_data['fuzzy']
@@ -64,18 +63,13 @@ class FileAnalysis():
         if self.error_record['messages']:
             self.error_record['status'] = True
 
-    def __analyze_properties(self, locale, source_files):
+    def __analyze_properties(self, locale, search_patterns):
         ''' Analyze properties files '''
 
-        for source_file in source_files:
-            # source_file can include wildcards, e.g. *.properties
-            # properties_stats.py supports wildcards, no need to pass one file
-            # at the time.
+        for search_pattern in search_patterns:
             try:
-                string_stats_json = properties_stats.analyze_files(
-                    self.product_folder, locale,
-                    self.reference_locale, source_file
-                )
+                properties_file = parser.PropertiesParser(self.product_folder, search_pattern, self.reference_locale, locale)
+                string_stats_json = properties_file.analyze_files()
                 for file_name, file_data in string_stats_json.iteritems():
                     self.string_count['identical'] += file_data['identical']
                     self.string_count['missing'] += file_data['missing']

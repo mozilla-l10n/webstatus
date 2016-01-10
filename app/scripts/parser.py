@@ -74,7 +74,7 @@ class Parser():
 class GettextParser(Parser):
     ''' Class to parse gettext files (.po) '''
 
-    def __init__(self, repo_folder, locale, search_pattern):
+    def __init__(self, repo_folder, search_pattern, locale):
         ''' Check environment and initialize parameters '''
         # Locale I'm analyzing
         self.locale = locale
@@ -120,6 +120,101 @@ class GettextParser(Parser):
                 'total': total,
                 'translated': translated,
                 'untranslated': untranslated
+            }
+
+        return global_stats
+
+class PropertiesParser(Parser):
+    ''' Class to parse properties files (.properties) '''
+
+    def __init__(self, repo_folder, search_pattern, reference, locale):
+        ''' Check environment and initialize parameters '''
+        # Path to the repository
+        self.repo_folder = repo_folder
+
+        # Search pattern
+        self.search_pattern = search_pattern
+
+        # Reference folder/locale for this product
+        self.reference = reference
+
+        # Locale I'm analyzing
+        self.locale = locale
+
+    def analyze_files(self):
+        ''' Analyze files, returning an array with stats and errors '''
+
+        try:
+            silme.format.Manager.register('properties')
+            ioclient = silme.io.Manager.get('file')
+        except Exception as e:
+            print e
+            sys.exit(1)
+
+        global_stats = {}
+
+        # Get a list of all files for the reference locale
+        reference_files = self.create_file_list(self.repo_folder, self.reference, self.search_pattern)
+        for reference_file in reference_files:
+            translated = 0
+            missing = 0
+            identical = 0
+            total = 0
+            try:
+                locale_file = reference_file.replace(
+                    '/{0}/'.format(self.reference),
+                    '/{0}/'.format(self.locale)
+                )
+                reference_entities = ioclient.get_entitylist(reference_file)
+                # Store reference strings
+                reference_strings = {}
+                for entity in reference_entities:
+                    reference_strings[entity] = reference_entities[
+                        entity].get_value()
+
+                locale_strings = {}
+                if os.path.isfile(locale_file):
+                    # Locale file exists
+                    missing_file = False
+                    locale_entities = ioclient.get_entitylist(locale_file)
+
+                    # Store translations
+                    for entity in locale_entities:
+                        locale_strings[entity] = locale_entities[
+                            entity].get_value()
+
+                    for entity in reference_strings:
+                        if entity in locale_strings:
+                            translated += 1
+                            if reference_strings[entity] == locale_strings[entity]:
+                                identical += 1
+                        else:
+                            missing += 1
+                else:
+                    # Locale file doesn't exist, count all reference strings as
+                    # missing
+                    missing += len(reference_entities)
+                    missing_file = True
+
+            except Exception as e:
+                print e
+                sys.exit(1)
+
+            # Check missing/obsolete strings
+            missing_strings = self.list_diff(reference_strings, locale_strings)
+            obsolete_strings = self.list_diff(locale_strings, reference_strings)
+
+            total = translated + missing
+            source_index = os.path.basename(reference_file)
+            global_stats[source_index] = {
+                'identical': identical,
+                'missing': missing,
+                'missing_file': missing_file,
+                'missing_strings': missing_strings,
+                'obsolete': len(obsolete_strings),
+                'obsolete_strings': obsolete_strings,
+                'total': total,
+                'translated': translated
             }
 
         return global_stats
