@@ -11,8 +11,8 @@ from ConfigParser import SafeConfigParser
 from StringIO import StringIO
 from datetime import datetime
 
-# Import local files
-import po_stats
+# Import local libraries
+import parser
 import properties_stats
 import xliff_stats
 
@@ -43,13 +43,13 @@ class FileAnalysis():
 
         return self.__calculate_stats()
 
-    def __analyze_gettext(self, locale, locale_files):
+    def __analyze_gettext(self, locale, search_patterns):
         '''Analyze gettext (.po) files'''
 
-        for locale_file in locale_files:
+        for search_pattern in search_patterns:
             try:
-                string_stats_json = po_stats.analyze_files(
-                    self.product_folder, locale, locale_file)
+                po_file = parser.GettextParser(self.product_folder, locale, search_pattern)
+                string_stats_json = po_file.analyze_files()
                 for file_name, file_data in string_stats_json.iteritems():
                     self.string_count['fuzzy'] += file_data['fuzzy']
                     self.string_count['translated'] += file_data['translated']
@@ -59,7 +59,7 @@ class FileAnalysis():
             except Exception as e:
                 print '\n', e
                 self.error_record[
-                    'messages'] = 'Error extracting stats with postats.sh'
+                    'messages'] = 'Generic error extracting stats.\n'
 
         if self.error_record['messages']:
             self.error_record['status'] = True
@@ -291,9 +291,9 @@ def check_environment(main_path, settings):
         env_errors = True
     else:
         try:
-            parser = SafeConfigParser()
-            parser.readfp(open(config_file))
-            settings['storage_path'] = parser.get('config', 'storage_path')
+            ini_parser = SafeConfigParser()
+            ini_parser.readfp(open(config_file))
+            settings['storage_path'] = ini_parser.get('config', 'storage_path')
             if not os.path.isdir(settings['storage_path']):
                 print 'Folder specified in config.ini is missing ({0}).'.format(settings['storage_path'])
                 print 'Script will try to create it.'
@@ -376,14 +376,14 @@ def main():
     products = {}
 
     # Get command line parameters
-    parser = argparse.ArgumentParser()
-    parser.add_argument('product_code', nargs='?',
-                        help='Code of the single product to update')
-    parser.add_argument('--pretty', action='store_true',
-                        help='export indented and more readable JSON')
-    parser.add_argument('--noupdate', action='store_true',
-                        help='don\'t update local repositories (but clone them if missing)')
-    args = parser.parse_args()
+    cl_parser = argparse.ArgumentParser()
+    cl_parser.add_argument('product_code', nargs='?',
+                           help='Code of the single product to update')
+    cl_parser.add_argument('--pretty', action='store_true',
+                           help='export indented and more readable JSON')
+    cl_parser.add_argument('--noupdate', action='store_true',
+                           help='don\'t update local repositories (but clone them if missing)')
+    args = cl_parser.parse_args()
 
     if (args.product_code):
         product_code = args.product_code
