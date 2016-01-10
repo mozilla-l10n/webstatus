@@ -146,6 +146,10 @@ class PropertiesParser(Parser):
         # Reference folder/locale for this product
         self.reference = reference
 
+        # Store reference data to read them only once
+        self.reference_strings = {}
+        self.reference_files = []
+
     def set_locale(self, locale):
         ''' Set current locale '''
 
@@ -163,10 +167,32 @@ class PropertiesParser(Parser):
 
         global_stats = {}
 
-        # Get a list of all files for the reference locale
-        reference_files = self.create_file_list(
-            self.repo_folder, self.reference, self.search_patterns)
-        for reference_file in reference_files:
+        # Create a list of reference files, and store reference data only once.
+        # Object has the following structure:
+        #
+        # {
+        #     'filename': {
+        #         'entity1': 'value1',
+        #         ...
+        #     },
+        #     'filename2': {
+        #         'entity1': 'value1',
+        #         ...
+        #     },
+        #     ...
+        # }
+        if not self.reference_files:
+            # Store the list of files
+            self.reference_files = self.create_file_list(self.repo_folder, self.reference, self.search_patterns)
+            for reference_file in self.reference_files:
+                reference_entities = ioclient.get_entitylist(reference_file)
+                file_index = os.path.basename(reference_file)
+                self.reference_strings[file_index] = {}
+                for entity in reference_entities:
+                    self.reference_strings[file_index][entity] = reference_entities[entity].get_value()
+
+        for reference_file in self.reference_files:
+            file_index = os.path.basename(reference_file)
             translated = 0
             missing = 0
             identical = 0
@@ -176,13 +202,6 @@ class PropertiesParser(Parser):
                     '/{0}/'.format(self.reference),
                     '/{0}/'.format(self.locale)
                 )
-                reference_entities = ioclient.get_entitylist(reference_file)
-                # Store reference strings
-                reference_strings = {}
-                for entity in reference_entities:
-                    reference_strings[entity] = reference_entities[
-                        entity].get_value()
-
                 locale_strings = {}
                 if os.path.isfile(locale_file):
                     # Locale file exists
@@ -194,17 +213,17 @@ class PropertiesParser(Parser):
                         locale_strings[entity] = locale_entities[
                             entity].get_value()
 
-                    for entity in reference_strings:
+                    for entity, original in self.reference_strings[file_index].iteritems():
                         if entity in locale_strings:
                             translated += 1
-                            if reference_strings[entity] == locale_strings[entity]:
+                            if locale_strings[entity] == original:
                                 identical += 1
                         else:
                             missing += 1
                 else:
                     # Locale file doesn't exist, count all reference strings as
                     # missing
-                    missing += len(reference_entities)
+                    missing += len(self.reference_strings[file_index])
                     missing_file = True
 
             except Exception as e:
@@ -212,13 +231,11 @@ class PropertiesParser(Parser):
                 sys.exit(1)
 
             # Check missing/obsolete strings
-            missing_strings = self.list_diff(reference_strings, locale_strings)
-            obsolete_strings = self.list_diff(
-                locale_strings, reference_strings)
+            missing_strings = self.list_diff(self.reference_strings[file_index], locale_strings)
+            obsolete_strings = self.list_diff(locale_strings, self.reference_strings[file_index])
 
             total = translated + missing
-            source_index = os.path.basename(reference_file)
-            global_stats[source_index] = {
+            global_stats[file_index] = {
                 'identical': identical,
                 'missing': missing,
                 'missing_file': missing_file,
