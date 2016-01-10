@@ -46,7 +46,8 @@ class FileAnalysis():
 
         for search_pattern in search_patterns:
             try:
-                po_file = parser.GettextParser(self.product_folder, search_pattern, locale)
+                po_file = parser.GettextParser(
+                    self.product_folder, search_pattern, locale)
                 string_stats_json = po_file.analyze_files()
                 for file_name, file_data in string_stats_json.iteritems():
                     self.string_count['fuzzy'] += file_data['fuzzy']
@@ -67,7 +68,8 @@ class FileAnalysis():
 
         for search_pattern in search_patterns:
             try:
-                properties_file = parser.PropertiesParser(self.product_folder, search_pattern, self.reference_locale, locale)
+                properties_file = parser.PropertiesParser(
+                    self.product_folder, search_pattern, self.reference_locale, locale)
                 string_stats_json = properties_file.analyze_files()
                 for file_name, file_data in string_stats_json.iteritems():
                     self.string_count['identical'] += file_data['identical']
@@ -91,7 +93,8 @@ class FileAnalysis():
 
         for search_pattern in search_patterns:
             try:
-                xliff_file = parser.XliffParser(self.product_folder, search_pattern, self.reference_locale, locale)
+                xliff_file = parser.XliffParser(
+                    self.product_folder, search_pattern, self.reference_locale, locale)
                 string_stats_json = xliff_file.analyze_files()
                 for file_name, file_data in string_stats_json.iteritems():
                     self.string_count['identical'] += file_data['identical']

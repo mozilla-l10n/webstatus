@@ -53,6 +53,7 @@ except ImportError:
     print 'Error importing polib library'
     sys.exit(1)
 
+
 class Parser():
     '''Generic class used to analyze a source file pattern'''
 
@@ -127,6 +128,7 @@ class GettextParser(Parser):
 
         return global_stats
 
+
 class PropertiesParser(Parser):
     ''' Class to parse properties files (.properties) '''
 
@@ -157,7 +159,8 @@ class PropertiesParser(Parser):
         global_stats = {}
 
         # Get a list of all files for the reference locale
-        reference_files = self.create_file_list(self.repo_folder, self.reference, self.search_pattern)
+        reference_files = self.create_file_list(
+            self.repo_folder, self.reference, self.search_pattern)
         for reference_file in reference_files:
             translated = 0
             missing = 0
@@ -205,7 +208,8 @@ class PropertiesParser(Parser):
 
             # Check missing/obsolete strings
             missing_strings = self.list_diff(reference_strings, locale_strings)
-            obsolete_strings = self.list_diff(locale_strings, reference_strings)
+            obsolete_strings = self.list_diff(
+                locale_strings, reference_strings)
 
             total = translated + missing
             source_index = os.path.basename(reference_file)
@@ -221,6 +225,7 @@ class PropertiesParser(Parser):
             }
 
         return global_stats
+
 
 class XliffParser(Parser):
     ''' Class to parse XLIFF files (.xliff) '''
@@ -246,7 +251,8 @@ class XliffParser(Parser):
         global_stats = {}
 
         # Get a list of all files for the reference locale
-        source_files = self.create_file_list(self.repo_folder, self.reference, self.search_pattern)
+        source_files = self.create_file_list(
+            self.repo_folder, self.reference, self.search_pattern)
         for source_file in source_files:
             reference_strings = []
             reference_stats = self.parse_xliff(
@@ -279,7 +285,8 @@ class XliffParser(Parser):
 
             # Check missing/obsolete strings
             missing_strings = self.list_diff(reference_strings, locale_strings)
-            obsolete_strings = self.list_diff(locale_strings, reference_strings)
+            obsolete_strings = self.list_diff(
+                locale_strings, reference_strings)
 
             source_index = os.path.basename(source_file)
             global_stats[source_index] = {

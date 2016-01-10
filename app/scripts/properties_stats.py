@@ -16,10 +16,11 @@ def main():
     cl_parser.add_argument('reference', help='Reference locale code')
     cl_parser.add_argument('locale', help='Locale code to analyze')
     cl_parser.add_argument('--pretty', action='store_true',
-                        help='export indented and more readable JSON')
+                           help='export indented and more readable JSON')
     args = cl_parser.parse_args()
 
-    properties_file = parser.PropertiesParser(args.repo_folder, args.search_pattern, args.reference, args.locale)
+    properties_file = parser.PropertiesParser(
+        args.repo_folder, args.search_pattern, args.reference, args.locale)
     global_stats = properties_file.analyze_files()
 
     if args.pretty:
