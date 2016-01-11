@@ -11,114 +11,126 @@ from ConfigParser import SafeConfigParser
 from StringIO import StringIO
 from datetime import datetime
 
-# Import local files
-import po_stats
-import properties_stats
-import xliff_stats
+# Import local libraries
+import parser
 
 
 class FileAnalysis():
     '''Class used to analyze a source file pattern'''
 
-    def __init__(self, source_type, reference_locale, product_folder, script_path):
-        '''Initialize object setting parameters that remain identical across an entire product'''
+    def __init__(self, source_type):
+        '''Initialize object with only source type, make sure file_parse is not defined'''
 
+        self.file_parser = None
         self.source_type = source_type
-        self.reference_locale = reference_locale
-        self.product_folder = product_folder
-        self.script_path = script_path
 
-    def analyze_pattern(self, locale, source_files):
+    def set_product_folder(self, product_folder):
+        ''' Set product folder '''
+
+        self.product_folder = product_folder
+
+    def set_locale(self, locale):
+        ''' Set current locale '''
+
+        self.locale = locale
+
+    def set_reference(self, reference):
+        ''' Set reference locale/folder '''
+
+        self.reference = reference
+
+    def set_search_patterns(self, search_patterns):
+        ''' Set file search patterns '''
+
+        self.search_patterns = search_patterns
+
+    def analyze_pattern(self):
         '''Initialize internal stats and call the specific method to perform the actual analysis'''
 
         # Initialize stats
         self.__initialize_stats()
         # Pick the correct analysis based on source_type
-        if self.source_type == 'xliff':
-            self.__analyze_xliff(locale, source_files)
+        if self.source_type == 'gettext':
+            if self.file_parser is None:
+                self.file_parser = parser.GettextParser(
+                    self.product_folder, self.search_patterns)
+            self.file_parser.set_locale(self.locale)
+            self.__analyze_gettext()
         elif self.source_type == 'properties':
-            self.__analyze_properties(locale, source_files)
-        elif self.source_type == 'gettext':
-            self.__analyze_gettext(locale, source_files)
+            if self.file_parser is None:
+                self.file_parser = parser.PropertiesParser(
+                    self.product_folder, self.search_patterns, self.reference)
+            self.file_parser.set_locale(self.locale)
+            self.__analyze_properties()
+        elif self.source_type == 'xliff':
+            if self.file_parser is None:
+                self.file_parser = parser.XliffParser(
+                    self.product_folder, self.search_patterns, self.reference)
+            self.file_parser.set_locale(self.locale)
+            self.__analyze_xliff()
 
         return self.__calculate_stats()
 
-    def __analyze_gettext(self, locale, locale_files):
+    def __analyze_gettext(self):
         '''Analyze gettext (.po) files'''
 
-        for locale_file in locale_files:
-            try:
-                string_stats_json = po_stats.analyze_files(
-                    self.product_folder, locale, locale_file)
-                for file_name, file_data in string_stats_json.iteritems():
-                    self.string_count['fuzzy'] += file_data['fuzzy']
-                    self.string_count['translated'] += file_data['translated']
-                    self.string_count[
-                        'untranslated'] += file_data['untranslated']
-                    self.string_count['total'] += file_data['total']
-            except Exception as e:
-                print '\n', e
-                self.error_record[
-                    'messages'] = 'Error extracting stats with postats.sh'
+        try:
+            string_stats_json = self.file_parser.analyze_files()
+            for file_name, file_data in string_stats_json.iteritems():
+                self.string_count['fuzzy'] += file_data['fuzzy']
+                self.string_count['translated'] += file_data['translated']
+                self.string_count[
+                    'untranslated'] += file_data['untranslated']
+                self.string_count['total'] += file_data['total']
+        except Exception as e:
+            print '\n', e
+            self.error_record[
+                'messages'] = 'Generic error extracting stats.\n'
 
         if self.error_record['messages']:
             self.error_record['status'] = True
 
-    def __analyze_properties(self, locale, source_files):
+    def __analyze_properties(self):
         ''' Analyze properties files '''
 
-        for source_file in source_files:
-            # source_file can include wildcards, e.g. *.properties
-            # properties_stats.py supports wildcards, no need to pass one file
-            # at the time.
-            try:
-                string_stats_json = properties_stats.analyze_files(
-                    self.product_folder, locale,
-                    self.reference_locale, source_file
-                )
-                for file_name, file_data in string_stats_json.iteritems():
-                    self.string_count['identical'] += file_data['identical']
-                    self.string_count['missing'] += file_data['missing']
-                    self.string_count['translated'] += file_data['translated']
-                    self.string_count['total'] += file_data['total']
-            except subprocess.CalledProcessError as e:
-                print '\n', e
-                self.error_record[
-                    'messages'] = 'Error extracting stats: {0!s}\n'.format(e.output)
-            except Exception as e:
-                print '\n', e
-                self.error_record[
-                    'messages'] = 'Generic error extracting stats.\n'
+        try:
+            string_stats_json = self.file_parser.analyze_files()
+            for file_name, file_data in string_stats_json.iteritems():
+                self.string_count['identical'] += file_data['identical']
+                self.string_count['missing'] += file_data['missing']
+                self.string_count['translated'] += file_data['translated']
+                self.string_count['total'] += file_data['total']
+        except subprocess.CalledProcessError as e:
+            print '\n', e
+            self.error_record[
+                'messages'] = 'Error extracting stats: {0!s}\n'.format(e.output)
+        except Exception as e:
+            print '\n', e
+            self.error_record[
+                'messages'] = 'Generic error extracting stats.\n'
 
         if self.error_record['messages']:
             self.error_record['status'] = True
 
-    def __analyze_xliff(self, locale, source_files):
+    def __analyze_xliff(self):
         ''' Analyze XLIFF files '''
 
-        for source_file in source_files:
-            # source_file can include wildcards, e.g. *.xliff
-            # xliff_stats.py supports wildcards, no need to pass one file
-            # at the time.
-            try:
-                string_stats_json = xliff_stats.analyze_files(
-                    self.product_folder, locale,
-                    self.reference_locale, source_file
-                )
-                for file_name, file_data in string_stats_json.iteritems():
-                    self.string_count['identical'] += file_data['identical']
-                    self.string_count['missing'] += file_data['missing']
-                    self.string_count['translated'] += file_data['translated']
-                    self.string_count[
-                        'untranslated'] += file_data['untranslated']
-                    self.string_count['total'] += file_data['total']
-                    if file_data['errors'] != '':
-                        self.error_record[
-                            'messages'] = 'Error extracting stats: {0!s}\n'.format(e.output)
-            except Exception as e:
-                print '\n', e
-                self.error_record[
-                    'messages'] = 'Generic error extracting stats.\n'
+        try:
+            string_stats_json = self.file_parser.analyze_files()
+            for file_name, file_data in string_stats_json.iteritems():
+                self.string_count['identical'] += file_data['identical']
+                self.string_count['missing'] += file_data['missing']
+                self.string_count['translated'] += file_data['translated']
+                self.string_count[
+                    'untranslated'] += file_data['untranslated']
+                self.string_count['total'] += file_data['total']
+                if file_data['errors'] != '':
+                    self.error_record[
+                        'messages'] = 'Error extracting stats: {0!s}\n'.format(e.output)
+        except Exception as e:
+            print '\n', e
+            self.error_record[
+                'messages'] = 'Generic error extracting stats.\n'
 
         if self.error_record['messages']:
             self.error_record['status'] = True
@@ -291,9 +303,9 @@ def check_environment(main_path, settings):
         env_errors = True
     else:
         try:
-            parser = SafeConfigParser()
-            parser.readfp(open(config_file))
-            settings['storage_path'] = parser.get('config', 'storage_path')
+            ini_parser = SafeConfigParser()
+            ini_parser.readfp(open(config_file))
+            settings['storage_path'] = ini_parser.get('config', 'storage_path')
             if not os.path.isdir(settings['storage_path']):
                 print 'Folder specified in config.ini is missing ({0}).'.format(settings['storage_path'])
                 print 'Script will try to create it.'
@@ -320,39 +332,6 @@ def check_environment(main_path, settings):
             print '{0} command not available.'.format(command)
             env_errors = True
 
-    if not env_errors:
-        # Check libraries, only if there are no previous env_errors since
-        # I need Mercurial to checkout libraries.
-        library_path = os.path.join(main_path, 'app', 'libraries')
-
-        # Silme (for .properties files)
-        silme_path = os.path.join(library_path, 'silme')
-        if not os.path.isdir(silme_path):
-            try:
-                print 'Cloning silme...'
-                cmd_status = subprocess.check_output(
-                    ['hg', 'clone', 'https://hg.mozilla.org/l10n/silme',
-                        silme_path, '-u', 'silme-0.8.0'],
-                    stderr=subprocess.STDOUT,
-                    shell=False)
-                print cmd_status
-            except Exception as e:
-                print e
-
-        # polib (for gettext files)
-        polib_path = os.path.join(library_path, 'polib')
-        if not os.path.isdir(polib_path):
-            try:
-                print 'Cloning polib...'
-                cmd_status = subprocess.check_output(
-                    ['hg', 'clone', 'https://bitbucket.org/izi/polib',
-                        polib_path, '-u', '1.0.7'],
-                    stderr=subprocess.STDOUT,
-                    shell=False)
-                print cmd_status
-            except Exception as e:
-                print e
-
     if env_errors:
         print '\nPlease fix these errors and try again.'
         sys.exit(0)
@@ -363,7 +342,6 @@ def main():
     settings = {}
     webstatus_path = os.path.abspath(
         os.path.join(sys.path[0], os.pardir, os.pardir))
-    script_path = os.path.join(webstatus_path, 'app', 'scripts')
     check_environment(webstatus_path, settings)
 
     storage_path = settings['storage_path']
@@ -376,14 +354,14 @@ def main():
     products = {}
 
     # Get command line parameters
-    parser = argparse.ArgumentParser()
-    parser.add_argument('product_code', nargs='?',
-                        help='Code of the single product to update')
-    parser.add_argument('--pretty', action='store_true',
-                        help='export indented and more readable JSON')
-    parser.add_argument('--noupdate', action='store_true',
-                        help='don\'t update local repositories (but clone them if missing)')
-    args = parser.parse_args()
+    cl_parser = argparse.ArgumentParser()
+    cl_parser.add_argument('product_code', nargs='?',
+                           help='Code of the single product to update')
+    cl_parser.add_argument('--pretty', action='store_true',
+                           help='export indented and more readable JSON')
+    cl_parser.add_argument('--noupdate', action='store_true',
+                           help='don\'t update local repositories (but clone them if missing)')
+    args = cl_parser.parse_args()
 
     if (args.product_code):
         product_code = args.product_code
@@ -427,8 +405,10 @@ def main():
         # Determine source type only once for product, create a FileAnalysis
         # object
         source_type = product.get('source_type', 'gettext')
-        file_analysis = FileAnalysis(
-            source_type, reference_locale, product_folder, script_path)
+        file_analysis = FileAnalysis(source_type)
+        file_analysis.set_reference(reference_locale)
+        file_analysis.set_product_folder(product_folder)
+        file_analysis.set_search_patterns(product['source_files'])
 
         print '\n--------\nAnalyzing: {0}'.format(product['displayed_name'])
         for locale in sorted(os.listdir(product_folder)):
@@ -445,9 +425,9 @@ def main():
             sys.stdout.write(pretty_locale + ' ')
             sys.stdout.flush()
 
-            # Analyze file
-            status_record = file_analysis.analyze_pattern(
-                locale, product['source_files'])
+            # Analyze files for this locale
+            file_analysis.set_locale(locale)
+            status_record = file_analysis.analyze_pattern()
             status_record['name'] = product['displayed_name']
 
             # If the pretty_locale key does not exist, I create it
