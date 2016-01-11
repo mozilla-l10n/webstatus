@@ -76,6 +76,10 @@ class Parser():
         b = set(b)
         return [aa for aa in a if aa not in b]
 
+    def set_locale(self, locale):
+        ''' Set current locale '''
+
+        self.locale = locale
 
 class GettextParser(Parser):
     ''' Class to parse gettext files (.po) '''
@@ -86,11 +90,6 @@ class GettextParser(Parser):
 
         # Search pattern
         self.search_patterns = search_patterns
-
-    def set_locale(self, locale):
-        ''' Set current locale '''
-
-        self.locale = locale
 
     def analyze_files(self):
         ''' Analyze files, returning an array with stats and errors '''
@@ -150,11 +149,6 @@ class PropertiesParser(Parser):
         self.reference_strings = {}
         self.reference_files = []
 
-    def set_locale(self, locale):
-        ''' Set current locale '''
-
-        self.locale = locale
-
     def analyze_files(self):
         ''' Analyze files, returning an array with stats and errors '''
 
@@ -171,18 +165,13 @@ class PropertiesParser(Parser):
         # Object has the following structure:
         #
         # {
-        #     'filename': {
-        #         'entity1': 'value1',
-        #         ...
-        #     },
-        #     'filename2': {
+        #     'filename1': {
         #         'entity1': 'value1',
         #         ...
         #     },
         #     ...
         # }
         if not self.reference_files:
-            # Store the list of files
             self.reference_files = self.create_file_list(
                 self.repo_folder, self.reference, self.search_patterns)
             for reference_file in self.reference_files:
@@ -272,11 +261,6 @@ class XliffParser(Parser):
         self.reference_strings = {}
         self.reference_files = []
 
-    def set_locale(self, locale):
-        ''' Set current locale '''
-
-        self.locale = locale
-
     def analyze_files(self):
         ''' Analyze files, returning an array with stats and errors '''
 
@@ -289,15 +273,9 @@ class XliffParser(Parser):
         #     'filename': {
         #         'entity1': 'value1',
         #         ...
-        #     },
-        #     'filename2': {
-        #         'entity1': 'value1',
-        #         ...
-        #     },
         #     ...
         # }
         if not self.reference_files:
-            # Store the list of files
             self.reference_files = self.create_file_list(
                 self.repo_folder, self.reference, self.search_patterns)
             for reference_file in self.reference_files:
