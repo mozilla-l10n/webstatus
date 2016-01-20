@@ -1,7 +1,15 @@
 {
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/mozilla-l10n/phpclass-json"
+        }
+    ],
+
     "require-dev": {
         "atoum/atoum": "~2.0",
         "fabpot/php-cs-fixer": "~1.4",
+        "mozillal10n/json": "~0.1",
         "twig/twig": "~1.0"
     },
 
