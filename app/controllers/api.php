@@ -1,11 +1,19 @@
 <?php
 namespace Webstatus;
 
+use Json\Json;
+
+$json_object = new Json;
+
+if ($requested_product == 'all') {
+    // No product specified
+    die($json_object->outputError('Product code is missing.'));
+}
+
 // Check if the requested product is available
 if (! isset($available_products[$requested_product])) {
     // Product is not available
-    http_response_code(400);
-    die('Product code is missing or not valid.');
+    die($json_object->outputError('Product code is not supported.'));
 }
 
 // Check if the output is JSON or plain text
@@ -32,8 +40,7 @@ if ($list_type == 'incomplete') {
         }
     }
 } else {
-    http_response_code(400);
-    die('Specified type is not supported. Available values: incomplete, supported.');
+    die($json_object->outputError('Specified type is not supported. Available values: incomplete, supported.'));
 }
 
 sort($locales);
@@ -48,9 +55,5 @@ if ($plain_text) {
     ob_end_flush();
 } else {
     // JSON output
-    ob_start();
-    header("access-control-allow-origin: *");
-    header("Content-type: application/json; charset=UTF-8");
-    echo json_encode($locales, JSON_PRETTY_PRINT);
-    ob_end_flush();
+    echo $json_object->outputContent($locales, false, true);
 }
