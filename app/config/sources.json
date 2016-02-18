@@ -220,6 +220,20 @@
         ],
         "source_type": "gettext"
     },
+    "thimble": {
+        "displayed_name": "Thimble",
+        "excluded_folders": [],
+        "locale_folder": "locales",
+        "product_id": "thimble",
+        "reference_locale": "en-US",
+        "repository_name": "thimble.mozilla.org",
+        "repository_type": "git",
+        "repository_url": "https://github.com/mozilla/thimble.mozilla.org",
+        "source_files": [
+            "*.properties"
+        ],
+        "source_type": "properties"
+    },
     "zamboni": {
         "displayed_name": "Marketplace",
         "excluded_folders": [],
