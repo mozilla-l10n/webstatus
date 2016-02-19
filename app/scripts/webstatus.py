@@ -375,6 +375,11 @@ def main():
             print '{0} is not available, you need to run an update for all products first.'.format(json_filename)
             sys.exit(1)
         json_data = json.load(open(json_filename))
+        # Remove all existing data for this product. This way, if a locale is
+        # removed from the repository, we don't keep the old data.
+        json_data['metadata']['products'].pop(product_code, None)
+        for locale in json_data['locales']:
+            json_data['locales'][locale].pop(product_code, None)
     else:
         # No product code, need to update everything and start from scratch
         products = all_products
