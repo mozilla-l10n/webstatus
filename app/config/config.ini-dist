@@ -6,3 +6,6 @@ storage_path=/path/to/your/folder
 ;Leave empty if the website will be served from the root,
 ;"name_subfolder" if it will be served from a subfolder (e.g. "webstatus")
 web_folder=
+
+; Github secret key for continuous integration
+github_key=putsecretkeyhere
