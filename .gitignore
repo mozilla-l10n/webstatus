@@ -5,4 +5,5 @@ app/libraries/silme
 composer.lock
 composer.phar
 vendor/
+web/github_log.txt
 web/web_status.json
