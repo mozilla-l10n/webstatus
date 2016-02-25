@@ -90,3 +90,6 @@ Example at: https://l10n.mozilla-community.org/~flod/webstatus/web_status.json
         "source_type": source type (gettext, properties, xliff)
     },
 ```
+
+# License
+This software is released under the terms of the [Mozilla Public License v2.0](http://www.mozilla.org/MPL/2.0/).
