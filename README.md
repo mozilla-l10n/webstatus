@@ -5,6 +5,19 @@ Python scripts and PHP Web views used to analyze Web projects based on Gettext (
 * ```app/scripts/webstatus.py``` generates a JSON file for all listed projects.
 * ```app/scripts/webstatus.py product-id``` generates a JSON file updating only the requested ```product-id```.
 
+Full syntas
+```
+usage: webstatus.py [-h] [--pretty] [--noupdate] [product_code]
+
+positional arguments:
+  product_code  Code of the single product to update
+
+optional arguments:
+  -h, --help    show this help message and exit
+  --pretty      export indented and more readable JSON
+  --noupdate    don't update local repositories (but clone them if missing)
+```
+
 Prerequisites:
 * Copy ```app/config/config.ini-dist``` as ```app/config/config.ini```, adapting the variables to your system:
     * ```storage_path```is the path used to store all local clones (currently about 1 GB of space required).
