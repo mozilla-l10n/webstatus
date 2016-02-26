@@ -5,7 +5,7 @@ Python scripts and PHP Web views used to analyze Web projects based on Gettext (
 * ```app/scripts/webstatus.py``` generates a JSON file for all listed projects.
 * ```app/scripts/webstatus.py product-id``` generates a JSON file updating only the requested ```product-id```.
 
-Full syntas
+Full command line syntax:
 ```
 usage: webstatus.py [-h] [--pretty] [--noupdate] [product_code]
 
@@ -23,7 +23,7 @@ Prerequisites:
     * ```storage_path```is the path used to store all local clones (currently about 1 GB of space required).
     * ```web_folder``` indicates if the website is served from a root or a subfolder.
 * Install [Composer](https://getcomposer.org/), a dependency manager for PHP.
-* Make sure ```git```, ```hg```, ```python```, ```svn``` and ```msgfmt```(included in package *gettext*) are installed in your system.
+* Make sure ```git```, ```hg```, ```python```, ```svn``` are installed in your system.
 * Run ```app/scripts/webstatus.py``` at least once to generate the data in ```/web_status.json```. If you're only interested in the front-end, you can copy an existing JSON file from a [running instance](https://l10n.mozilla-community.org/~flod/webstatus/web_status.json).
 
 ## Available URLS
