@@ -1,4 +1,5 @@
 *.pyc
+.composer_cache
 app/config/config.ini
 app/libraries/polib
 app/libraries/silme

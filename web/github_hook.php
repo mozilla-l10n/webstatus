@@ -40,7 +40,12 @@ if (isset($_SERVER[$header])) {
     );
 
     if ($validation == explode('=', $_SERVER[$header])[1]) {
+        $log = '';
+        // Aknowledge request
+        http_response_code(200);
+
         // Pull latest changes
+        $log = "Updating Git repository\n";
         exec("git checkout $branch ; git pull origin $branch");
 
         // Install or update dependencies
@@ -48,23 +53,29 @@ if (isset($_SERVER[$header])) {
             chdir($app_root);
 
             // www-data does not have a HOME or COMPOSER_HOME, create one
-            if (! is_dir("{$app_root}/.composer_cache")) {
-                mkdir("{$app_root}/.composer_cache");
+            $cache_folder = "{$app_root}/.composer_cache";
+            if (! is_dir($cache_folder)) {
+                $log = "Creating folder {$cache_folder}\n";
+                mkdir($cache_folder);
             }
 
             putenv("COMPOSER_HOME={$app_root}/.composer_cache");
 
             if (file_exists($app_root . '/vendor')) {
+                $log .= "Updating Composer\n";
                 exec("php {$composer} update > /dev/null 2>&1");
             } else {
+                $log .= "Installing Composer\n";
                 exec("php {$composer} install > /dev/null 2>&1");
             }
         }
 
         // Execute webstatus.py to update repositories
+        $log .= "Running webstatus.py\n";
         exec("{$app_root}/app/scripts/webstatus.py > /dev/null 2>&1");
 
-        logHookResult('Last update: ' . date('d-m-Y H:i:s'), true);
+        $log .= 'Last update: ' . date('d-m-Y H:i:s');
+        logHookResult($log, true);
     } else {
         logHookResult('Invalid GitHub secret');
     }
