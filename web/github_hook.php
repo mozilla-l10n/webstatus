@@ -41,8 +41,17 @@ if (isset($_SERVER[$header])) {
 
     if ($validation == explode('=', $_SERVER[$header])[1]) {
         $log = '';
-        // Aknowledge request
-        http_response_code(200);
+
+        // Aknowledge request since the script takes a few minutes
+        ob_start();
+        echo '{}';
+        header($_SERVER["SERVER_PROTOCOL"] . " 202 Accepted");
+        header("Status: 202 Accepted");
+        header("Content-Type: application/json");
+        header('Content-Length: ' . ob_get_length());
+        ob_end_flush();
+        ob_flush();
+        flush();
 
         // Pull latest changes
         $log = "Updating Git repository\n";
