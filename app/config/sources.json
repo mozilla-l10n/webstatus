@@ -102,11 +102,11 @@
     "input": {
         "displayed_name": "Firefox Input",
         "excluded_folders": [],
-        "locale_folder": "locale",
+        "locale_folder": "",
         "product_id": "input",
         "repository_name": "input",
-        "repository_type": "svn",
-        "repository_url": "http://svn.mozilla.org/projects/l10n-misc/trunk/input/",
+        "repository_type": "git",
+        "repository_url": "https://github.com/mozilla-l10n/input-l10n",
         "source_files": [
             "LC_MESSAGES/*.po"
         ],
