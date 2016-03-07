@@ -79,9 +79,12 @@ if (isset($_SERVER[$header])) {
             }
         }
 
-        // Execute webstatus.py to update repositories
-        $log .= "Running webstatus.py\n";
-        exec("{$app_root}/app/scripts/webstatus.py > /dev/null 2>&1");
+        /*
+            DISABLED to avoid permissions issues
+            Execute webstatus.py to update repositories
+            $log .= "Running webstatus.py\n";
+            exec("{$app_root}/app/scripts/webstatus.py > /dev/null 2>&1");
+        */
 
         $log .= 'Last update: ' . date('d-m-Y H:i:s');
         logHookResult($log, true);
