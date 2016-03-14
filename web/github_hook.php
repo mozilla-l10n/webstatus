@@ -21,7 +21,7 @@ function logHookResult($message, $success = false)
             $log_headers .= "$header: $value \n";
         }
     }
-    file_put_contents(__DIR__ . '/github_log.txt', $log_headers);
+    file_put_contents(__DIR__ . '/../logs/github_log.txt', $log_headers);
 }
 
 // CHECK: Download composer in the app root if it is not already there
