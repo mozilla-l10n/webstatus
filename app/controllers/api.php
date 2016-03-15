@@ -33,6 +33,16 @@ if ($list_type == 'incomplete') {
             }
         }
     }
+} elseif ($list_type == 'complete') {
+    foreach ($available_locales as $locale_code) {
+        if (isset($webstatus_data[$locale_code][$requested_product])) {
+            if (! $webstatus_data[$locale_code][$requested_product]['error_status'] &&
+                $webstatus_data[$locale_code][$requested_product]['percentage'] == 100) {
+                // Locale is completely localized and doesn't have errors
+                $locales[] = $locale_code;
+            }
+        }
+    }
 } elseif ($list_type == 'supported') {
     foreach ($available_locales as $locale_code) {
         if (isset($webstatus_data[$locale_code][$requested_product])) {
