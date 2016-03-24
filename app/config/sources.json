@@ -178,6 +178,19 @@
         ],
         "source_type": "gettext"
     },
+    "push-dev-dashboard": {
+        "displayed_name": "Developer Services Dashboard",
+        "excluded_folders": [],
+        "locale_folder": "locale",
+        "product_id": "push-dev-dashboard",
+        "repository_name": "push-dev-dashboard",
+        "repository_type": "git",
+        "repository_url": "https://github.com/mozilla-services/push-dev-dashboard",
+        "source_files": [
+            "LC_MESSAGES/*.po"
+        ],
+        "source_type": "gettext"
+    },
     "socialapi-directory": {
         "displayed_name": "Social API Directory",
         "excluded_folders": [],
