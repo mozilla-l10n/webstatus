@@ -10,7 +10,7 @@ $(document).ready(function() {
 
     // Associate click handlers to anchors
     $('.locale_anchor').click(function(e) {
-        e.preventDefault;
+        e.preventDefault();
         // Remove other selected rows and spacers
         $('tr').removeClass('selected');
         $('.spacer').remove();
