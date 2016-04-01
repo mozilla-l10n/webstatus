@@ -14,8 +14,8 @@ $excluded_locales = [
     'ach', 'ak', 'an', 'az', 'br', 'cak', 'db-LB', 'en', 'en-GB',
     'en-US', 'en-ZA', 'es-AR', 'es-CL', 'es-ES', 'es-MX', 'fur',
     'fy', 'fy-NL', 'ga', 'gu-IN', 'hi', 'hy-AM', 'is', 'ka', 'kk',
-    'lo', 'lv', 'mai', 'metadata', 'ml-IN', 'mr', 'nb', 'nn-NO',
-    'no', 'nso', 'oc', 'pa-IN', 'pt', 'rm', 'rw', 'sah', 'son',
+    'lo', 'lv', 'mai', 'metadata', 'mg', 'ml-IN', 'mr', 'nb', 'nn-NO',
+    'no', 'nso', 'oc', 'pa-IN', 'pt', 'rm', 'rw', 'sah', 'ses', 'son',
     'sr-Cyrl', 'sr-CYRL', 'sr-LATN', 'sv', 'ta-LK', 'tsz', 'uz',
 ];
 

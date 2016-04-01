@@ -1,4 +1,6 @@
-$(document).ready(function () {
+/* eslint new-cap: [2, {"capIsNewExceptions": ["DataTable"]}] */
+
+$(document).ready(function() {
     // Make table sortable
     $('#main_table').DataTable({
         info: false,
@@ -7,7 +9,7 @@ $(document).ready(function () {
     });
 
     // Associate click handlers to anchors
-    $('.locale_anchor').click(function (e) {
+    $('.locale_anchor').click(function(e) {
         e.preventDefault;
         // Remove other selected rows and spacers
         $('tr').removeClass('selected');
@@ -21,7 +23,7 @@ $(document).ready(function () {
         $(row).addClass('selected');
         // Scroll slight above the anchor
         var y = $(window).scrollTop();
-        $("html, body").animate(
+        $('html, body').animate(
             {
                 scrollTop: y - 150
             }, 500);
