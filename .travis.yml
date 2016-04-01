@@ -17,11 +17,14 @@ install:
   - hg clone https://hg.mozilla.org/l10n/silme app/libraries/silme -u silme-0.8.0
   ## Copy config to avoid warning
   - cp app/config/config.ini-dist app/config/config.ini
+  ## Install ESLint
+  - npm install -g eslint
 script:
   - vendor/atoum/atoum/bin/atoum -d tests/units/
   - php tests/functional/scripts.php
   - php tests/integrity/source_integrity.php
   - vendor/bin/php-cs-fixer --diff --dry-run -v fix
+  - eslint web/assets/js
 notifications:
   irc:
     channels:
