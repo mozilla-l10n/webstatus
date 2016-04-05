@@ -5,9 +5,10 @@ $error_messages = [];
 $content_title = '';
 $comparison_data = [];
 
-/* Read locale and product: if locale is missing it defaults to the
- * browser's locale, if product is missing it defaults to 'all'
- */
+/*
+    Read locale and product: if locale is missing it defaults to the
+    browser's locale, if product is missing it defaults to 'all'.
+*/
 if (! in_array($requested_locale, $available_locales)) {
     $error_messages[] = 'This locale is not supported.';
 }
@@ -36,11 +37,13 @@ if (empty($error_messages)) {
         }
 
         foreach ($product_data['source_files'] as $source_file) {
-            /* Scripts are called xliff_stats.py, properties_stats.py and have
-             * the same input parameters and output
-             */
+            /*
+                Scripts are called xliff_stats.py, properties_stats.py and have
+                the same input parameters and output.
+            */
             $script_path = __DIR__ . "/../scripts/{$source_type}_stats.py";
-            $command = "python {$script_path} {$base_path} {$source_file} {$product_data['reference_locale']} {$requested_locale}";
+            $reference_locale = $webstatus->getReferenceLocale($requested_product);
+            $command = "python {$script_path} {$base_path} {$source_file} {$reference_locale} {$requested_locale}";
             $comparison_data += json_decode(shell_exec($command), true);
         }
     }

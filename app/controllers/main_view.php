@@ -16,8 +16,10 @@ $xliff_note = false;
 $calculate_row_style = function ($product_data) {
     $result = [];
 
-    // Determine percentage of completeness. For .properties files
-    // I consider also the number of identical strings
+    /*
+        Determine percentage of completeness. For .properties files
+        I consider also the number of identical strings.
+    */
     $percentage = $product_data['percentage'];
     if ($product_data['source_type'] == 'properties') {
         if ($product_data['total'] > 0) {

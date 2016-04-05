@@ -38,6 +38,26 @@ class Webstatus extends atoum\test
                 ->isEqualTo($test_product);
     }
 
+    public function getReferenceLocaleDP()
+    {
+        return [
+            ['affiliates', 'en-US'],
+            ['browserid', 'templates'],
+            ['zippy', ''],
+        ];
+    }
+
+    /**
+     * @dataProvider getReferenceLocaleDP
+     */
+    public function testGetReferenceLocale($a, $b)
+    {
+        $obj = new _Webstatus(TEST_FILES . 'config/webstatus_test.json', TEST_FILES . 'config/sources.json');
+        $this
+            ->string($obj->getReferenceLocale($a))
+                ->isEqualTo($b);
+    }
+
     public function testGetSingleProductData()
     {
         $obj = new _Webstatus(TEST_FILES . 'config/webstatus_test.json', TEST_FILES . 'config/sources.json');
@@ -47,6 +67,7 @@ class Webstatus extends atoum\test
             'excluded_folders' => [],
             'locale_folder'    => 'locale',
             'product_id'       => 'affiliates',
+            'reference_locale' => 'en-US',
             'repository_name'  => 'affiliates',
             'repository_type'  => 'svn',
             'repository_url'   => 'http://svn.mozilla.org/projects/l10n-misc/trunk/affiliates/',

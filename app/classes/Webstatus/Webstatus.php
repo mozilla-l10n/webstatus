@@ -82,6 +82,20 @@ class Webstatus
     }
 
     /**
+     * Return the reference locale if available
+     *
+     * @param string $product_id Product ID to check
+     *
+     * @return string Reference locale code
+     */
+    public function getReferenceLocale($product_id)
+    {
+        return isset($this->sources_data[$product_id]['reference_locale'])
+            ? $this->sources_data[$product_id]['reference_locale']
+            : '';
+    }
+
+    /**
      * Return data for all products and locales
      *
      * @return array Data for all locales and products

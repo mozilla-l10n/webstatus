@@ -53,6 +53,8 @@ if ($list_type == 'incomplete') {
     die($json_object->outputError('Specified type is not supported. Available values: incomplete, supported.'));
 }
 
+// Remove reference locale if set for this product
+$locales = array_diff($locales, [$webstatus->getReferenceLocale($requested_product)]);
 sort($locales);
 
 if ($plain_text) {
