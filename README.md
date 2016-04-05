@@ -2,8 +2,8 @@ Web Status
 =========
 
 Python scripts and PHP Web views used to analyze Web projects based on Gettext (.po), .properties and XLIFF files.
-* ```app/scripts/webstatus.py``` generates a JSON file for all listed projects.
-* ```app/scripts/webstatus.py product-id``` generates a JSON file updating only the requested ```product-id```.
+* `app/scripts/webstatus.py` generates a JSON file for all listed projects.
+* `app/scripts/webstatus.py product-id` generates a JSON file updating only the requested `product-id`.
 
 Full command line syntax:
 ```
@@ -19,12 +19,12 @@ optional arguments:
 ```
 
 Prerequisites:
-* Copy ```app/config/config.ini-dist``` as ```app/config/config.ini```, adapting the variables to your system:
-    * ```storage_path```is the path used to store all local clones (currently about 1 GB of space required).
-    * ```web_folder``` indicates if the website is served from a root or a subfolder.
-* Install [Composer](https://getcomposer.org/), a dependency manager for PHP.
-* Make sure ```git```, ```hg```, ```python```, ```svn``` are installed in your system.
-* Run ```app/scripts/webstatus.py``` at least once to generate the data in ```/web_status.json```. If you're only interested in the front-end, you can copy an existing JSON file from a [running instance](https://l10n.mozilla-community.org/~flod/webstatus/web_status.json).
+* Copy `app/config/config.ini-dist` as `app/config/config.ini`, adapting the variables to your system:
+    * `storage_path`is the path used to store all local clones (currently about 1 GB of space required).
+    * `web_folder` indicates if the website is served from a root or a subfolder.
+* Install [Composer], a dependency manager for PHP.
+* Make sure `git`, `hg`, `python`, `svn` are installed in your system.
+* Run `app/scripts/webstatus.py` at least once to generate the data in `/web_status.json`. If you're only interested in the front-end, you can copy an existing JSON file from a [running instance].
 
 ## Available URLS
 ```
@@ -41,14 +41,12 @@ Marketplace Stats view.
 /api
 ```
 Simple API requests:
-* ```product=XXX```: request the list of supported locales for product XXX.
-* ```type=incomplete```: get only incomplete locales (missing strings or errors).
-* ```type=complete```: get only complete locales (no missing strings and errors).
-* ```txt```: get the response as text (default JSON).
+* `product=XXX`: request the list of supported locales for product XXX. Example: [Firefox for iOS supported locales].
+* `type=incomplete`: get only incomplete locales (missing strings or errors). Example: [Firefox for iOS incomplete locales].
+* `type=complete`: get only complete locales (no missing strings and errors). Example: [Firefox for iOS complete locales].
+* `txt`: get the response as text (default JSON). Example: [Firefox for iOS supported locales in plain text format].
 
 Without an explicit `type` output will be a list of all supported locales.
-
-Query example: [api/?product=firefox-ios&type=incomplete&txt](https://l10n.mozilla-community.org/~flod/webstatus/api/?product=firefox-ios&type=incomplete&txt)
 
 A running instance of this project is available at http://l10n.mozilla-community.org/~flod/webstatus/
 
@@ -109,3 +107,10 @@ Example at: https://l10n.mozilla-community.org/~flod/webstatus/web_status.json
 
 # License
 This software is released under the terms of the [Mozilla Public License v2.0](http://www.mozilla.org/MPL/2.0/).
+
+[Composer]: https://getcomposer.org/
+[running instance]: https://l10n.mozilla-community.org/~flod/webstatus/web_status.json
+[Firefox for iOS supported locales]: https://l10n.mozilla-community.org/~flod/webstatus/api/?product=firefox-ios
+[Firefox for iOS incomplete locales]: https://l10n.mozilla-community.org/~flod/webstatus/api/?product=firefox-ios&type=incomplete
+[Firefox for iOS complete locales]: https://l10n.mozilla-community.org/~flod/webstatus/api/?product=firefox-ios&type=complete
+[Firefox for iOS supported locales in plain text format]: https://l10n.mozilla-community.org/~flod/webstatus/api/?product=firefox-ios&txt
