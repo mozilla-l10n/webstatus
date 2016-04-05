@@ -146,7 +146,7 @@
         "product_id": "mdn",
         "repository_name": "kuma",
         "repository_type": "git",
-        "repository_url": "https://github.com/mozilla/kuma/",
+        "repository_url": "https://github.com/mozilla/kuma",
         "source_files": [
             "LC_MESSAGES/*.po"
         ],
@@ -155,11 +155,11 @@
     "mozillians": {
         "displayed_name": "Mozillians",
         "excluded_folders": [],
-        "locale_folder": "locales",
+        "locale_folder": "",
         "product_id": "mozillians",
         "repository_name": "mozillians",
-        "repository_type": "svn",
-        "repository_url": "http://svn.mozilla.org/projects/l10n-misc/trunk/mozillians/",
+        "repository_type": "git",
+        "repository_url": "https://github.com/mozilla-l10n/mozillians-l10n",
         "source_files": [
             "LC_MESSAGES/*.po"
         ],
