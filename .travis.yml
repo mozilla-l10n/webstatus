@@ -21,6 +21,7 @@ install:
   - npm install -g eslint
 script:
   - vendor/atoum/atoum/bin/atoum -d tests/units/
+  - php tests/functional/api.php
   - php tests/functional/scripts.php
   - php tests/integrity/source_integrity.php
   - vendor/bin/php-cs-fixer --diff --dry-run -v fix
