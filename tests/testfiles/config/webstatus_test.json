@@ -39,11 +39,11 @@
         "identical": 0,
         "missing": 0,
         "name": "Firefox Affiliates",
-        "percentage": 100,
+        "percentage": 90,
         "source_type": "gettext",
         "total": 290,
-        "translated": 290,
-        "untranslated": 0
+        "translated": 261,
+        "untranslated": 29
       },
       "browserid": {
         "complete": true,
@@ -83,11 +83,11 @@
         "identical": 0,
         "missing": 0,
         "name": "Browser ID",
-        "percentage": 100,
+        "percentage": 90,
         "source_type": "gettext",
         "total": 110,
-        "translated": 110,
-        "untranslated": 0
+        "translated": 99,
+        "untranslated": 11
       },
       "zippy": {
         "complete": true,

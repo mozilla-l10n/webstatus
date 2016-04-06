@@ -6,9 +6,15 @@ require __DIR__ . '/../../vendor/autoload.php';
 
 $root_folder = realpath(__DIR__ . '/../..');
 
-$config_file = "{$root_folder}/app/config/config.ini";
-$sources_file = "{$root_folder}/app/config/sources.json";
-$webstatus_file = "{$root_folder}/web/web_status.json";
+if (getenv('AUTOMATED_TESTS')) {
+    $config_file = "{$root_folder}/app/config/config.ini-dist";
+    $sources_file = "{$root_folder}/tests/testfiles/config/sources.json";
+    $webstatus_file = "{$root_folder}/tests/testfiles/config/webstatus_test.json";
+} else {
+    $config_file = "{$root_folder}/app/config/config.ini";
+    $sources_file = "{$root_folder}/app/config/sources.json";
+    $webstatus_file = "{$root_folder}/web/web_status.json";
+}
 
 // Store server config
 $server_config = parse_ini_file($config_file);
