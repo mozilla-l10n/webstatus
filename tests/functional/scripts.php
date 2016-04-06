@@ -10,9 +10,6 @@ define('TESTFILES',  realpath(__DIR__ . '/../') . '/testfiles/');
 mb_internal_encoding('UTF-8');
 date_default_timezone_set('Europe/Paris');
 
-// Set an environment variable so that the instance will use content from test files
-putenv("AUTOMATED_TESTS=true");
-
 /*
     Compare $reference JSON with $result. Return true if identical, false
     if they're different.
