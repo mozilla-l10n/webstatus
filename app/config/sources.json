@@ -213,8 +213,8 @@
         "locale_folder": "",
         "product_id": "sumo",
         "repository_name": "sumo",
-        "repository_type": "svn",
-        "repository_url": "http://svn.mozilla.org/projects/sumo/locales",
+        "repository_type": "git",
+        "repository_url": "https://github.com/mozilla-l10n/sumo-l10n",
         "source_files": [
             "LC_MESSAGES/*.po"
         ],
