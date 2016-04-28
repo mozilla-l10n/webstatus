@@ -165,19 +165,6 @@
         ],
         "source_type": "gettext"
     },
-    "payments-l10n": {
-        "displayed_name": "Firefox Accounts Payments",
-        "excluded_folders": [],
-        "locale_folder": "locale",
-        "product_id": "payments-l10n",
-        "repository_name": "payments-l10n",
-        "repository_type": "git",
-        "repository_url": "https://github.com/mozilla/payments-l10n",
-        "source_files": [
-            "LC_MESSAGES/*.po"
-        ],
-        "source_type": "gettext"
-    },
     "socialapi-directory": {
         "displayed_name": "Social API Directory",
         "excluded_folders": [],
