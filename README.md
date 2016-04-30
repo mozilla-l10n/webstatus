@@ -1,5 +1,4 @@
-Web Status
-=========
+# Web Status
 
 Python scripts and PHP Web views used to analyze Web projects based on Gettext (.po), .properties and XLIFF files.
 * `app/scripts/webstatus.py` generates a JSON file for all listed projects.
@@ -18,12 +17,12 @@ optional arguments:
   --noupdate    don't update local repositories (but clone them if missing)
 ```
 
-Prerequisites:
+## Installation
 * Copy `app/config/config.ini-dist` as `app/config/config.ini`, adapting the variables to your system:
     * `storage_path`is the path used to store all local clones (currently about 1 GB of space required).
     * `web_folder` indicates if the website is served from a root or a subfolder.
-* Install [Composer], a dependency manager for PHP.
-* Make sure `git`, `hg`, `python`, `svn` are installed in your system.
+* Install [Composer] (PHP dependency manager), either locally or globally, then install the dependencies by running `php composer.phar install` from the project's root folder.
+* Make sure that `git`, `hg`, and `python` are installed in your system.
 * Run `app/scripts/webstatus.py` at least once to generate the data in `/web_status.json`. If you're only interested in the front-end, you can copy an existing JSON file from a [running instance].
 
 ## Available URLS
@@ -106,7 +105,7 @@ Example at: https://l10n.mozilla-community.org/~flod/webstatus/web_status.json
 ```
 
 # License
-This software is released under the terms of the [Mozilla Public License v2.0](http://www.mozilla.org/MPL/2.0/).
+This software is released under the terms of the [Mozilla Public License v2.0].
 
 [Composer]: https://getcomposer.org/
 [running instance]: https://l10n.mozilla-community.org/~flod/webstatus/web_status.json
@@ -114,3 +113,4 @@ This software is released under the terms of the [Mozilla Public License v2.0](h
 [Firefox for iOS incomplete locales]: https://l10n.mozilla-community.org/~flod/webstatus/api/?product=firefox-ios&type=incomplete
 [Firefox for iOS complete locales]: https://l10n.mozilla-community.org/~flod/webstatus/api/?product=firefox-ios&type=complete
 [Firefox for iOS supported locales in plain text format]: https://l10n.mozilla-community.org/~flod/webstatus/api/?product=firefox-ios&txt
+[Mozilla Public License v2.0]: http://www.mozilla.org/MPL/2.0/
