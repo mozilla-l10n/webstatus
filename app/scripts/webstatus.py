@@ -126,7 +126,7 @@ class FileAnalysis():
                 self.string_count['total'] += file_data['total']
                 if file_data['errors'] != '':
                     self.error_record[
-                        'messages'] = 'Error extracting stats: {0!s}\n'.format(e.output)
+                        'messages'] = u'Error extracting stats: {0!s}\n'.format(file_data['errors'])
         except Exception as e:
             print '\n', e
             self.error_record[
