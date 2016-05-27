@@ -40,19 +40,6 @@
         ],
         "source_type": "gettext"
     },
-    "findmydevice": {
-        "displayed_name": "Find My Device",
-        "excluded_folders": [],
-        "locale_folder": "locale",
-        "product_id": "findmydevice",
-        "repository_name": "FindMyDevice-l10n",
-        "repository_type": "git",
-        "repository_url": "https://github.com/mozilla-services/FindMyDevice-l10n",
-        "source_files": [
-            "LC_MESSAGES/*.po"
-        ],
-        "source_type": "gettext"
-    },
     "firefox-ios": {
         "displayed_name": "Firefox for iOS",
         "excluded_folders": [],
