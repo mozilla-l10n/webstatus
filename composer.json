@@ -8,7 +8,7 @@
 
     "require-dev": {
         "atoum/atoum": "~2.0",
-        "fabpot/php-cs-fixer": "~1.4",
+        "friendsofphp/php-cs-fixer": "~1.11",
         "mozillal10n/json": "~0.1",
         "twig/twig": "~1.0"
     },
