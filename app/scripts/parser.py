@@ -422,8 +422,7 @@ class XliffParser(Parser):
                             file_element.attributes['original'].value)
                         errors.append(error_msg)
         except Exception as e:
-            print e
-            sys.exit(1)
+            errors.append(str(e))
 
         total = translated + untranslated
         file_stats = {
