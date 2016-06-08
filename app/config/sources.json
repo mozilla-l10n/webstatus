@@ -27,6 +27,20 @@
         ],
         "source_type": "gettext"
     },
+    "advocacy": {
+        "displayed_name": "Mozilla Advocacy",
+        "excluded_folders": [],
+        "locale_folder": "locales",
+        "product_id": "advocacy",
+        "reference_locale": "en-US",
+        "repository_name": "advocacy.mozilla.org",
+        "repository_type": "git",
+        "repository_url": "https://github.com/mozilla/advocacy.mozilla.org",
+        "source_files": [
+            "*.properties"
+        ],
+        "source_type": "properties"
+    },
     "commbadge": {
         "displayed_name": "Marketplace CommBadge",
         "excluded_folders": [],
