@@ -73,7 +73,7 @@
         "source_type": "properties"
     },
     "fxaccount": {
-        "displayed_name": "Firefox Account",
+        "displayed_name": "Firefox Accounts",
         "excluded_folders": [
             "linux",
             "osx",
