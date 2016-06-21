@@ -41,19 +41,6 @@
         ],
         "source_type": "properties"
     },
-    "commbadge": {
-        "displayed_name": "Marketplace CommBadge",
-        "excluded_folders": [],
-        "locale_folder": "locale",
-        "product_id": "commbadge",
-        "repository_name": "commbadge",
-        "repository_type": "git",
-        "repository_url": "https://github.com/mozilla/commbadge",
-        "source_files": [
-            "LC_MESSAGES/*.po"
-        ],
-        "source_type": "gettext"
-    },
     "firefox-ios": {
         "displayed_name": "Firefox for iOS",
         "excluded_folders": [],
@@ -67,19 +54,6 @@
             "*.xliff"
         ],
         "source_type": "xliff"
-    },
-    "fireplace": {
-        "displayed_name": "Marketplace Fireplace",
-        "excluded_folders": [],
-        "locale_folder": "locale",
-        "product_id": "fireplace",
-        "repository_name": "fireplace",
-        "repository_type": "git",
-        "repository_url": "https://github.com/mozilla/fireplace",
-        "source_files": [
-            "LC_MESSAGES/*.po"
-        ],
-        "source_type": "gettext"
     },
     "fundraising": {
         "displayed_name": "Fundraising",
@@ -142,19 +116,6 @@
         ],
         "source_type": "properties"
     },
-    "marketplace-stats": {
-        "displayed_name": "Marketplace Stats",
-        "excluded_folders": [],
-        "locale_folder": "locale",
-        "product_id": "marketplace-stats",
-        "repository_name": "marketplace-stats",
-        "repository_type": "git",
-        "repository_url": "https://github.com/mozilla/marketplace-stats",
-        "source_files": [
-            "LC_MESSAGES/*.po"
-        ],
-        "source_type": "gettext"
-    },
     "mdn": {
         "displayed_name": "MDN",
         "excluded_folders": ["en_US"],
@@ -194,19 +155,6 @@
         ],
         "source_type": "gettext"
     },
-    "spartacus": {
-        "displayed_name": "Marketplace Spartacus",
-        "excluded_folders": [],
-        "locale_folder": "locale",
-        "product_id": "spartacus",
-        "repository_name": "spartacus",
-        "repository_type": "git",
-        "repository_url": "https://github.com/mozilla/spartacus",
-        "source_files": [
-            "LC_MESSAGES/*.po"
-        ],
-        "source_type": "gettext"
-    },
     "sumo": {
         "displayed_name": "SUMO",
         "excluded_folders": [
@@ -236,31 +184,5 @@
             "*.properties"
         ],
         "source_type": "properties"
-    },
-    "zamboni": {
-        "displayed_name": "Marketplace",
-        "excluded_folders": [],
-        "locale_folder": "locale",
-        "product_id": "zamboni",
-        "repository_name": "zamboni",
-        "repository_type": "git",
-        "repository_url": "https://github.com/mozilla/zamboni",
-        "source_files": [
-            "LC_MESSAGES/*.po"
-        ],
-        "source_type": "gettext"
-    },
-    "zippy": {
-        "displayed_name": "Marketplace Zippy",
-        "excluded_folders": [],
-        "locale_folder": "locale",
-        "product_id": "zippy",
-        "repository_name": "zippy",
-        "repository_type": "git",
-        "repository_url": "https://github.com/mozilla/zippy",
-        "source_files": [
-            "LC_MESSAGES/*.po"
-        ],
-        "source_type": "gettext"
     }
 }
