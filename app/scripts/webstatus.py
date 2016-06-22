@@ -18,11 +18,12 @@ import parser
 class FileAnalysis():
     '''Class used to analyze a source file pattern'''
 
-    def __init__(self, source_type):
+    def __init__(self, source_type, storage_path):
         '''Initialize object with only source type, make sure file_parse is not defined'''
 
         self.file_parser = None
         self.source_type = source_type
+        self.storage_path = storage_path
 
     def set_product_folder(self, product_folder):
         ''' Set product folder '''
@@ -82,6 +83,12 @@ class FileAnalysis():
                 self.string_count[
                     'untranslated'] += file_data['untranslated']
                 self.string_count['total'] += file_data['total']
+                if file_data['errors'] != '':
+                    # Hide storage path from polib error messages
+                    error_msg = file_data['errors'].replace(
+                        self.storage_path, '')
+                    self.error_record[
+                        'messages'] = u'Error extracting stats: {0!s}\n'.format(error_msg)
         except Exception as e:
             print '\n', e
             self.error_record[
@@ -100,6 +107,9 @@ class FileAnalysis():
                 self.string_count['missing'] += file_data['missing']
                 self.string_count['translated'] += file_data['translated']
                 self.string_count['total'] += file_data['total']
+                if file_data['errors'] != '':
+                    self.error_record[
+                        'messages'] = u'Error extracting stats: {0!s}\n'.format(file_data['errors'])
         except subprocess.CalledProcessError as e:
             print '\n', e
             self.error_record[
@@ -334,7 +344,7 @@ def check_environment(main_path, settings):
 
     if env_errors:
         print '\nPlease fix these errors and try again.'
-        sys.exit(0)
+        sys.exit(1)
 
 
 def main():
@@ -410,7 +420,7 @@ def main():
         # Determine source type only once for product, create a FileAnalysis
         # object
         source_type = product.get('source_type', 'gettext')
-        file_analysis = FileAnalysis(source_type)
+        file_analysis = FileAnalysis(source_type, storage_path)
         file_analysis.set_reference(reference_locale)
         file_analysis.set_product_folder(product_folder)
         file_analysis.set_search_patterns(product['source_files'])

@@ -47,6 +47,7 @@ $compare_results[] = compare_json(
         "fuzzy": 1,
         "translated": 174,
         "total": 176,
+        "errors": "",
         "untranslated": 1
     }
 }',
@@ -126,6 +127,7 @@ echo "\nTesting .properties file...\n";
 $compare_results[] = compare_json(
     '{
     "test.properties": {
+        "errors": "",
         "identical": 1,
         "translated": 6,
         "total": 7,
