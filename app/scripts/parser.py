@@ -81,6 +81,7 @@ class Parser():
 
         self.locale = locale
 
+
 class GettextParser(Parser):
     ''' Class to parse gettext files (.po) '''
 
@@ -105,6 +106,7 @@ class GettextParser(Parser):
             total = 0
             translated = 0
             untranslated = 0
+            errors = []
             try:
                 po = polib.pofile(locale_file)
                 obsolete_strings = po.obsolete_entries()
@@ -116,12 +118,12 @@ class GettextParser(Parser):
                 untranslated = len(self.list_diff(
                     po.untranslated_entries(), obsolete_strings))
             except Exception as e:
-                print e
-                sys.exit(1)
+                errors.append(str(e))
 
             total = translated + untranslated + fuzzy
             source_index = os.path.basename(locale_file)
             global_stats[source_index] = {
+                'errors': '\n'.join(errors),
                 'fuzzy': fuzzy,
                 'total': total,
                 'translated': translated,
@@ -188,6 +190,7 @@ class PropertiesParser(Parser):
             missing = 0
             identical = 0
             total = 0
+            errors = []
             try:
                 locale_file = reference_file.replace(
                     '/{0}/'.format(self.reference),
@@ -218,8 +221,7 @@ class PropertiesParser(Parser):
                     missing_file = True
 
             except Exception as e:
-                print e
-                sys.exit(1)
+                errors.append(str(e))
 
             # Check missing/obsolete strings
             missing_strings = self.list_diff(
@@ -229,6 +231,7 @@ class PropertiesParser(Parser):
 
             total = translated + missing
             global_stats[file_index] = {
+                'errors': '\n'.join(errors),
                 'identical': identical,
                 'missing': missing,
                 'missing_file': missing_file,
