@@ -74,11 +74,11 @@ if ($requested_product != 'all') {
                 $row_style = $calculate_row_style($current_product);
 
                 $row = [
-                    'class'           => $row_style['class'],
-                    'locale'          => $locale_code,
-                    'product_data'    => $current_product,
-                    'product_id'      => $requested_product,
-                    'style'           => $row_style['style'],
+                    'class'        => $row_style['class'],
+                    'locale'       => $locale_code,
+                    'product_data' => $current_product,
+                    'product_id'   => $requested_product,
+                    'style'        => $row_style['style'],
                 ];
                 array_push($table_rows, $row);
             }

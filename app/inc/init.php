@@ -24,7 +24,7 @@ $assets_folder = $webroot_folder != '' ? "/{$webroot_folder}/assets" : '/assets'
 // Base variables
 $webstatus = new Webstatus($webstatus_file, $sources_file);
 $available_locales = $webstatus->getAvailableLocales();
-$available_products =  $webstatus->getAvailableProducts();
+$available_products = $webstatus->getAvailableProducts();
 $webstatus_data = $webstatus->getWebstatusData();
 $webstatus_metadata = $webstatus->getWebstatusMetadata();
 $requested_locale = Utils::getQueryParam('locale', Utils::detectLocale($available_locales));
