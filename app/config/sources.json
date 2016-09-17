@@ -156,6 +156,20 @@
         ],
         "source_type": "properties"
     },
+    "pocket": {
+        "displayed_name": "Pocket",
+        "excluded_folders": [],
+        "locale_folder": "locales",
+        "product_id": "pocket",
+        "reference_locale": "en-US",
+        "repository_name": "pocket",
+        "repository_type": "git",
+        "repository_url": "https://github.com/mozilla-l10n/pocket-l10n",
+        "source_files": [
+            "*.properties"
+        ],
+        "source_type": "properties"
+    },
     "socialapi-directory": {
         "displayed_name": "Social API Directory",
         "excluded_folders": [],
