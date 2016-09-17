@@ -426,7 +426,14 @@ def main():
         file_analysis.set_search_patterns(product['source_files'])
 
         print '\n--------\nAnalyzing: {0}'.format(product['displayed_name'])
-        for locale in sorted(os.listdir(product_folder)):
+
+        if os.path.isdir(product_folder):
+            locales = sorted(os.listdir(product_folder))
+        else:
+            print '\nFolder is not available: {0}'.format(product_folder)
+            locales = []
+
+        for locale in locales:
             locale_folder = os.path.join(product_folder, locale)
 
             # Ignore files, consider just folders. Ignore some of them
