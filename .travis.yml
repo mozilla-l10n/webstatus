@@ -15,7 +15,7 @@ install:
   - composer install --no-interaction --prefer-dist
   ## Clone libraries
   - hg clone https://bitbucket.org/izi/polib app/libraries/polib -u 1.0.7
-  - hg clone https://hg.mozilla.org/l10n/silme app/libraries/silme -u silme-0.8.0
+  - hg clone https://hg.mozilla.org/l10n/compare-locales app/libraries/compare-locales -u RELEASE_1_1
   ## Copy config to avoid warning
   - cp app/config/config.ini-dist app/config/config.ini
   ## Install ESLint
