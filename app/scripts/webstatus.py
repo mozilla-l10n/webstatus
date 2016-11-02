@@ -90,7 +90,7 @@ class FileAnalysis():
                     self.error_record[
                         'messages'] = u'Error extracting stats: {0!s}\n'.format(error_msg)
         except Exception as e:
-            print '\n', e
+            print('\n' + e)
             self.error_record[
                 'messages'] = 'Generic error extracting stats.\n'
 
@@ -111,11 +111,11 @@ class FileAnalysis():
                     self.error_record[
                         'messages'] = u'Error extracting stats: {0!s}\n'.format(file_data['errors'])
         except subprocess.CalledProcessError as e:
-            print '\n', e
+            print('\n' + e)
             self.error_record[
                 'messages'] = 'Error extracting stats: {0!s}\n'.format(e.output)
         except Exception as e:
-            print '\n', e
+            print('\n' + e)
             self.error_record[
                 'messages'] = 'Generic error extracting stats.\n'
 
@@ -138,7 +138,7 @@ class FileAnalysis():
                     self.error_record[
                         'messages'] = u'Error extracting stats: {0!s}\n'.format(file_data['errors'])
         except Exception as e:
-            print '\n', e
+            print('\n' + e)
             self.error_record[
                 'messages'] = 'Generic error extracting stats.\n'
 
@@ -232,7 +232,8 @@ class Repositories():
                     self.__update_repo()
             else:
                 # It's not a repository: delete folder and re-clone
-                print 'Removing folder (not a valid repository): {0}'.format(self.path)
+                print(
+                    'Removing folder (not a valid repository): {0}'.format(self.path))
                 shutil.rmtree(self.path)
                 self.__clone_repo()
         else:
@@ -244,7 +245,7 @@ class Repositories():
 
         # Move in the main storage path
         os.chdir(self.storage_path)
-        print 'Cloning repository: {0}'.format(self.url)
+        print('Cloning repository: {0}'.format(self.url))
         if (self.type == 'git'):
             # git repository
             try:
@@ -252,9 +253,9 @@ class Repositories():
                     ['git', 'clone', '--depth', '1', self.url, self.name],
                     stderr=subprocess.STDOUT,
                     shell=False)
-                print cmd_status
+                print(cmd_status)
             except Exception as e:
-                print e
+                print(e)
         else:
             # svn repository
             try:
@@ -262,9 +263,9 @@ class Repositories():
                     ['svn', 'co', self.url, self.name],
                     stderr=subprocess.STDOUT,
                     shell=False)
-                print cmd_status
+                print(cmd_status)
             except Exception as e:
-                print e
+                print(e)
 
     def __set_product(self, product):
         ''' Set product information '''
@@ -280,7 +281,7 @@ class Repositories():
 
         # Move in the repository folder
         os.chdir(self.path)
-        print 'Updating repository: {0}'.format(self.displayed_name)
+        print('Updating repository: {0}'.format(self.displayed_name))
         if (self.type == 'git'):
             # git repository
             try:
@@ -288,9 +289,9 @@ class Repositories():
                     ['git', 'pull'],
                     stderr=subprocess.STDOUT,
                     shell=False)
-                print cmd_status
+                print(cmd_status)
             except Exception as e:
-                print e
+                print(e)
         else:
             # svn repository
             try:
@@ -298,9 +299,9 @@ class Repositories():
                     ['svn', 'up'],
                     stderr=subprocess.STDOUT,
                     shell=False)
-                print cmd_status
+                print(cmd_status)
             except Exception as e:
-                print e
+                print(e)
 
 
 def check_environment(main_path, settings):
@@ -309,7 +310,7 @@ def check_environment(main_path, settings):
     # Check if config file exists and parse it
     config_file = os.path.join(main_path, 'app', 'config', 'config.ini')
     if not os.path.isfile(config_file):
-        print 'Configuration file (app/config/config.ini) is missing.'
+        print('Configuration file (app/config/config.ini) is missing.')
         env_errors = True
     else:
         try:
@@ -317,16 +318,17 @@ def check_environment(main_path, settings):
             ini_parser.readfp(open(config_file))
             settings['storage_path'] = ini_parser.get('config', 'storage_path')
             if not os.path.isdir(settings['storage_path']):
-                print 'Folder specified in config.ini is missing ({0}).'.format(settings['storage_path'])
-                print 'Script will try to create it.'
+                print('Folder specified in config.ini is missing ({0}).'.format(
+                    settings['storage_path']))
+                print('Script will try to create it.')
                 try:
                     os.makedirs(settings['storage_path'])
                 except Exception as e:
-                    print e
+                    print(e)
                     env_errors = True
         except Exception as e:
-            print 'Error parsing configuration file.'
-            print e
+            print('Error parsing configuration file.')
+            print(e)
 
     # Check if all necessary commands are available
     commands = ['git', 'hg', 'svn']
@@ -339,11 +341,11 @@ def check_environment(main_path, settings):
                 stderr=devnull
             ).communicate()
         except OSError as e:
-            print '{0} command not available.'.format(command)
+            print('{0} command not available.'.format(command))
             env_errors = True
 
     if env_errors:
-        print '\nPlease fix these errors and try again.'
+        print('\nPlease fix these errors and try again.')
         sys.exit(1)
 
 
@@ -376,13 +378,15 @@ def main():
     if (args.product_code):
         product_code = args.product_code
         if not product_code in all_products:
-            print 'The requested product code ({0}) is not available.'.format(product_code)
+            print('The requested product code ({0}) is not available.'.format(
+                product_code))
             sys.exit(1)
         # Use only the requested product
         products[product_code] = all_products[product_code]
         # Load the existing JSON data
         if not os.path.isfile(json_filename):
-            print '{0} is not available, you need to run an update for all products first.'.format(json_filename)
+            print('{0} is not available, you need to run an update for all products first.'.format(
+                json_filename))
             sys.exit(1)
         json_data = json.load(open(json_filename))
         # Remove all existing data for this product. This way, if a locale is
@@ -425,12 +429,12 @@ def main():
         file_analysis.set_product_folder(product_folder)
         file_analysis.set_search_patterns(product['source_files'])
 
-        print '\n--------\nAnalyzing: {0}'.format(product['displayed_name'])
+        print('\n--------\nAnalyzing: {0}'.format(product['displayed_name']))
 
         if os.path.isdir(product_folder):
             locales = sorted(os.listdir(product_folder))
         else:
-            print '\nFolder is not available: {0}'.format(product_folder)
+            print('\nFolder is not available: {0}'.format(product_folder))
             locales = []
 
         for locale in locales:
@@ -480,7 +484,7 @@ def main():
         json_file.write(json.dumps(json_data, sort_keys=True))
     json_file.close()
 
-    print '\nAnalysis completed.'
+    print('\nAnalysis completed.')
 
 
 if __name__ == '__main__':

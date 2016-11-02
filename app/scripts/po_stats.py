@@ -23,9 +23,9 @@ def main():
     global_stats = file_parser.analyze_files()
 
     if args.pretty:
-        print json.dumps(global_stats, sort_keys=True, indent=2)
+        print(json.dumps(global_stats, sort_keys=True, indent=2))
     else:
-        print json.dumps(global_stats)
+        print(json.dumps(global_stats))
 
 
 if __name__ == '__main__':

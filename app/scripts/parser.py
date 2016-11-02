@@ -177,7 +177,8 @@ class PropertiesParser(Parser):
                 self.reference_strings[file_index] = {}
                 for entity in reference_entities:
                     if not isinstance(entity, parser.Junk):
-                        self.reference_strings[file_index][str(entity)] = entity.raw_val
+                        self.reference_strings[file_index][
+                            str(entity)] = entity.raw_val
 
         for reference_file in self.reference_files:
             file_index = os.path.basename(reference_file)
