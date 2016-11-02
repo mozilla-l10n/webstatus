@@ -11,46 +11,46 @@ from xml.dom import minidom
 library_path = os.path.abspath(os.path.join(
     os.path.dirname(__file__), os.pardir, 'libraries'))
 
-# Silme library (http://hg.mozilla.org/l10n/silme/)
-silme_path = os.path.join(library_path, 'silme')
-if not os.path.isdir(silme_path):
+# Import compare-locales (http://hg.mozilla.org/l10n/compare-locales/)
+# and add it to the system's path
+compare_locales_path = os.path.join(library_path, 'compare-locales')
+if not os.path.isdir(compare_locales_path):
     try:
-        print 'Cloning silme...'
+        print('Cloning compare-locales...')
         cmd_status = subprocess.check_output(
-            ['hg', 'clone', 'https://hg.mozilla.org/l10n/silme',
-                silme_path, '-u', 'silme-0.8.0'],
+            ['hg', 'clone', 'https://hg.mozilla.org/l10n/compare-locales',
+                compare_locales_path, '-u', 'RELEASE_1_1'],
             stderr=subprocess.STDOUT,
             shell=False)
-        print cmd_status
+        print(cmd_status)
     except Exception as e:
-        print e
-sys.path.append(os.path.join(silme_path, 'lib'))
+        print(e)
+sys.path.append(compare_locales_path)
+
 try:
-    import silme.core
-    import silme.io
-    import silme.format
+    from compare_locales import parser
 except ImportError:
-    print 'Error importing Silme library'
+    print('Error importing compare-locales library')
     sys.exit(1)
 
 # Polib library (https://bitbucket.org/izi/polib)
 polib_path = os.path.join(library_path, 'polib')
 if not os.path.isdir(polib_path):
     try:
-        print 'Cloning polib...'
+        print('Cloning polib...')
         cmd_status = subprocess.check_output(
             ['hg', 'clone', 'https://bitbucket.org/izi/polib',
                 polib_path, '-u', '1.0.7'],
             stderr=subprocess.STDOUT,
             shell=False)
-        print cmd_status
+        print(cmd_status)
     except Exception as e:
-        print e
-sys.path.append(os.path.join(polib_path))
+        print(e)
+sys.path.append(polib_path)
 try:
     import polib
 except ImportError:
-    print 'Error importing polib library'
+    print('Error importing polib library')
     sys.exit(1)
 
 
@@ -154,15 +154,6 @@ class PropertiesParser(Parser):
     def analyze_files(self):
         ''' Analyze files, returning an array with stats and errors '''
 
-        try:
-            silme.format.Manager.register('properties')
-            ioclient = silme.io.Manager.get('file')
-        except Exception as e:
-            print e
-            sys.exit(1)
-
-        global_stats = {}
-
         # Create a list of reference files, and store reference data only once.
         # Object has the following structure:
         #
@@ -173,16 +164,20 @@ class PropertiesParser(Parser):
         #     },
         #     ...
         # }
+        global_stats = {}
+        file_parser = parser.getParser('.properties')
+
         if not self.reference_files:
             self.reference_files = self.create_file_list(
                 self.repo_folder, self.reference, self.search_patterns)
             for reference_file in self.reference_files:
-                reference_entities = ioclient.get_entitylist(reference_file)
+                file_parser.readFile(reference_file)
+                reference_entities, map = file_parser.parse()
                 file_index = os.path.basename(reference_file)
                 self.reference_strings[file_index] = {}
                 for entity in reference_entities:
-                    self.reference_strings[file_index][
-                        entity] = reference_entities[entity].get_value()
+                    if not isinstance(entity, parser.Junk):
+                        self.reference_strings[file_index][str(entity)] = entity.raw_val
 
         for reference_file in self.reference_files:
             file_index = os.path.basename(reference_file)
@@ -200,12 +195,13 @@ class PropertiesParser(Parser):
                 if os.path.isfile(locale_file):
                     # Locale file exists
                     missing_file = False
-                    locale_entities = ioclient.get_entitylist(locale_file)
+                    file_parser.readFile(locale_file)
+                    locale_entities, map = file_parser.parse()
 
                     # Store translations
                     for entity in locale_entities:
-                        locale_strings[entity] = locale_entities[
-                            entity].get_value()
+                        if not isinstance(entity, parser.Junk):
+                            locale_strings[str(entity)] = entity.raw_val
 
                     for entity, original in self.reference_strings[file_index].iteritems():
                         if entity in locale_strings:
