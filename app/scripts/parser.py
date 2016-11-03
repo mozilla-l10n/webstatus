@@ -3,56 +3,13 @@
 
 import glob
 import os
-import subprocess
 import sys
 from xml.dom import minidom
 
-# Import local libraries
-library_path = os.path.abspath(os.path.join(
-    os.path.dirname(__file__), os.pardir, 'libraries'))
-
-# Import compare-locales (http://hg.mozilla.org/l10n/compare-locales/)
-# and add it to the system's path
-compare_locales_path = os.path.join(library_path, 'compare-locales')
-if not os.path.isdir(compare_locales_path):
-    try:
-        print('Cloning compare-locales...')
-        cmd_status = subprocess.check_output(
-            ['hg', 'clone', 'https://hg.mozilla.org/l10n/compare-locales',
-                compare_locales_path, '-u', 'RELEASE_1_1'],
-            stderr=subprocess.STDOUT,
-            shell=False)
-        print(cmd_status)
-    except Exception as e:
-        print(e)
-sys.path.append(compare_locales_path)
-
-try:
-    from compare_locales import parser
-except ImportError:
-    print('Error importing compare-locales library')
-    sys.exit(1)
-
-# Polib library (https://bitbucket.org/izi/polib)
-polib_path = os.path.join(library_path, 'polib')
-if not os.path.isdir(polib_path):
-    try:
-        print('Cloning polib...')
-        cmd_status = subprocess.check_output(
-            ['hg', 'clone', 'https://bitbucket.org/izi/polib',
-                polib_path, '-u', '1.0.7'],
-            stderr=subprocess.STDOUT,
-            shell=False)
-        print(cmd_status)
-    except Exception as e:
-        print(e)
-sys.path.append(polib_path)
-try:
-    import polib
-except ImportError:
-    print('Error importing polib library')
-    sys.exit(1)
-
+# Import external libraries
+import env_setup
+import polib
+from compare_locales import parser
 
 class Parser():
     '''Generic class used to analyze a source file pattern'''
