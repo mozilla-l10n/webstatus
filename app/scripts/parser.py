@@ -75,18 +75,18 @@ class L20nParser(Parser):
 
         for entry in ast['body']:
             if entry['type'] == 'Entity':
+                # Get the string 'value'
                 if entry['value']:
-                    # Standard string
                     string_id = entry['id']['name']
                     string_value = entry['value']['source']
                     strings[file_index][string_id] = string_value
-                else:
-                    # String with traits
-                    for trait in entry['traits']:
-                        string_id = '{0}[{1}/{2}]'.format(entry['id']['name'], trait['key'][
-                                                          'namespace'], trait['key']['name'])
-                        string_value = trait['value']['source']
-                        strings[file_index][string_id] = string_value
+                # Get traits
+                for trait in entry['traits']:
+                    string_id = '{0}[{1}/{2}]'.format(
+                        entry['id']['name'], trait['key']['namespace'],
+                        trait['key']['name'])
+                    string_value = trait['value']['source']
+                    strings[file_index][string_id] = string_value
 
     def analyze_files(self):
         ''' Analyze files, returning an array with stats and errors '''
