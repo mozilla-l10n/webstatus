@@ -9,7 +9,7 @@ from xml.dom import minidom
 # Import external libraries
 import env_setup
 import polib
-from compare_locales import parser
+from compare_locales import parser as comparelocales_parser
 
 class Parser():
     '''Generic class used to analyze a source file pattern'''
@@ -122,7 +122,7 @@ class PropertiesParser(Parser):
         #     ...
         # }
         global_stats = {}
-        file_parser = parser.getParser('.properties')
+        file_parser = comparelocales_parser.getParser('.properties')
 
         if not self.reference_files:
             self.reference_files = self.create_file_list(
@@ -133,7 +133,7 @@ class PropertiesParser(Parser):
                 file_index = os.path.basename(reference_file)
                 self.reference_strings[file_index] = {}
                 for entity in reference_entities:
-                    if not isinstance(entity, parser.Junk):
+                    if not isinstance(entity, comparelocales_parser.Junk):
                         self.reference_strings[file_index][
                             str(entity)] = entity.raw_val
 
@@ -158,7 +158,7 @@ class PropertiesParser(Parser):
 
                     # Store translations
                     for entity in locale_entities:
-                        if not isinstance(entity, parser.Junk):
+                        if not isinstance(entity, comparelocales_parser.Junk):
                             locale_strings[str(entity)] = entity.raw_val
 
                     for entity, original in self.reference_strings[file_index].iteritems():
