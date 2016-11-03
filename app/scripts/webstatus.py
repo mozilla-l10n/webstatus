@@ -51,7 +51,13 @@ class FileAnalysis():
         # Initialize stats
         self.__initialize_stats()
         # Pick the correct analysis based on source_type
-        if self.source_type == 'gettext':
+        if self.source_type == 'l20n':
+            if self.file_parser is None:
+                self.file_parser = parser.L20nParser(
+                    self.product_folder, self.search_patterns, self.reference)
+            self.file_parser.set_locale(self.locale)
+            self.__analyze_properties()
+        elif self.source_type == 'gettext':
             if self.file_parser is None:
                 self.file_parser = parser.GettextParser(
                     self.product_folder, self.search_patterns)
