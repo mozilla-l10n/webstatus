@@ -57,3 +57,13 @@ try:
 except ImportError:
     print('Error importing polib library')
     sys.exit(1)
+
+# Import l20n Python library
+import_library(
+    libraries_path, 'git', 'python-l20n',
+    'https://github.com/l20n/python-l20n', '')
+try:
+    import l20n.format.parser
+except ImportError:
+    print('Error importing python-l20n library')
+    sys.exit(1)
