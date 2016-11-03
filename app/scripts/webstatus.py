@@ -352,8 +352,9 @@ def check_environment(main_path, settings):
 def main():
     # Check environment
     settings = {}
+    script_folder = os.path.dirname(os.path.realpath(__file__))
     webstatus_path = os.path.abspath(
-        os.path.join(sys.path[0], os.pardir, os.pardir))
+        os.path.join(script_folder, os.pardir, os.pardir))
     check_environment(webstatus_path, settings)
 
     storage_path = settings['storage_path']
