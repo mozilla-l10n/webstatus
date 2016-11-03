@@ -4,6 +4,7 @@ import os
 import subprocess
 import sys
 
+
 def import_library(libraries_path, type, name, url, version):
     library_path = os.path.join(libraries_path, name)
     if not os.path.isdir(library_path):
@@ -14,20 +15,20 @@ def import_library(libraries_path, type, name, url, version):
                 if version != '':
                     commands.extend(['-u', version])
                 cmd_status = subprocess.check_output(commands,
-                    stderr=subprocess.STDOUT,
-                    shell=False)
+                                                     stderr=subprocess.STDOUT,
+                                                     shell=False)
                 print(cmd_status)
             elif type == 'git':
                 commands = ['git', 'clone', url, library_path]
                 cmd_status = subprocess.check_output(commands,
-                    stderr=subprocess.STDOUT,
-                    shell=False)
+                                                     stderr=subprocess.STDOUT,
+                                                     shell=False)
                 print(cmd_status)
                 if version != '':
                     commands = ['git', 'checkout', version]
                     cmd_status = subprocess.check_output(commands,
-                        stderr=subprocess.STDOUT,
-                        shell=False)
+                                                         stderr=subprocess.STDOUT,
+                                                         shell=False)
                     print(cmd_status)
         except Exception as e:
             print(e)

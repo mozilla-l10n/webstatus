@@ -11,6 +11,7 @@ import env_setup
 import polib
 from compare_locales import parser as comparelocales_parser
 
+
 class Parser():
     '''Generic class used to analyze a source file pattern'''
 
