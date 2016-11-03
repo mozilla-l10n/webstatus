@@ -1,8 +1,7 @@
 *.pyc
 .composer_cache
 app/config/config.ini
-app/libraries/polib
-app/libraries/compare-locales
+app/libraries/*
 composer.lock
 composer.phar
 vendor/
