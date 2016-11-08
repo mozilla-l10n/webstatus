@@ -56,7 +56,7 @@ class FileAnalysis():
                 self.file_parser = parser.L20nParser(
                     self.product_folder, self.search_patterns, self.reference)
             self.file_parser.set_locale(self.locale)
-            self.__analyze_properties()
+            self.__analyze_l20n()
         elif self.source_type == 'gettext':
             if self.file_parser is None:
                 self.file_parser = parser.GettextParser(
@@ -78,6 +78,31 @@ class FileAnalysis():
 
         return self.__calculate_stats()
 
+    def __analyze_l20n(self):
+        ''' Analyze l20n (.ftl) files '''
+
+        try:
+            string_stats_json = self.file_parser.analyze_files()
+            for file_name, file_data in string_stats_json.iteritems():
+                self.string_count['identical'] += file_data['identical']
+                self.string_count['missing'] += file_data['missing']
+                self.string_count['translated'] += file_data['translated']
+                self.string_count['total'] += file_data['total']
+                if file_data['errors'] != '':
+                    self.error_record[
+                        'messages'] = u'Error extracting stats: {0!s}\n'.format(file_data['errors'])
+        except subprocess.CalledProcessError as e:
+            print(e)
+            self.error_record[
+                'messages'] = 'Error extracting stats: {0!s}\n'.format(e.output)
+        except Exception as e:
+            print(e)
+            self.error_record[
+                'messages'] = 'Generic error extracting stats.\n'
+
+        if self.error_record['messages']:
+            self.error_record['status'] = True
+
     def __analyze_gettext(self):
         '''Analyze gettext (.po) files'''
 
@@ -96,7 +121,7 @@ class FileAnalysis():
                     self.error_record[
                         'messages'] = u'Error extracting stats: {0!s}\n'.format(error_msg)
         except Exception as e:
-            print('\n' + e)
+            print(e)
             self.error_record[
                 'messages'] = 'Generic error extracting stats.\n'
 
@@ -117,11 +142,11 @@ class FileAnalysis():
                     self.error_record[
                         'messages'] = u'Error extracting stats: {0!s}\n'.format(file_data['errors'])
         except subprocess.CalledProcessError as e:
-            print('\n' + e)
+            print(e)
             self.error_record[
                 'messages'] = 'Error extracting stats: {0!s}\n'.format(e.output)
         except Exception as e:
-            print('\n' + e)
+            print(e)
             self.error_record[
                 'messages'] = 'Generic error extracting stats.\n'
 
@@ -144,7 +169,7 @@ class FileAnalysis():
                     self.error_record[
                         'messages'] = u'Error extracting stats: {0!s}\n'.format(file_data['errors'])
         except Exception as e:
-            print('\n' + e)
+            print(e)
             self.error_record[
                 'messages'] = 'Generic error extracting stats.\n'
 

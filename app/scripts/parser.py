@@ -138,8 +138,8 @@ class L20nParser(Parser):
                     # Locale file doesn't exist, count all reference strings as
                     # missing
                     missing += len(self.reference_strings[file_index])
+                    locale_strings[file_index] = []
                     missing_file = True
-
             except Exception as e:
                 errors.append(str(e))
 
