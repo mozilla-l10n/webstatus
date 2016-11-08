@@ -46,7 +46,7 @@ libraries_path = os.path.abspath(os.path.join(
 # Import compare-locales
 import_library(
     libraries_path, 'hg', 'compare-locales',
-    'https://hg.mozilla.org/l10n/compare-locales', 'RELEASE_1_1')
+    'https://hg.mozilla.org/l10n/compare-locales', 'RELEASE_1_2')
 try:
     from compare_locales import parser
 except ImportError:
