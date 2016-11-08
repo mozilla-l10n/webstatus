@@ -213,6 +213,20 @@
         ],
         "source_type": "gettext"
     },
+    "testpilot": {
+        "displayed_name": "Test Pilot",
+        "excluded_folders": [],
+        "locale_folder": "locales",
+        "product_id": "testpilot",
+        "reference_locale": "en-US",
+        "repository_name": "testpilot",
+        "repository_type": "git",
+        "repository_url": "https://github.com/mozilla/testpilot/",
+        "source_files": [
+            "*.ftl"
+        ],
+        "source_type": "l20n"
+    },
     "thimble": {
         "displayed_name": "Thimble",
         "excluded_folders": [],

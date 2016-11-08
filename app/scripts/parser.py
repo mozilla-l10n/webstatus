@@ -1,7 +1,9 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import codecs
 import glob
+import json
 import os
 import sys
 from xml.dom import minidom
@@ -9,7 +11,10 @@ from xml.dom import minidom
 # Import external libraries
 import env_setup
 import polib
-from compare_locales import parser
+from compare_locales import parser as comparelocales_parser
+from l20n.format import parser as l20n_parser
+from l20n.format import ast as l20n_ast
+
 
 class Parser():
     '''Generic class used to analyze a source file pattern'''
@@ -37,6 +42,127 @@ class Parser():
         ''' Set current locale '''
 
         self.locale = locale
+
+
+class L20nParser(Parser):
+    ''' Class to parse l20n files (.ftl) '''
+
+    def __init__(self, repo_folder, search_patterns, reference):
+        ''' Initialize parameters '''
+        # Path to the repository
+        self.repo_folder = repo_folder
+
+        # Search pattern
+        self.search_patterns = search_patterns
+
+        # Reference folder/locale for this product
+        self.reference = reference
+
+        # Store reference data to read them only once
+        self.reference_strings = {}
+        self.reference_files = []
+
+    def extract_strings(self, file_path, strings):
+        ''' Extract entities and translations in a dictionary '''
+
+        file_index = os.path.basename(file_path)
+        strings[file_index] = {}
+
+        file_parser = l20n_parser.FTLParser()
+        with codecs.open(file_path, 'r', encoding='utf-8') as file:
+            file_content = file.read()
+        [ast, errors] = file_parser.parseResource(file_content)
+
+        for entry in ast['body']:
+            if entry['type'] == 'Entity':
+                # Get the string 'value'
+                if entry['value']:
+                    string_id = entry['id']['name']
+                    string_value = entry['value']['source']
+                    strings[file_index][string_id] = string_value
+                # Get traits
+                for trait in entry['traits']:
+                    string_id = '{0}[{1}/{2}]'.format(
+                        entry['id']['name'], trait['key']['namespace'],
+                        trait['key']['name'])
+                    string_value = trait['value']['source']
+                    strings[file_index][string_id] = string_value
+
+    def analyze_files(self):
+        ''' Analyze files, returning an array with stats and errors '''
+
+        # Create a list of reference files, and store reference data only once.
+        # Object has the following structure:
+        #
+        # {
+        #     'filename1': {
+        #         'entity1': 'value1',
+        #         ...
+        #     },
+        #     ...
+        # }
+        global_stats = {}
+
+        if not self.reference_files:
+            self.reference_files = self.create_file_list(
+                self.repo_folder, self.reference, self.search_patterns)
+            for reference_file in self.reference_files:
+                self.extract_strings(reference_file, self.reference_strings)
+
+        for reference_file in self.reference_files:
+            file_index = os.path.basename(reference_file)
+            translated = 0
+            missing = 0
+            identical = 0
+            total = 0
+            errors = []
+            try:
+                locale_file = reference_file.replace(
+                    '/{0}/'.format(self.reference),
+                    '/{0}/'.format(self.locale)
+                )
+                locale_strings = {}
+                if os.path.isfile(locale_file):
+                    # Locale file exists
+                    missing_file = False
+                    self.extract_strings(locale_file, locale_strings)
+
+                    for entity, original in self.reference_strings[file_index].iteritems():
+                        if entity in locale_strings[file_index]:
+                            translated += 1
+                            if locale_strings[file_index][entity] == original:
+                                identical += 1
+                        else:
+                            missing += 1
+                else:
+                    # Locale file doesn't exist, count all reference strings as
+                    # missing
+                    missing += len(self.reference_strings[file_index])
+                    missing_file = True
+
+            except Exception as e:
+                errors.append(str(e))
+
+            # Check missing/obsolete strings
+            missing_strings = self.list_diff(
+                self.reference_strings[file_index], locale_strings[file_index])
+            obsolete_strings = self.list_diff(
+                locale_strings[file_index], self.reference_strings[file_index])
+
+            total = translated + missing
+            global_stats[file_index] = {
+                'errors': '\n'.join(errors),
+                'identical': identical,
+                'missing': missing,
+                'missing_file': missing_file,
+                'missing_strings': missing_strings,
+                'obsolete': len(obsolete_strings),
+                'obsolete_strings': obsolete_strings,
+                'total': total,
+                'translated': translated
+            }
+
+        return global_stats
 
 
 class GettextParser(Parser):
@@ -122,7 +248,7 @@ class PropertiesParser(Parser):
         #     ...
         # }
         global_stats = {}
-        file_parser = parser.getParser('.properties')
+        file_parser = comparelocales_parser.getParser('.properties')
 
         if not self.reference_files:
             self.reference_files = self.create_file_list(
@@ -133,7 +259,7 @@ class PropertiesParser(Parser):
                 file_index = os.path.basename(reference_file)
                 self.reference_strings[file_index] = {}
                 for entity in reference_entities:
-                    if not isinstance(entity, parser.Junk):
+                    if not isinstance(entity, comparelocales_parser.Junk):
                         self.reference_strings[file_index][
                             str(entity)] = entity.raw_val
 
@@ -158,7 +284,7 @@ class PropertiesParser(Parser):
 
                     # Store translations
                     for entity in locale_entities:
-                        if not isinstance(entity, parser.Junk):
+                        if not isinstance(entity, comparelocales_parser.Junk):
                             locale_strings[str(entity)] = entity.raw_val
 
                     for entity, original in self.reference_strings[file_index].iteritems():

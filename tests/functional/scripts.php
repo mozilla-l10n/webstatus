@@ -143,6 +143,34 @@ $compare_results[] = compare_json(
     shell_exec("{$script_name} {$repo_folder} *.properties en fr")
 );
 
+// Test .ftl files
+$script_name = SCRIPTS . 'l20n_stats.py';
+$repo_folder = TESTFILES . 'ftl/';
+
+echo "\nTesting .ftl file...\n";
+$compare_results[] = compare_json(
+    '{
+    "test.ftl": {
+        "errors": "",
+        "identical": 4,
+        "translated": 5,
+        "total": 8,
+        "missing": 3,
+        "missing_file": false,
+        "missing_strings": [
+            "emailOptInInputExtra",
+            "emailOptInInputExtra[html/placeholder]",
+            "emailOptInButton"
+        ],
+        "obsolete": 1,
+        "obsolete_strings": [
+            "siteNameOld"
+        ]
+     }
+}',
+    shell_exec("{$script_name} {$repo_folder} *.ftl en-US it")
+);
+
 $test_failed = 0;
 foreach ($compare_results as $result) {
     if (! $result) {
