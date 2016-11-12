@@ -223,7 +223,8 @@
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla/testpilot/",
         "source_files": [
-            "*.ftl"
+            "*.ftl",
+            "*.properties"
         ],
         "source_type": "l20n"
     },
