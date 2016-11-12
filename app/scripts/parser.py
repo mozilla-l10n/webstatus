@@ -62,7 +62,7 @@ class L20nParser(Parser):
         self.reference_strings = {}
         self.reference_files = []
 
-    def extract_strings(self, file_path, strings):
+    def extract_strings(self, file_path, strings, errors):
         ''' Extract entities and translations in a dictionary '''
 
         file_index = os.path.basename(file_path)
@@ -71,7 +71,7 @@ class L20nParser(Parser):
         file_parser = l20n_parser.FTLParser()
         with codecs.open(file_path, 'r', encoding='utf-8') as file:
             file_content = file.read()
-        [ast, errors] = file_parser.parseResource(file_content)
+        [ast, parse_errors] = file_parser.parseResource(file_content)
 
         for entry in ast['body']:
             if entry['type'] == 'Entity':
@@ -87,6 +87,8 @@ class L20nParser(Parser):
                         trait['key']['name'])
                     string_value = trait['value']['source']
                     strings[file_index][string_id] = string_value
+        for error in parse_errors:
+            errors.append(error.message)
 
     def analyze_files(self):
         ''' Analyze files, returning an array with stats and errors '''
@@ -107,7 +109,7 @@ class L20nParser(Parser):
             self.reference_files = self.create_file_list(
                 self.repo_folder, self.reference, self.search_patterns)
             for reference_file in self.reference_files:
-                self.extract_strings(reference_file, self.reference_strings)
+                self.extract_strings(reference_file, self.reference_strings, [])
 
         for reference_file in self.reference_files:
             file_index = os.path.basename(reference_file)
@@ -125,7 +127,7 @@ class L20nParser(Parser):
                 if os.path.isfile(locale_file):
                     # Locale file exists
                     missing_file = False
-                    self.extract_strings(locale_file, locale_strings)
+                    self.extract_strings(locale_file, locale_strings, errors)
 
                     for entity, original in self.reference_strings[file_index].iteritems():
                         if entity in locale_strings[file_index]:
@@ -141,7 +143,7 @@ class L20nParser(Parser):
                     locale_strings[file_index] = []
                     missing_file = True
             except Exception as e:
-                errors.append(str(e))
+                self.errors.append(str(e))
 
             # Check missing/obsolete strings
             missing_strings = self.list_diff(
