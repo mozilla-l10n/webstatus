@@ -58,8 +58,7 @@
     "fundraising": {
         "displayed_name": "Fundraising",
         "excluded_folders": [
-            "en-AU", "en-CA", "en-IN", "hi", "ka",
-            "lo", "ml-IN", "mr-IN", "te-IN"
+            "en-AU", "en-CA", "en-IN", "es-AR", "es-CL", "es-ES", "es-MX"
         ],
         "locale_folder": "locales",
         "product_id": "fundraising",
