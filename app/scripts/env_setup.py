@@ -5,11 +5,13 @@ import shutil
 import subprocess
 import sys
 
+
 def import_library(libraries_path, type, name, url, version):
     library_path = os.path.join(libraries_path, name)
 
     if os.path.isdir(library_path) and not os.path.isdir(os.path.join(library_path, '.{0}'.format(type))):
-        print('Folder {0} is not the expected type of repository. Removing...'.format(library_path))
+        print('Folder {0} is not the expected type of repository. Removing...'.format(
+            library_path))
         shutil.rmtree(library_path)
 
     if not os.path.isdir(library_path):
