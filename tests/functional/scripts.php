@@ -151,7 +151,7 @@ echo "\nTesting .ftl file...\n";
 $compare_results[] = compare_json(
     '{
     "test.ftl": {
-        "errors": "",
+        "errors": "\n\n Expected \"[[\" to open a section\nat pos 233:\n------\n...pageTitleExperiment = Firefox Test Pilot - {$title}\n\n# This is a broken section\n[email]\nema\n------",
         "identical": 4,
         "translated": 5,
         "total": 8,

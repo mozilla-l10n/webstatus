@@ -65,30 +65,41 @@ class L20nParser(Parser):
     def extract_strings(self, file_path, strings, errors):
         ''' Extract entities and translations in a dictionary '''
 
+        def analyze_ast(ast, stored_strings, errors):
+            ''' Analyze body in ast recursively '''
+
+            for entry in ast.get('body', []):
+                if entry['type'] == 'Entity':
+                    # Analyze the string
+                    try:
+                        # Get the string 'value'
+                        if entry['value']:
+                            string_id = entry['id']['name']
+                            string_value = entry['value']['source']
+                            stored_strings[string_id] = string_value
+                        # Get traits
+                        for trait in entry['traits']:
+                            string_id = '{0}[{1}/{2}]'.format(
+                                entry['id']['name'],
+                                trait['key']['namespace'],
+                                trait['key']['name'])
+                            string_value = trait['value']['source']
+                            stored_strings[string_id] = string_value
+                    except Exception as e:
+                        errors.append(str(e))
+                elif entry['type'] == 'Section':
+                    # Analyze body in this section
+                    analyze_ast(entry, stored_strings, errors)
+
         file_index = os.path.basename(file_path)
         strings[file_index] = {}
-
         file_parser = l20n_parser.FTLParser()
         with codecs.open(file_path, 'r', encoding='utf-8') as file:
             file_content = file.read()
         [ast, parse_errors] = file_parser.parseResource(file_content)
-
-        for entry in ast['body']:
-            if entry['type'] == 'Entity':
-                # Get the string 'value'
-                if entry['value']:
-                    string_id = entry['id']['name']
-                    string_value = entry['value']['source']
-                    strings[file_index][string_id] = string_value
-                # Get traits
-                for trait in entry['traits']:
-                    string_id = '{0}[{1}/{2}]'.format(
-                        entry['id']['name'], trait['key']['namespace'],
-                        trait['key']['name'])
-                    string_value = trait['value']['source']
-                    strings[file_index][string_id] = string_value
         for error in parse_errors:
             errors.append(error.message)
+        analyze_ast(ast, strings[file_index], errors)
 
     def analyze_files(self):
         ''' Analyze files, returning an array with stats and errors '''
@@ -109,7 +120,8 @@ class L20nParser(Parser):
             self.reference_files = self.create_file_list(
                 self.repo_folder, self.reference, self.search_patterns)
             for reference_file in self.reference_files:
-                self.extract_strings(reference_file, self.reference_strings, [])
+                self.extract_strings(
+                    reference_file, self.reference_strings, [])
 
         for reference_file in self.reference_files:
             file_index = os.path.basename(reference_file)
