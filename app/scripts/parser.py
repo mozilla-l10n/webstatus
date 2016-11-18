@@ -275,7 +275,7 @@ class PropertiesParser(Parser):
                 for entity in reference_entities:
                     if not isinstance(entity, comparelocales_parser.Junk):
                         self.reference_strings[file_index][
-                            str(entity)] = entity.raw_val
+                            unicode(entity)] = entity.raw_val
 
         for reference_file in self.reference_files:
             file_index = os.path.basename(reference_file)
@@ -299,7 +299,7 @@ class PropertiesParser(Parser):
                     # Store translations
                     for entity in locale_entities:
                         if not isinstance(entity, comparelocales_parser.Junk):
-                            locale_strings[str(entity)] = entity.raw_val
+                            locale_strings[unicode(entity)] = entity.raw_val
 
                     for entity, original in self.reference_strings[file_index].iteritems():
                         if entity in locale_strings:
