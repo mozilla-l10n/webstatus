@@ -88,19 +88,6 @@
         ],
         "source_type": "gettext"
     },
-    "input": {
-        "displayed_name": "Firefox Input",
-        "excluded_folders": [],
-        "locale_folder": "",
-        "product_id": "input",
-        "repository_name": "input",
-        "repository_type": "git",
-        "repository_url": "https://github.com/mozilla-l10n/input-l10n",
-        "source_files": [
-            "LC_MESSAGES/*.po"
-        ],
-        "source_type": "gettext"
-    },
     "loop-client-l10n": {
         "displayed_name": "Firefox Hello",
         "excluded_folders": [],
