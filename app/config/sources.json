@@ -55,6 +55,20 @@
         ],
         "source_type": "xliff"
     },
+    "focus-ios": {
+        "displayed_name": "Focus for iOS",
+        "excluded_folders": [],
+        "locale_folder": "",
+        "product_id": "focus-ios",
+        "reference_locale": "en-US",
+        "repository_name": "focus-ios",
+        "repository_type": "git",
+        "repository_url": "https://github.com/mozilla-l10n/focusios-l10n",
+        "source_files": [
+            "*.xliff"
+        ],
+        "source_type": "xliff"
+    },
     "fundraising": {
         "displayed_name": "Fundraising",
         "excluded_folders": [
