@@ -1,4 +1,18 @@
 {
+    "activity-stream": {
+        "displayed_name": "Activity Stream (New Tab)",
+        "excluded_folders": [],
+        "locale_folder": "l10n",
+        "product_id": "activity-stream",
+        "reference_locale": "templates",
+        "repository_name": "activity-stream",
+        "repository_type": "git",
+        "repository_url": "https://github.com/mozilla/activity-stream-l10n",
+        "source_files": [
+            "*.properties"
+        ],
+        "source_type": "properties"
+    },
     "addons-frontend": {
         "displayed_name": "AMO Frontend",
         "excluded_folders": [
