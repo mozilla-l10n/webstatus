@@ -8,6 +8,7 @@
         "repository_name": "activity-stream",
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla/activity-stream-l10n",
+        "repository_branch": "master",
         "source_files": [
             "*.properties"
         ],
@@ -23,6 +24,7 @@
         "repository_name": "addons-frontend",
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla/addons-frontend",
+        "repository_branch": "master",
         "source_files": [
             "LC_MESSAGES/*.po"
         ],
@@ -36,6 +38,7 @@
         "repository_name": "addons-server",
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla/addons-server",
+        "repository_branch": "master",
         "source_files": [
             "LC_MESSAGES/*.po"
         ],
@@ -50,6 +53,7 @@
         "repository_name": "advocacy.mozilla.org",
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla/advocacy.mozilla.org",
+        "repository_branch": "master",
         "source_files": [
             "*.properties"
         ],
@@ -64,6 +68,7 @@
         "repository_name": "firefox-ios",
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla-l10n/firefoxios-l10n",
+        "repository_branch": "master",
         "source_files": [
             "*.xliff"
         ],
@@ -78,6 +83,7 @@
         "repository_name": "focus-ios",
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla-l10n/focusios-l10n",
+        "repository_branch": "master",
         "source_files": [
             "*.xliff"
         ],
@@ -94,6 +100,7 @@
         "repository_name": "donate.mozilla.org",
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla/donate.mozilla.org",
+        "repository_branch": "master",
         "source_files": [
             "*.properties"
         ],
@@ -111,24 +118,11 @@
         "repository_name": "fxa-content-server-l10n",
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla/fxa-content-server-l10n",
+        "repository_branch": "master",
         "source_files": [
             "LC_MESSAGES/*.po"
         ],
         "source_type": "gettext"
-    },
-    "loop-client-l10n": {
-        "displayed_name": "Firefox Hello",
-        "excluded_folders": [],
-        "locale_folder": "l10n",
-        "product_id": "loop-client-l10n",
-        "reference_locale": "templates",
-        "repository_name": "loop-client-l10n",
-        "repository_type": "git",
-        "repository_url": "https://github.com/mozilla/loop-client-l10n",
-        "source_files": [
-            "*.properties"
-        ],
-        "source_type": "properties"
     },
     "mdn": {
         "displayed_name": "MDN",
@@ -138,6 +132,7 @@
         "repository_name": "kuma",
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla/kuma",
+        "repository_branch": "master",
         "source_files": [
             "LC_MESSAGES/*.po"
         ],
@@ -152,6 +147,7 @@
         "repository_name": "learning.mozilla.org",
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla/learning.mozilla.org",
+        "repository_branch": "master",
         "source_files": [
             "*.properties"
         ],
@@ -165,6 +161,7 @@
         "repository_name": "mozillians",
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla-l10n/mozillians-l10n",
+        "repository_branch": "master",
         "source_files": [
             "LC_MESSAGES/*.po"
         ],
@@ -179,6 +176,7 @@
         "repository_name": "outofdate-notifications-system-addon",
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla/outofdate-notifications-system-addon",
+        "repository_branch": "master",
         "source_files": [
             "*.properties"
         ],
@@ -193,6 +191,7 @@
         "repository_name": "pocket",
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla-l10n/pocket-l10n",
+        "repository_branch": "master",
         "source_files": [
             "*.properties"
         ],
@@ -206,6 +205,7 @@
         "repository_name": "socialapi-directory",
         "repository_type": "git",
         "repository_url": "https://github.com/mixedpuppy/socialapi-directory",
+        "repository_branch": "master",
         "source_files": [
             "LC_MESSAGES/*.po"
         ],
@@ -222,13 +222,14 @@
         "repository_name": "sumo",
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla-l10n/sumo-l10n",
+        "repository_branch": "master",
         "source_files": [
             "LC_MESSAGES/*.po"
         ],
         "source_type": "gettext"
     },
     "testpilot": {
-        "displayed_name": "Test Pilot",
+        "displayed_name": "Test Pilot Website",
         "excluded_folders": [],
         "locale_folder": "locales",
         "product_id": "testpilot",
@@ -236,11 +237,57 @@
         "repository_name": "testpilot",
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla/testpilot/",
+        "repository_branch": "master",
         "source_files": [
             "*.ftl",
             "*.properties"
         ],
         "source_type": "l20n"
+    },
+    "testpilot-minvid": {
+        "displayed_name": "TP Min Vid",
+        "excluded_folders": [],
+        "locale_folder": "locales",
+        "product_id": "testpilot-minvid",
+        "reference_locale": "en-US",
+        "repository_name": "testpilot-minvid",
+        "repository_type": "git",
+        "repository_url": "https://github.com/meandavejustice/min-vid",
+        "repository_branch": "master",
+        "source_files": [
+            "*.properties"
+        ],
+        "source_type": "properties"
+    },
+    "testpilot-snoozetabs": {
+        "displayed_name": "TP SnoozeTabs",
+        "excluded_folders": [],
+        "locale_folder": "locales",
+        "product_id": "testpilot-snoozetabs",
+        "reference_locale": "en-US",
+        "repository_name": "testpilot-snoozetabs",
+        "repository_type": "git",
+        "repository_url": "https://github.com/bwinton/SnoozeTabs",
+        "repository_branch": "l10n",
+        "source_files": [
+            "*.properties"
+        ],
+        "source_type": "properties"
+    },
+    "testpilot-tabcenter": {
+        "displayed_name": "TP Tab Center",
+        "excluded_folders": [],
+        "locale_folder": "locales",
+        "product_id": "testpilot-tabcenter",
+        "reference_locale": "en-US",
+        "repository_name": "testpilot-tabcenter",
+        "repository_type": "git",
+        "repository_url": "https://github.com/bwinton/TabCenter-l10n",
+        "repository_branch": "master",
+        "source_files": [
+            "*.properties"
+        ],
+        "source_type": "properties"
     },
     "thimble": {
         "displayed_name": "Thimble",
@@ -251,6 +298,7 @@
         "repository_name": "thimble.mozilla.org",
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla/thimble.mozilla.org",
+        "repository_branch": "master",
         "source_files": [
             "*.properties"
         ],
