@@ -280,11 +280,28 @@ class Repositories():
         if (self.type == 'git'):
             # git repository
             try:
-                cmd_status = subprocess.check_output(
-                    ['git', 'clone', '--depth', '1', self.url, self.name],
-                    stderr=subprocess.STDOUT,
-                    shell=False)
-                print(cmd_status)
+                if self.branch == 'master':
+                    # Clone repository (shallow clone)
+                    cmd_status = subprocess.check_output(
+                        ['git', 'clone', '--depth', '1', self.url, self.name],
+                        stderr=subprocess.STDOUT,
+                        shell=False)
+                    print(cmd_status)
+                else:
+                    # Clone repository
+                    cmd_status = subprocess.check_output(
+                        ['git', 'clone', self.url, self.name],
+                        stderr=subprocess.STDOUT,
+                        shell=False)
+                    print(cmd_status)
+
+                    # Checkout branch
+                    os.chdir(self.path)
+                    cmd_status = subprocess.check_output(
+                        ['git', 'checkout', self.branch],
+                        stderr=subprocess.STDOUT,
+                        shell=False)
+                    print(cmd_status)
             except Exception as e:
                 print(e)
         else:
@@ -306,6 +323,7 @@ class Repositories():
         self.path = os.path.join(self.storage_path, self.name)
         self.type = product['repository_type']
         self.url = product['repository_url']
+        self.branch = product['repository_branch']
 
     def __update_repo(self):
         ''' Update existing product's repository '''
@@ -316,6 +334,15 @@ class Repositories():
         if (self.type == 'git'):
             # git repository
             try:
+                # Checkout branch if different than master
+                if self.branch != 'master':
+                    cmd_status = subprocess.check_output(
+                        ['git', 'checkout', self.branch],
+                        stderr=subprocess.STDOUT,
+                        shell=False)
+                    print(cmd_status)
+
+                # Update repository
                 cmd_status = subprocess.check_output(
                     ['git', 'pull'],
                     stderr=subprocess.STDOUT,
