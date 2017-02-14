@@ -124,21 +124,6 @@
         ],
         "source_type": "gettext"
     },
-    "loop-client-l10n": {
-        "displayed_name": "Firefox Hello",
-        "excluded_folders": [],
-        "locale_folder": "l10n",
-        "product_id": "loop-client-l10n",
-        "reference_locale": "templates",
-        "repository_name": "loop-client-l10n",
-        "repository_type": "git",
-        "repository_url": "https://github.com/mozilla/loop-client-l10n",
-        "repository_branch": "master",
-        "source_files": [
-            "*.properties"
-        ],
-        "source_type": "properties"
-    },
     "mdn": {
         "displayed_name": "MDN",
         "excluded_folders": ["en_US"],
