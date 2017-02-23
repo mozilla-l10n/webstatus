@@ -17,7 +17,9 @@
     "addons-frontend": {
         "displayed_name": "AMO Frontend",
         "excluded_folders": [
-            "dbg_rtl"
+            "dbg_rtl",
+            "dbl",
+            "dbr"
         ],
         "locale_folder": "locale",
         "product_id": "addons-frontend",
