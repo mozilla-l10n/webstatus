@@ -76,6 +76,21 @@
         ],
         "source_type": "xliff"
     },
+    "focus-android": {
+        "displayed_name": "Focus for Android",
+        "excluded_folders": [],
+        "locale_folder": "locales",
+        "product_id": "focus-android",
+        "reference_locale": "templates",
+        "repository_name": "focus-android",
+        "repository_type": "git",
+        "repository_url": "https://github.com/mozilla-l10n/focus-android-l10n",
+        "repository_branch": "master",
+        "source_files": [
+            "*.po"
+        ],
+        "source_type": "gettext"
+    },
     "focus-ios": {
         "displayed_name": "Focus for iOS",
         "excluded_folders": [],
