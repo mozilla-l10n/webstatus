@@ -61,6 +61,21 @@
         ],
         "source_type": "properties"
     },
+    "copyright": {
+        "displayed_name": "EU Copyright campaign",
+        "excluded_folders": [],
+        "locale_folder": "locales",
+        "product_id": "copyright",
+        "reference_locale": "en-US",
+        "repository_name": "copyright",
+        "repository_type": "git",
+        "repository_url": "https://github.com/mozilla/copyright",
+        "repository_branch": "master",
+        "source_files": [
+            "*.properties"
+        ],
+        "source_type": "properties"
+    },
     "firefox-ios": {
         "displayed_name": "Firefox for iOS",
         "excluded_folders": [],
