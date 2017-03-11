@@ -1,5 +1,6 @@
-*.pyc
 .composer_cache
+.php_cs.cache
+*.pyc
 app/config/config.ini
 app/libraries/*
 composer.lock
