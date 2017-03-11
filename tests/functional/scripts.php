@@ -4,8 +4,8 @@ namespace Webstatus;
 // Autoloading of composer dependencies
 require_once __DIR__ . '/../../vendor/autoload.php';
 
-define('SCRIPTS',  realpath(__DIR__ . '/../../') . '/app/scripts/');
-define('TESTFILES',  realpath(__DIR__ . '/../') . '/testfiles/');
+define('SCRIPTS', realpath(__DIR__ . '/../../') . '/app/scripts/');
+define('TESTFILES', realpath(__DIR__ . '/../') . '/testfiles/');
 
 mb_internal_encoding('UTF-8');
 date_default_timezone_set('Europe/Paris');

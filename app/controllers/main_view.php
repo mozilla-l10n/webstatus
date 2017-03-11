@@ -120,7 +120,7 @@ if ($requested_product != 'all') {
 // Determine proper URL for history page
 $url_history = "https://l10n.mozilla-community.org/~flod/webstatus_history/?product={$requested_product}&";
 if ($requested_locale == 'All locales') {
-    $url_history .= "locale=all";
+    $url_history .= 'locale=all';
 } else {
     $url_history .= "locale={$requested_locale}";
 }

@@ -60,7 +60,7 @@ sort($locales);
 if ($plain_text) {
     // TXT output
     ob_start();
-    header("Content-type: text/plain; charset=UTF-8");
+    header('Content-type: text/plain; charset=UTF-8');
     foreach ($locales as $locale_code) {
         echo "{$locale_code}\n";
     }

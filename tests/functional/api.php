@@ -10,7 +10,7 @@ mb_internal_encoding('UTF-8');
 date_default_timezone_set('Europe/Paris');
 
 // Set an environment variable so that the instance will use content from test files
-putenv("AUTOMATED_TESTS=true");
+putenv('AUTOMATED_TESTS=true');
 
 // Launch PHP dev server in the background
 $root_folder = realpath(__DIR__ . '/../../');
