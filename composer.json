@@ -6,11 +6,14 @@
         }
     ],
 
-    "require-dev": {
-        "atoum/atoum": "~2.0",
-        "friendsofphp/php-cs-fixer": "~2.1",
+    "require": {
         "mozillal10n/json": "~0.1",
         "twig/twig": "~1.0"
+    },
+
+    "require-dev": {
+        "atoum/atoum": "~2.0",
+        "friendsofphp/php-cs-fixer": "~2.1"
     },
 
     "autoload": {
