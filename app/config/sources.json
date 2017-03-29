@@ -91,6 +91,21 @@
         ],
         "source_type": "xliff"
     },
+    "firefox-screenshots": {
+        "displayed_name": "Firefox Screenshots",
+        "excluded_folders": [],
+        "locale_folder": "locales",
+        "product_id": "firefox-screenshots",
+        "reference_locale": "en-US",
+        "repository_name": "firefox-screenshots",
+        "repository_type": "git",
+        "repository_url": "https://github.com/mozilla-services/screenshots/",
+        "repository_branch": "master",
+        "source_files": [
+            "*.properties"
+        ],
+        "source_type": "properties"
+    },
     "focus-android": {
         "displayed_name": "Focus for Android",
         "excluded_folders": [],
