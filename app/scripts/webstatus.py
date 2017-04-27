@@ -51,12 +51,12 @@ class FileAnalysis():
         # Initialize stats
         self.__initialize_stats()
         # Pick the correct analysis based on source_type
-        if self.source_type == 'l20n':
+        if self.source_type == 'ftl':
             if self.file_parser is None:
-                self.file_parser = parser.L20nParser(
+                self.file_parser = parser.FTLParser(
                     self.product_folder, self.search_patterns, self.reference)
             self.file_parser.set_locale(self.locale)
-            self.__analyze_l20n()
+            self.__analyze_ftl()
         elif self.source_type == 'gettext':
             if self.file_parser is None:
                 self.file_parser = parser.GettextParser(
@@ -78,8 +78,8 @@ class FileAnalysis():
 
         return self.__calculate_stats()
 
-    def __analyze_l20n(self):
-        ''' Analyze l20n (.ftl) files '''
+    def __analyze_ftl(self):
+        ''' Analyze FTL files '''
 
         try:
             string_stats_json = self.file_parser.analyze_files()

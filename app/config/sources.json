@@ -289,7 +289,7 @@
             "*.ftl",
             "*.properties"
         ],
-        "source_type": "l20n"
+        "source_type": "ftl"
     },
     "testpilot-minvid": {
         "displayed_name": "TP Min Vid",

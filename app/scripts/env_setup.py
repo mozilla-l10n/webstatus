@@ -65,12 +65,12 @@ except ImportError:
     print('Error importing polib library')
     sys.exit(1)
 
-# Import l20n Python library
+# Import Fluent Python library
 import_library(
-    libraries_path, 'git', 'python-l20n',
-    'https://github.com/l20n/python-l20n', '')
+    libraries_path, 'git', 'python-fluent',
+    'https://github.com/projectfluent/python-fluent', '')
 try:
-    import l20n.format.parser
+    import fluent.syntax.parser
 except ImportError:
-    print('Error importing python-l20n library')
+    print('Error importing python-fluent library')
     sys.exit(1)

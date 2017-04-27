@@ -12,8 +12,9 @@ from xml.dom import minidom
 import env_setup
 import polib
 from compare_locales import parser as comparelocales_parser
-from l20n.format import parser as l20n_parser
-from l20n.format import ast as l20n_ast
+from fluent.syntax import ast as ftl_ast
+from fluent.syntax import parser as ftl_parser
+from fluent.syntax import serializer as ftl_serializer
 
 
 class Parser():
@@ -44,8 +45,8 @@ class Parser():
         self.locale = locale
 
 
-class L20nParser(Parser):
-    ''' Class to parse l20n files (.ftl) '''
+class FTLParser(Parser):
+    ''' Class to parse FTL files (.ftl) '''
 
     def __init__(self, repo_folder, search_patterns, reference):
         ''' Initialize parameters '''
@@ -68,37 +69,24 @@ class L20nParser(Parser):
         def analyze_ast(ast, stored_strings, errors):
             ''' Analyze body in ast recursively '''
 
-            for entry in ast.get('body', []):
-                if entry['type'] == 'Entity':
-                    # Analyze the string
-                    try:
-                        # Get the string 'value'
-                        if entry['value']:
-                            string_id = entry['id']['name']
-                            string_value = entry['value']['source']
-                            stored_strings[string_id] = string_value
-                        # Get traits
-                        for trait in entry['traits']:
-                            string_id = '{0}[{1}/{2}]'.format(
-                                entry['id']['name'],
-                                trait['key']['namespace'],
-                                trait['key']['name'])
-                            string_value = trait['value']['source']
-                            stored_strings[string_id] = string_value
-                    except Exception as e:
-                        errors.append(str(e))
-                elif entry['type'] == 'Section':
-                    # Analyze body in this section
-                    analyze_ast(entry, stored_strings, errors)
+            for obj in ast.body:
+                # Analyze the string
+                try:
+                    if type(obj) == ftl_ast.Message:
+                        string_id = obj.id.name
+                        stored_strings[string_id] = ftl_serializer.serialize_message(obj)
+                    elif type(obj) == ftl_ast.Junk:
+                        for annot in obj.annotations:
+                            errors.append(u'{0}: {1}\n------\n{2}'.format(annot.name, annot.message, obj.content))
+                except Exception as e:
+                    print e
+                    errors.append(str(e))
 
         file_index = os.path.basename(file_path)
         strings[file_index] = {}
-        file_parser = l20n_parser.FTLParser()
         with codecs.open(file_path, 'r', encoding='utf-8') as file:
             file_content = file.read()
-        [ast, parse_errors] = file_parser.parseResource(file_content)
-        for error in parse_errors:
-            errors.append(error.message)
+        ast = ftl_parser.parse(file_content)
         analyze_ast(ast, strings[file_index], errors)
 
     def analyze_files(self):
