@@ -286,10 +286,24 @@
         "repository_url": "https://github.com/mozilla/testpilot/",
         "repository_branch": "master",
         "source_files": [
-            "*.ftl",
-            "*.properties"
+            "*.ftl"
         ],
         "source_type": "ftl"
+    },
+    "testpilot-addon": {
+        "displayed_name": "Test Pilot Add-on",
+        "excluded_folders": [],
+        "locale_folder": "locales",
+        "product_id": "testpilot-addon",
+        "reference_locale": "en-US",
+        "repository_name": "testpilot",
+        "repository_type": "git",
+        "repository_url": "https://github.com/mozilla/testpilot/",
+        "repository_branch": "master",
+        "source_files": [
+            "*.properties"
+        ],
+        "source_type": "properties"
     },
     "testpilot-minvid": {
         "displayed_name": "TP Min Vid",
