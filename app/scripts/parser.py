@@ -72,10 +72,10 @@ class FTLParser(Parser):
             for obj in ast.body:
                 # Analyze the string
                 try:
-                    if type(obj) == ftl_ast.Message:
+                    if isinstance(obj, ftl_ast.Message):
                         string_id = obj.id.name
                         stored_strings[string_id] = ftl_serializer.serialize_message(obj)
-                    elif type(obj) == ftl_ast.Junk:
+                    elif isinstance(obj, ftl_ast.Junk):
                         for annot in obj.annotations:
                             errors.append(u'{0}: {1}\n------\n{2}'.format(annot.name, annot.message, obj.content))
                 except Exception as e:
