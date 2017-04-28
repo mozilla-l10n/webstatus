@@ -67,7 +67,7 @@ class FTLParser(Parser):
         ''' Extract entities and translations in a dictionary '''
 
         def analyze_ast(ast, stored_strings, errors):
-            ''' Analyze body in ast recursively '''
+            ''' Analyze body in ast '''
 
             for obj in ast.body:
                 # Analyze the string
@@ -79,7 +79,6 @@ class FTLParser(Parser):
                         for annot in obj.annotations:
                             errors.append(u'{0}: {1}\n------\n{2}'.format(annot.name, annot.message, obj.content))
                 except Exception as e:
-                    print e
                     errors.append(str(e))
 
         file_index = os.path.basename(file_path)
