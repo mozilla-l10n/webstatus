@@ -144,22 +144,21 @@ $compare_results[] = compare_json(
 );
 
 // Test .ftl files
-$script_name = SCRIPTS . 'l20n_stats.py';
+$script_name = SCRIPTS . 'ftl_stats.py';
 $repo_folder = TESTFILES . 'ftl/';
 
 echo "\nTesting .ftl file...\n";
 $compare_results[] = compare_json(
     '{
     "test.ftl": {
-        "errors": "\n\n Expected \"[[\" to open a section\nat pos 233:\n------\n...pageTitleExperiment = Firefox Test Pilot - {$title}\n\n# This is a broken section\n[email]\nema\n------",
+        "errors": "ParseError: Expected token \"[\"\n------\n\/\/ This is a broken section\n[email]\n",
         "identical": 4,
         "translated": 5,
-        "total": 8,
-        "missing": 3,
+        "total": 7,
+        "missing": 2,
         "missing_file": false,
         "missing_strings": [
             "emailOptInInputExtra",
-            "emailOptInInputExtra[html/placeholder]",
             "emailOptInButton"
         ],
         "obsolete": 1,
