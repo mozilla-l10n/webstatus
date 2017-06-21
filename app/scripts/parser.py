@@ -13,7 +13,7 @@ import env_setup
 import polib
 from compare_locales import parser as comparelocales_parser
 from fluent.syntax import ast as ftl_ast
-from fluent.syntax import parser as ftl_parser
+from fluent.syntax import parse as ftl_parse
 from fluent.syntax import serializer as ftl_serializer
 
 
@@ -77,7 +77,7 @@ class FTLParser(Parser):
                         stored_strings[string_id] = ftl_serializer.serialize_message(obj)
                     elif isinstance(obj, ftl_ast.Junk):
                         for annot in obj.annotations:
-                            errors.append(u'{0}: {1}\n------\n{2}'.format(annot.name, annot.message, obj.content))
+                            errors.append(u'{0}: {1}\n------\n{2}'.format(annot.code, annot.message, obj.content))
                 except Exception as e:
                     errors.append(str(e))
 
@@ -85,7 +85,7 @@ class FTLParser(Parser):
         strings[file_index] = {}
         with codecs.open(file_path, 'r', encoding='utf-8') as file:
             file_content = file.read()
-        ast = ftl_parser.parse(file_content)
+        ast = ftl_parse(file_content)
         analyze_ast(ast, strings[file_index], errors)
 
     def analyze_files(self):

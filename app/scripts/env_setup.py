@@ -32,7 +32,7 @@ def import_library(libraries_path, type, name, url, version):
                                                      shell=False)
                 print(cmd_status)
                 if version != '':
-                    commands = ['git', 'checkout', version]
+                    commands = ['git', '-C', library_path, 'checkout', version]
                     cmd_status = subprocess.check_output(commands,
                                                          stderr=subprocess.STDOUT,
                                                          shell=False)
@@ -48,7 +48,7 @@ libraries_path = os.path.abspath(os.path.join(
 # Import compare-locales
 import_library(
     libraries_path, 'hg', 'compare-locales',
-    'https://hg.mozilla.org/l10n/compare-locales', 'RELEASE_1_2_1')
+    'https://hg.mozilla.org/l10n/compare-locales', 'RELEASE_1_2_3')
 try:
     from compare_locales import parser
 except ImportError:
@@ -68,9 +68,9 @@ except ImportError:
 # Import Fluent Python library
 import_library(
     libraries_path, 'git', 'python-fluent',
-    'https://github.com/projectfluent/python-fluent', '')
+    'https://github.com/projectfluent/python-fluent', '0.4.0')
 try:
-    import fluent.syntax.parser
+    import fluent.syntax
 except ImportError:
     print('Error importing python-fluent library')
     sys.exit(1)

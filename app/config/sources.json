@@ -320,6 +320,21 @@
         ],
         "source_type": "properties"
     },
+    "testpilot-notes": {
+        "displayed_name": "TP Notes",
+        "excluded_folders": [],
+        "locale_folder": "locales",
+        "product_id": "testpilot-notes",
+        "reference_locale": "en-US",
+        "repository_name": "testpilot-notes",
+        "repository_type": "git",
+        "repository_url": "https://github.com/mozilla/notes",
+        "repository_branch": "master",
+        "source_files": [
+            "*.properties"
+        ],
+        "source_type": "properties"
+    },
     "testpilot-snoozetabs": {
         "displayed_name": "TP SnoozeTabs",
         "excluded_folders": [],

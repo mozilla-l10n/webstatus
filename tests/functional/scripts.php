@@ -150,22 +150,22 @@ $repo_folder = TESTFILES . 'ftl/';
 echo "\nTesting .ftl file...\n";
 $compare_results[] = compare_json(
     '{
-    "test.ftl": {
-        "errors": "ParseError: Expected token \"[\"\n------\n\/\/ This is a broken section\n[email]\n",
-        "identical": 4,
-        "translated": 5,
-        "total": 7,
-        "missing": 2,
-        "missing_file": false,
-        "missing_strings": [
-            "emailOptInInputExtra",
-            "emailOptInButton"
-        ],
-        "obsolete": 1,
-        "obsolete_strings": [
-            "siteNameOld"
-        ]
-     }
+        "test.ftl": {
+            "identical": 4,
+            "errors": "E0003: Expected token: \"[\"\n------\n\/\/ This is a broken section\n[email]\n",
+            "missing_file": false,
+            "missing": 2,
+            "translated": 5,
+            "obsolete_strings": [
+                "siteNameOld"
+            ],
+            "total": 7,
+            "missing_strings": [
+                "emailOptInInputExtra",
+                "emailOptInButton"
+            ],
+            "obsolete": 1
+        }
 }',
     shell_exec("{$script_name} {$repo_folder} *.ftl en-US it")
 );
