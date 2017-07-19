@@ -152,7 +152,7 @@ $compare_results[] = compare_json(
     '{
         "test.ftl": {
             "identical": 4,
-            "errors": "E0003: Expected token: \"[\"\n------\n\/\/ This is a broken section\n[email]\n",
+            "errors": "Unparsed content: _junk_1_234-269, \/\/ This is a broken section\n[email]",
             "missing_file": false,
             "missing": 2,
             "translated": 5,
@@ -161,7 +161,7 @@ $compare_results[] = compare_json(
             ],
             "total": 7,
             "missing_strings": [
-                "emailOptInInputExtra",
+                "emailOptInInputExtra.placeholder",
                 "emailOptInButton"
             ],
             "obsolete": 1

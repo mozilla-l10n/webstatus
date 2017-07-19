@@ -125,20 +125,30 @@ class PropertiesFTLParser(Parser):
         #     ...
         # }
         global_stats = {}
-        file_parser = comparelocales_parser.getParser('.properties')
 
         if not self.reference_files:
             self.reference_files = self.create_file_list(
                 self.repo_folder, self.reference, self.search_patterns)
             for reference_file in self.reference_files:
+                # Parser can be .ftl or .properties
+                file_type = os.path.splitext(reference_file)[1]
+                file_parser = comparelocales_parser.getParser(file_type)
                 file_parser.readFile(reference_file)
                 reference_entities, map = file_parser.parse()
                 file_index = os.path.basename(reference_file)
                 self.reference_strings[file_index] = {}
                 for entity in reference_entities:
-                    if not isinstance(entity, comparelocales_parser.Junk):
-                        self.reference_strings[file_index][
-                            unicode(entity)] = entity.raw_val
+                    if isinstance(entity, comparelocales_parser.Junk):
+                        errors.append('Unparsed content: {0}, {1}'.format(entity, entity.val))
+                    else:
+                        if file_type == '.ftl':
+                            if entity.raw_val != '':
+                                self.reference_strings[file_index][unicode(entity)] = entity.raw_val
+                            for attribute in entity.attributes:
+                                entity_name = u'{0}.{1}'.format(entity, attribute)
+                                self.reference_strings[file_index][entity_name] = attribute.raw_val
+                        else:
+                            self.reference_strings[file_index][unicode(entity)] = entity.raw_val
 
         for reference_file in self.reference_files:
             file_index = os.path.basename(reference_file)
@@ -156,14 +166,25 @@ class PropertiesFTLParser(Parser):
                 if os.path.isfile(locale_file):
                     # Locale file exists
                     missing_file = False
+                    # Parser can be .ftl or .properties
+                    file_type = os.path.splitext(locale_file)[1]
+                    file_parser = comparelocales_parser.getParser(file_type)
                     file_parser.readFile(locale_file)
                     locale_entities, map = file_parser.parse()
 
                     # Store translations
                     for entity in locale_entities:
-                        if not isinstance(entity, comparelocales_parser.Junk):
-                            locale_strings[unicode(entity)] = entity.raw_val
-
+                        if isinstance(entity, comparelocales_parser.Junk):
+                            errors.append('Unparsed content: {0}, {1}'.format(entity, entity.val))
+                        else:
+                            if file_type == '.ftl':
+                                if entity.raw_val != '':
+                                    locale_strings[unicode(entity)] = entity.raw_val
+                                for attribute in entity.attributes:
+                                    entity_name = u'{0}.{1}'.format(entity, attribute)
+                                    locale_strings[entity_name] = attribute.raw_val
+                            else:
+                                locale_strings[unicode(entity)] = entity.raw_val
                     for entity, original in self.reference_strings[file_index].iteritems():
                         if entity in locale_strings:
                             translated += 1
