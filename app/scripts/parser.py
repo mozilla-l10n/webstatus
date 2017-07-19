@@ -12,9 +12,6 @@ from xml.dom import minidom
 import env_setup
 import polib
 from compare_locales import parser as comparelocales_parser
-from fluent.syntax import ast as ftl_ast
-from fluent.syntax import parse as ftl_parse
-from fluent.syntax import serializer as ftl_serializer
 
 
 class Parser():
@@ -43,127 +40,6 @@ class Parser():
         ''' Set current locale '''
 
         self.locale = locale
-
-
-class FTLParser(Parser):
-    ''' Class to parse FTL files (.ftl) '''
-
-    def __init__(self, repo_folder, search_patterns, reference):
-        ''' Initialize parameters '''
-        # Path to the repository
-        self.repo_folder = repo_folder
-
-        # Search pattern
-        self.search_patterns = search_patterns
-
-        # Reference folder/locale for this product
-        self.reference = reference
-
-        # Store reference data to read them only once
-        self.reference_strings = {}
-        self.reference_files = []
-
-    def extract_strings(self, file_path, strings, errors):
-        ''' Extract entities and translations in a dictionary '''
-
-        def analyze_ast(ast, stored_strings, errors):
-            ''' Analyze body in ast '''
-
-            for obj in ast.body:
-                # Analyze the string
-                try:
-                    if isinstance(obj, ftl_ast.Message):
-                        string_id = obj.id.name
-                        stored_strings[string_id] = ftl_serializer.serialize_message(obj)
-                    elif isinstance(obj, ftl_ast.Junk):
-                        for annot in obj.annotations:
-                            errors.append(u'{0}: {1}\n------\n{2}'.format(annot.code, annot.message, obj.content))
-                except Exception as e:
-                    errors.append(str(e))
-
-        file_index = os.path.basename(file_path)
-        strings[file_index] = {}
-        with codecs.open(file_path, 'r', encoding='utf-8') as file:
-            file_content = file.read()
-        ast = ftl_parse(file_content)
-        analyze_ast(ast, strings[file_index], errors)
-
-    def analyze_files(self):
-        ''' Analyze files, returning an array with stats and errors '''
-
-        # Create a list of reference files, and store reference data only once.
-        # Object has the following structure:
-        #
-        # {
-        #     'filename1': {
-        #         'entity1': 'value1',
-        #         ...
-        #     },
-        #     ...
-        # }
-        global_stats = {}
-
-        if not self.reference_files:
-            self.reference_files = self.create_file_list(
-                self.repo_folder, self.reference, self.search_patterns)
-            for reference_file in self.reference_files:
-                self.extract_strings(
-                    reference_file, self.reference_strings, [])
-
-        for reference_file in self.reference_files:
-            file_index = os.path.basename(reference_file)
-            translated = 0
-            missing = 0
-            identical = 0
-            total = 0
-            errors = []
-            try:
-                locale_file = reference_file.replace(
-                    '/{0}/'.format(self.reference),
-                    '/{0}/'.format(self.locale)
-                )
-                locale_strings = {}
-                if os.path.isfile(locale_file):
-                    # Locale file exists
-                    missing_file = False
-                    self.extract_strings(locale_file, locale_strings, errors)
-
-                    for entity, original in self.reference_strings[file_index].iteritems():
-                        if entity in locale_strings[file_index]:
-                            translated += 1
-                            if locale_strings[file_index][entity] == original:
-                                identical += 1
-                        else:
-                            missing += 1
-                else:
-                    # Locale file doesn't exist, count all reference strings as
-                    # missing
-                    missing += len(self.reference_strings[file_index])
-                    locale_strings[file_index] = []
-                    missing_file = True
-            except Exception as e:
-                self.errors.append(str(e))
-
-            # Check missing/obsolete strings
-            missing_strings = self.list_diff(
-                self.reference_strings[file_index], locale_strings[file_index])
-            obsolete_strings = self.list_diff(
-                locale_strings[file_index], self.reference_strings[file_index])
-
-            total = translated + missing
-            global_stats[file_index] = {
-                'errors': '\n'.join(errors),
-                'identical': identical,
-                'missing': missing,
-                'missing_file': missing_file,
-                'missing_strings': missing_strings,
-                'obsolete': len(obsolete_strings),
-                'obsolete_strings': obsolete_strings,
-                'total': total,
-                'translated': translated
-            }
-
-        return global_stats
 
 
 class GettextParser(Parser):
@@ -217,8 +93,8 @@ class GettextParser(Parser):
         return global_stats
 
 
-class PropertiesParser(Parser):
-    ''' Class to parse properties files (.properties) '''
+class PropertiesFTLParser(Parser):
+    ''' Class to parse properties (.properties) and FTL (.ftl) files '''
 
     def __init__(self, repo_folder, search_patterns, reference):
         ''' Initialize parameters '''

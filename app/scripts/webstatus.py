@@ -51,21 +51,15 @@ class FileAnalysis():
         # Initialize stats
         self.__initialize_stats()
         # Pick the correct analysis based on source_type
-        if self.source_type == 'ftl':
-            if self.file_parser is None:
-                self.file_parser = parser.FTLParser(
-                    self.product_folder, self.search_patterns, self.reference)
-            self.file_parser.set_locale(self.locale)
-            self.__analyze_ftl()
-        elif self.source_type == 'gettext':
+        if self.source_type == 'gettext':
             if self.file_parser is None:
                 self.file_parser = parser.GettextParser(
                     self.product_folder, self.search_patterns)
             self.file_parser.set_locale(self.locale)
             self.__analyze_gettext()
-        elif self.source_type == 'properties':
+        elif self.source_type == 'properties' or self.source_type == 'ftl':
             if self.file_parser is None:
-                self.file_parser = parser.PropertiesParser(
+                self.file_parser = parser.PropertiesFTLParser(
                     self.product_folder, self.search_patterns, self.reference)
             self.file_parser.set_locale(self.locale)
             self.__analyze_properties()
@@ -77,31 +71,6 @@ class FileAnalysis():
             self.__analyze_xliff()
 
         return self.__calculate_stats()
-
-    def __analyze_ftl(self):
-        ''' Analyze FTL files '''
-
-        try:
-            string_stats_json = self.file_parser.analyze_files()
-            for file_name, file_data in string_stats_json.iteritems():
-                self.string_count['identical'] += file_data['identical']
-                self.string_count['missing'] += file_data['missing']
-                self.string_count['translated'] += file_data['translated']
-                self.string_count['total'] += file_data['total']
-                if file_data['errors'] != '':
-                    self.error_record[
-                        'messages'] = u'Error extracting stats: {0!s}\n'.format(file_data['errors'])
-        except subprocess.CalledProcessError as e:
-            print(e)
-            self.error_record[
-                'messages'] = 'Error extracting stats: {0!s}\n'.format(e.output)
-        except Exception as e:
-            print(e)
-            self.error_record[
-                'messages'] = 'Generic error extracting stats.\n'
-
-        if self.error_record['messages']:
-            self.error_record['status'] = True
 
     def __analyze_gettext(self):
         '''Analyze gettext (.po) files'''

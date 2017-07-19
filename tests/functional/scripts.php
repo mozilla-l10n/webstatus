@@ -120,7 +120,7 @@ $compare_results[] = compare_json(
 );
 
 // Test .properties files
-$script_name = SCRIPTS . 'properties_stats.py';
+$script_name = SCRIPTS . 'properties_ftl_stats.py';
 $repo_folder = TESTFILES . 'properties/';
 
 echo "\nTesting .properties file...\n";
@@ -144,7 +144,7 @@ $compare_results[] = compare_json(
 );
 
 // Test .ftl files
-$script_name = SCRIPTS . 'ftl_stats.py';
+$script_name = SCRIPTS . 'properties_ftl_stats.py';
 $repo_folder = TESTFILES . 'ftl/';
 
 echo "\nTesting .ftl file...\n";
