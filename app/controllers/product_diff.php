@@ -17,7 +17,7 @@ if ($requested_product != 'all') {
     $source_type = $webstatus->getSourceType($requested_product);
     if (! isset($available_products[$requested_product])) {
         $error_messages[] = 'This product is not supported';
-    } elseif (! in_array($source_type, ['xliff', 'properties', 'ftl'])) {
+    } elseif (! in_array($source_type, ['ftl', 'properties', 'xliff'])) {
         $error_messages[] = 'This product doesn’t use XLIFF, PROPERTIES or FTL files.';
     }
 } else {

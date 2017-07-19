@@ -57,7 +57,7 @@ class FileAnalysis():
                     self.product_folder, self.search_patterns)
             self.file_parser.set_locale(self.locale)
             self.__analyze_gettext()
-        elif self.source_type == 'properties' or self.source_type == 'ftl':
+        elif self.source_type in ['ftl', 'properties']:
             if self.file_parser is None:
                 self.file_parser = parser.PropertiesFTLParser(
                     self.product_folder, self.search_patterns, self.reference)
