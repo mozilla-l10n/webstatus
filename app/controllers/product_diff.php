@@ -37,11 +37,13 @@ if (empty($error_messages)) {
         }
 
         foreach ($product_data['source_files'] as $source_file) {
-            /*
-                Scripts are called xliff_stats.py, properties_ftl_stats.py and have
-                the same input parameters and output.
-            */
-            $script_path = __DIR__ . "/../scripts/{$source_type}_stats.py";
+            $scripts_mapping = [
+                'ftl'        => 'properties_ftl_stats.py',
+                'properties' => 'properties_ftl_stats.py',
+                'xliff'      => 'xliff_stats.py',
+            ];
+
+            $script_path = __DIR__ . '/../scripts/' . $scripts_mapping[$source_type];
             $reference_locale = $webstatus->getReferenceLocale($requested_product);
             $command = "python {$script_path} {$base_path} {$source_file} {$reference_locale} {$requested_locale}";
             $comparison_data += json_decode(shell_exec($command), true);

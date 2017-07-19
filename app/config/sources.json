@@ -276,7 +276,7 @@
         "source_type": "gettext"
     },
     "testpilot": {
-        "displayed_name": "Test Pilot Website",
+        "displayed_name": "Test Pilot",
         "excluded_folders": [],
         "locale_folder": "locales",
         "product_id": "testpilot",
