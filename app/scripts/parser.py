@@ -139,7 +139,7 @@ class PropertiesFTLParser(Parser):
                 self.reference_strings[file_index] = {}
                 for entity in reference_entities:
                     if isinstance(entity, comparelocales_parser.Junk):
-                        errors.append('Unparsed content: {0}, {1}'.format(entity, entity.val))
+                        errors.append(u'Unparsed content: {0}, {1}'.format(entity, entity.val))
                     else:
                         if file_type == '.ftl':
                             if entity.raw_val != '':
@@ -157,6 +157,9 @@ class PropertiesFTLParser(Parser):
             identical = 0
             total = 0
             errors = []
+
+            # Parser can be used for .ftl or .properties
+            file_type = os.path.splitext(reference_file)[1]
             try:
                 locale_file = reference_file.replace(
                     '/{0}/'.format(self.reference),
@@ -166,8 +169,6 @@ class PropertiesFTLParser(Parser):
                 if os.path.isfile(locale_file):
                     # Locale file exists
                     missing_file = False
-                    # Parser can be .ftl or .properties
-                    file_type = os.path.splitext(locale_file)[1]
                     file_parser = comparelocales_parser.getParser(file_type)
                     file_parser.readFile(locale_file)
                     locale_entities, map = file_parser.parse()
@@ -175,7 +176,7 @@ class PropertiesFTLParser(Parser):
                     # Store translations
                     for entity in locale_entities:
                         if isinstance(entity, comparelocales_parser.Junk):
-                            errors.append('Unparsed content: {0}, {1}'.format(entity, entity.val))
+                            errors.append(u'Unparsed content: {0}, {1}'.format(entity, entity.val))
                         else:
                             if file_type == '.ftl':
                                 if entity.raw_val != '':
@@ -206,6 +207,13 @@ class PropertiesFTLParser(Parser):
                 self.reference_strings[file_index], locale_strings)
             obsolete_strings = self.list_diff(
                 locale_strings, self.reference_strings[file_index])
+            # Ignore obsole string attributes for .ftl
+            if file_type == '.ftl':
+                for s in obsolete_strings[:]:
+                    if '.' in s:
+                        main_id = s.split('.')[0]
+                        if main_id not in missing_strings:
+                            obsolete_strings.remove(s)
 
             total = translated + missing
             global_stats[file_index] = {

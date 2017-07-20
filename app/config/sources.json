@@ -102,6 +102,7 @@
         "repository_url": "https://github.com/mozilla-services/screenshots/",
         "repository_branch": "master",
         "source_files": [
+            "*.ftl",
             "*.properties"
         ],
         "source_type": "properties"
