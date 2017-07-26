@@ -47,11 +47,11 @@ Simple API requests:
 
 Without an explicit `type` output will be a list of all supported locales.
 
-A running instance of this project is available at http://l10n.mozilla-community.org/~flod/webstatus/
+A running instance of this project is available at http://l10n.mozilla-community.org/webstatus/
 
 ## Structure of the JSON file
 
-Example at: https://l10n.mozilla-community.org/~flod/webstatus/web_status.json
+Example at: https://l10n.mozilla-community.org/webstatus/web_status.json
 
 ```JSON
 "locales": {
@@ -108,9 +108,9 @@ Example at: https://l10n.mozilla-community.org/~flod/webstatus/web_status.json
 This software is released under the terms of the [Mozilla Public License v2.0].
 
 [Composer]: https://getcomposer.org/
-[running instance]: https://l10n.mozilla-community.org/~flod/webstatus/web_status.json
-[Firefox for iOS supported locales]: https://l10n.mozilla-community.org/~flod/webstatus/api/?product=firefox-ios
-[Firefox for iOS incomplete locales]: https://l10n.mozilla-community.org/~flod/webstatus/api/?product=firefox-ios&type=incomplete
-[Firefox for iOS complete locales]: https://l10n.mozilla-community.org/~flod/webstatus/api/?product=firefox-ios&type=complete
-[Firefox for iOS supported locales in plain text format]: https://l10n.mozilla-community.org/~flod/webstatus/api/?product=firefox-ios&txt
+[running instance]: https://l10n.mozilla-community.org/webstatus/web_status.json
+[Firefox for iOS supported locales]: https://l10n.mozilla-community.org/webstatus/api/?product=firefox-ios
+[Firefox for iOS incomplete locales]: https://l10n.mozilla-community.org/webstatus/api/?product=firefox-ios&type=incomplete
+[Firefox for iOS complete locales]: https://l10n.mozilla-community.org/webstatus/api/?product=firefox-ios&type=complete
+[Firefox for iOS supported locales in plain text format]: https://l10n.mozilla-community.org/webstatus/api/?product=firefox-ios&txt
 [Mozilla Public License v2.0]: http://www.mozilla.org/MPL/2.0/
