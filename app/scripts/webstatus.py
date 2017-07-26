@@ -389,7 +389,7 @@ def check_environment(main_path, settings):
             print(e)
 
     # Check if all necessary commands are available
-    commands = ['git', 'hg', 'svn']
+    commands = ['git', 'hg']
     for command in commands:
         try:
             devnull = open(os.devnull)
