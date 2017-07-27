@@ -292,6 +292,21 @@
         ],
         "source_type": "ftl"
     },
+    "testpilot-send": {
+        "displayed_name": "TP Firefox Send",
+        "excluded_folders": [],
+        "locale_folder": "public/locales",
+        "product_id": "testpilot-send",
+        "reference_locale": "en-US",
+        "repository_name": "testpilot-send",
+        "repository_type": "git",
+        "repository_url": "https://github.com/mozilla/send/",
+        "repository_branch": "master",
+        "source_files": [
+            "*.ftl"
+        ],
+        "source_type": "ftl"
+    },
     "testpilot-minvid": {
         "displayed_name": "TP Min Vid",
         "excluded_folders": [],
