@@ -130,7 +130,7 @@ class PropertiesFTLParser(Parser):
             self.reference_files = self.create_file_list(
                 self.repo_folder, self.reference, self.search_patterns)
             for reference_file in self.reference_files:
-                # Parser can be .ftl or .properties
+                # Parser can be for .ftl or .properties
                 file_type = os.path.splitext(reference_file)[1]
                 file_parser = comparelocales_parser.getParser(file_type)
                 file_parser.readFile(reference_file)
@@ -207,7 +207,7 @@ class PropertiesFTLParser(Parser):
                 self.reference_strings[file_index], locale_strings)
             obsolete_strings = self.list_diff(
                 locale_strings, self.reference_strings[file_index])
-            # Ignore obsole string attributes for .ftl
+            # Ignore obsolete string attributes for .ftl
             if file_type == '.ftl':
                 for s in obsolete_strings[:]:
                     if '.' in s:
