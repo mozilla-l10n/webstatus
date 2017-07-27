@@ -21,7 +21,7 @@ $calculate_row_style = function ($product_data) {
         I consider also the number of identical strings.
     */
     $percentage = $product_data['percentage'];
-    if ($product_data['source_type'] == 'properties') {
+    if (in_array($product_data['source_type'], ['ftl', 'properties'])) {
         if ($product_data['total'] > 0) {
             $perc_identical = $product_data['identical'] / $product_data['total'] * 100;
         } else {

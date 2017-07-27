@@ -102,6 +102,7 @@
         "repository_url": "https://github.com/mozilla-services/screenshots/",
         "repository_branch": "master",
         "source_files": [
+            "*.ftl",
             "*.properties"
         ],
         "source_type": "properties"
@@ -276,7 +277,7 @@
         "source_type": "gettext"
     },
     "testpilot": {
-        "displayed_name": "Test Pilot Website",
+        "displayed_name": "Test Pilot",
         "excluded_folders": [],
         "locale_folder": "locales",
         "product_id": "testpilot",
@@ -286,24 +287,25 @@
         "repository_url": "https://github.com/mozilla/testpilot/",
         "repository_branch": "master",
         "source_files": [
-            "*.ftl"
+            "*.ftl",
+            "*.properties"
         ],
         "source_type": "ftl"
     },
-    "testpilot-addon": {
-        "displayed_name": "Test Pilot Add-on",
+    "testpilot-send": {
+        "displayed_name": "TP Firefox Send",
         "excluded_folders": [],
-        "locale_folder": "locales",
-        "product_id": "testpilot-addon",
+        "locale_folder": "public/locales",
+        "product_id": "testpilot-send",
         "reference_locale": "en-US",
-        "repository_name": "testpilot",
+        "repository_name": "testpilot-send",
         "repository_type": "git",
-        "repository_url": "https://github.com/mozilla/testpilot/",
+        "repository_url": "https://github.com/mozilla/send/",
         "repository_branch": "master",
         "source_files": [
-            "*.properties"
+            "*.ftl"
         ],
-        "source_type": "properties"
+        "source_type": "ftl"
     },
     "testpilot-minvid": {
         "displayed_name": "TP Min Vid",

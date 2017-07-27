@@ -19,7 +19,7 @@ def main():
                            help='export indented and more readable JSON')
     args = cl_parser.parse_args()
 
-    file_parser = parser.FTLParser(
+    file_parser = parser.PropertiesFTLParser(
         args.repo_folder, [args.search_pattern], args.reference)
     file_parser.set_locale(args.locale)
     global_stats = file_parser.analyze_files()

@@ -41,7 +41,7 @@
                             {% endif %}
                         </td>
                         <td class="number">{{ row.product_data.translated }}</td>
-                        {% if row.product_data.source_type in ['xliff', 'properties', 'ftl'] and row.product_data.untranslated > 0 %}
+                        {% if row.product_data.source_type in ['ftl', 'properties', 'xliff'] and row.product_data.untranslated > 0 %}
                             <td class="number">
                                 <a href="views/product_diff.php?product={{ row.product_id }}&amp;locale={{ row.locale }}" title="Show untranslated strings">{{ row.product_data.untranslated }}</a>
                             </td>
@@ -49,7 +49,7 @@
                             <td class="number">{{ row.product_data.untranslated }}</td>
                         {% endif %}
                         <td class="number">{{ row.product_data.identical }}</td>
-                        {% if row.product_data.source_type in ['xliff', 'properties', 'ftl'] and row.product_data.missing > 0 %}
+                        {% if row.product_data.source_type in ['ftl', 'properties', 'xliff'] and row.product_data.missing > 0 %}
                             <td class="number">
                                 <a href="views/product_diff.php?product={{ row.product_id }}&amp;locale={{ row.locale }}" title="Show missing and obsolete strings">{{ row.product_data.missing }}</a>
                             </td>

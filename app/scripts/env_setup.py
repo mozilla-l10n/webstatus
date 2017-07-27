@@ -45,10 +45,20 @@ def import_library(libraries_path, type, name, url, version):
 libraries_path = os.path.abspath(os.path.join(
     os.path.dirname(__file__), os.pardir, 'libraries'))
 
+# Import Fluent Python library
+import_library(
+    libraries_path, 'git', 'python-fluent',
+    'https://github.com/projectfluent/python-fluent', '0.4.1')
+try:
+    import fluent.syntax
+except ImportError:
+    print('Error importing python-fluent library')
+    sys.exit(1)
+
 # Import compare-locales
 import_library(
     libraries_path, 'hg', 'compare-locales',
-    'https://hg.mozilla.org/l10n/compare-locales', 'RELEASE_1_2_3')
+    'https://hg.mozilla.org/l10n/compare-locales', 'RELEASE_2_0')
 try:
     from compare_locales import parser
 except ImportError:
@@ -63,14 +73,4 @@ try:
     import polib
 except ImportError:
     print('Error importing polib library')
-    sys.exit(1)
-
-# Import Fluent Python library
-import_library(
-    libraries_path, 'git', 'python-fluent',
-    'https://github.com/projectfluent/python-fluent', '0.4.0')
-try:
-    import fluent.syntax
-except ImportError:
-    print('Error importing python-fluent library')
     sys.exit(1)

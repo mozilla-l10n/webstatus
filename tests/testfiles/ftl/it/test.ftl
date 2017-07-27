@@ -1,5 +1,8 @@
 siteName = Firefox Test Pilot
+
+// This string is obsolete
 siteNameOld = Firefox Test Pilot
+
 [[test]]
 pageTitleDefault = Firefox Test Pilot
 pageTitleLandingPage = Firefox Test Pilot
