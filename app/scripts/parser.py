@@ -139,7 +139,7 @@ class PropertiesFTLParser(Parser):
                 self.reference_strings[file_index] = {}
                 for entity in reference_entities:
                     if isinstance(entity, comparelocales_parser.Junk):
-                        errors.append(u'Unparsed content: {0}, {1}'.format(entity, entity.val))
+                        continue
                     else:
                         if file_type == '.ftl':
                             if entity.raw_val != '':
