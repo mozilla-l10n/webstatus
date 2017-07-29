@@ -175,11 +175,11 @@
     "mdn": {
         "displayed_name": "MDN",
         "excluded_folders": ["en_US"],
-        "locale_folder": "locale",
+        "locale_folder": "",
         "product_id": "mdn",
-        "repository_name": "kuma",
+        "repository_name": "mdn-l10n",
         "repository_type": "git",
-        "repository_url": "https://github.com/mozilla/kuma",
+        "repository_url": "https://github.com/mozilla-l10n/mdn-l10n",
         "repository_branch": "master",
         "source_files": [
             "LC_MESSAGES/*.po"
