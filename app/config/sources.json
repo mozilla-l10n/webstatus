@@ -285,7 +285,7 @@
         "repository_name": "testpilot",
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla/testpilot/",
-        "repository_branch": "master",
+        "repository_branch": "l10n",
         "source_files": [
             "*.ftl",
             "*.properties"
