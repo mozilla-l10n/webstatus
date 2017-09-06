@@ -45,20 +45,21 @@ $calculate_row_style = function ($product_data) {
 
 $template_meta = [];
 $table_rows = [];
+$repository_url = '';
 if ($requested_product != 'all') {
     // Requested view: A single product for all locales
     $requested_locale = 'All locales';
     $page_title = "Web Status – {$product_name}";
     $supported = $supported_product;
     $template_name = 'main_single_product.twig';
-    $repository_url = $available_products[$requested_product]['repository_url'];
 
     if ($supported) {
+        $repository_url = $available_products[$requested_product]['repository_url'];
         $template_meta['complete_locales'] = 0;
         $template_meta['total_locales'] = 0;
 
         // Check if we need to display the note for this specific product
-        $xliff_note = $webstatus->getsoUrceType($requested_product) == 'xliff' ? true : false;
+        $xliff_note = $webstatus->getSourceType($requested_product) == 'xliff' ? true : false;
 
         foreach ($available_locales as $locale_code) {
             if (isset($webstatus_data[$locale_code][$requested_product])) {
@@ -89,7 +90,6 @@ if ($requested_product != 'all') {
     $page_title = "Web Status – {$requested_locale}";
     $supported = in_array($requested_locale, $available_locales);
     $template_name = 'main_single_locale.twig';
-    $repository_url = '';
 
     if ($supported) {
         foreach ($available_products as $product_id => $product) {
@@ -97,7 +97,7 @@ if ($requested_product != 'all') {
                 $current_product = $webstatus_data[$requested_locale][$product_id];
 
                 // I display the note even if there's only one XLIFF based product
-                if ($webstatus->getsoUrceType($product_id) == 'xliff') {
+                if ($webstatus->getSourceType($product_id) == 'xliff') {
                     $xliff_note = true;
                 }
                 // Calculate inline CSS and class for this row
@@ -108,7 +108,7 @@ if ($requested_product != 'all') {
                     'product_data'    => $current_product,
                     'product_id'      => $product_id,
                     'repository_url'  => $product['repository_url'],
-                    'repository_type' => $webstatus->getsoUrceType($product_id),
+                    'repository_type' => $webstatus->getSourceType($product_id),
                     'style'           => $row_style['style'],
                 ];
                 array_push($table_rows, $row);

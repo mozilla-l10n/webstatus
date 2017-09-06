@@ -124,11 +124,9 @@ class Webstatus
      */
     public function getSingleProductData($product_id)
     {
-        if (! isset($this->sources_data[$product_id])) {
-            return [];
-        }
-
-        return $this->sources_data[$product_id];
+        return isset($this->sources_data[$product_id])
+            ? $this->sources_data[$product_id]
+            : [];
     }
 
     /**
@@ -140,6 +138,8 @@ class Webstatus
      */
     public function getSourceType($product_id)
     {
-        return $this->sources_data[$product_id]['source_type'];
+        return isset($this->sources_data[$product_id])
+            ? $this->sources_data[$product_id]['source_type']
+            : '';
     }
 }
