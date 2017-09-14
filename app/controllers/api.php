@@ -74,8 +74,6 @@ if ($list_type == 'incomplete') {
 if ($list_type == 'stats') {
     // Remove reference locale if set for this product
     unset($locales[$webstatus->getReferenceLocale($requested_product)]);
-    sort($locales);
-
     // JSON output
     echo $json_object->outputContent($locales, false, true);
 } else {
