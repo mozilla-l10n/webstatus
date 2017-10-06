@@ -83,6 +83,7 @@ class FileAnalysis():
                 self.string_count[
                     'untranslated'] += file_data['untranslated']
                 self.string_count['total'] += file_data['total']
+                self.string_count['total_w'] += file_data['total_w']
                 if file_data['errors'] != '':
                     # Hide storage path from polib error messages
                     error_msg = file_data['errors'].replace(
@@ -107,6 +108,7 @@ class FileAnalysis():
                 self.string_count['missing'] += file_data['missing']
                 self.string_count['translated'] += file_data['translated']
                 self.string_count['total'] += file_data['total']
+                self.string_count['total_w'] += file_data['total_w']
                 if file_data['errors'] != '':
                     self.error_record[
                         'messages'] = u'Error extracting stats: {0!s}\n'.format(file_data['errors'])
@@ -134,6 +136,7 @@ class FileAnalysis():
                 self.string_count[
                     'untranslated'] += file_data['untranslated']
                 self.string_count['total'] += file_data['total']
+                self.string_count['total_w'] += file_data['total_w']
                 if file_data['errors'] != '':
                     self.error_record[
                         'messages'] = u'Error extracting stats: {0!s}\n'.format(file_data['errors'])
@@ -181,6 +184,7 @@ class FileAnalysis():
             'missing': self.string_count['missing'],
             'percentage': percentage,
             'total': self.string_count['total'],
+            'total_w': self.string_count['total_w'],
             'translated': self.string_count['translated'],
             'source_type': self.source_type,
             'untranslated': self.string_count['untranslated']
@@ -202,7 +206,8 @@ class FileAnalysis():
             'missing': 0,
             'translated': 0,
             'untranslated': 0,
-            'total': 0
+            'total': 0,
+            'total_w': 0
         }
 
 
