@@ -5,6 +5,7 @@ import codecs
 import glob
 import json
 import os
+import re
 import sys
 from xml.dom import minidom
 
@@ -41,6 +42,14 @@ class Parser():
 
         self.locale = locale
 
+    def count_words(self, text):
+        '''Taken from compare-locales'''
+        re_br = re.compile('<br\s*/?>', re.U)
+        re_sgml = re.compile('</?\w+.*?>', re.U | re.M)
+
+        text = re_br.sub(u'\n', text)
+        text = re_sgml.sub(u'', text)
+        return len(text.split())
 
 class GettextParser(Parser):
     ''' Class to parse gettext files (.po) '''
@@ -64,6 +73,7 @@ class GettextParser(Parser):
         for locale_file in locale_files:
             fuzzy = 0
             total = 0
+            total_w = 0
             translated = 0
             untranslated = 0
             errors = []
@@ -73,10 +83,18 @@ class GettextParser(Parser):
                 # I need to exclude obsolete strings
                 fuzzy = len(self.list_diff(
                     po.fuzzy_entries(), obsolete_strings))
+                for entry in po.fuzzy_entries():
+                    total_w += self.count_words(entry.msgid)
+
                 translated = len(self.list_diff(
                     po.translated_entries(), obsolete_strings))
+                for entry in po.translated_entries():
+                    total_w += self.count_words(entry.msgid)
+
                 untranslated = len(self.list_diff(
                     po.untranslated_entries(), obsolete_strings))
+                for entry in po.untranslated_entries():
+                    total_w += self.count_words(entry.msgid)
             except Exception as e:
                 errors.append(str(e))
 
@@ -86,6 +104,7 @@ class GettextParser(Parser):
                 'errors': '\n'.join(errors),
                 'fuzzy': fuzzy,
                 'total': total,
+                'total_w': total_w,
                 'translated': translated,
                 'untranslated': untranslated
             }
@@ -156,6 +175,7 @@ class PropertiesFTLParser(Parser):
             missing = 0
             identical = 0
             total = 0
+            total_w = 0
             errors = []
 
             # Parser can be used for .ftl or .properties
@@ -187,6 +207,7 @@ class PropertiesFTLParser(Parser):
                             else:
                                 locale_strings[unicode(entity)] = entity.raw_val
                     for entity, original in self.reference_strings[file_index].iteritems():
+                        total_w += self.count_words(original)
                         if entity in locale_strings:
                             translated += 1
                             if locale_strings[entity] == original:
@@ -225,6 +246,7 @@ class PropertiesFTLParser(Parser):
                 'obsolete': len(obsolete_strings),
                 'obsolete_strings': obsolete_strings,
                 'total': total,
+                'total_w': total_w,
                 'translated': translated
             }
 
@@ -296,6 +318,7 @@ class XliffParser(Parser):
                     'errors': 'File {0} is missing'.format(file_index),
                     'identical': 0,
                     'total': 0,
+                    'total_w': 0,
                     'translated': 0,
                     'untranslated': 0
                 }
@@ -314,6 +337,7 @@ class XliffParser(Parser):
                 'obsolete': len(obsolete_strings),
                 'obsolete_strings': obsolete_strings,
                 'total': locale_stats['total'],
+                'total_w': locale_stats['total_w'],
                 'translated': locale_stats['translated'],
                 'untranslated': locale_stats['untranslated'],
                 'untranslated_strings': untranslated_strings
@@ -334,6 +358,7 @@ class XliffParser(Parser):
         identical = 0
         missing = 0
         total = 0
+        total_w = 0
         translated = 0
         untranslated = 0
         errors = []
@@ -383,6 +408,7 @@ class XliffParser(Parser):
                 # Compare strings
                 try:
                     source_string = source[0].firstChild.data
+                    total_w += self.count_words(source_string)
                 except:
                     error_msg = u'Trans unit “{0}” in file ”{1}” has a malformed or empty <source> element'.format(
                         trans_unit.attributes['id'].value, file_element_name)
@@ -418,6 +444,7 @@ class XliffParser(Parser):
             'errors': '\n'.join(errors),
             'identical': identical,
             'total': total,
+            'total_w': total_w,
             'translated': translated,
             'untranslated': untranslated
         }

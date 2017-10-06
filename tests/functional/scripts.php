@@ -47,6 +47,7 @@ $compare_results[] = compare_json(
         "fuzzy": 1,
         "translated": 174,
         "total": 176,
+        "total_w": 998,
         "errors": "",
         "untranslated": 1
     }
@@ -71,7 +72,8 @@ $compare_results[] = compare_json(
         "obsolete_strings": [],
         "total": 6,
         "missing_strings": [],
-        "obsolete": 0
+        "obsolete": 0,
+        "total_w": 27
     }
 }',
     shell_exec("{$script_name} {$repo_folder}/repo1 *.xliff en-US it")
@@ -89,7 +91,8 @@ $compare_results[] = compare_json(
         "obsolete": 0,
         "translated": 4,
         "obsolete_strings": [],
-        "total": 4
+        "total": 4,
+        "total_w": 24
     }
 }',
     shell_exec("{$script_name} {$repo_folder}/repo2 *.xliff en-US it")
@@ -113,7 +116,8 @@ $compare_results[] = compare_json(
         "obsolete_strings": [
             "Client\/ErrorPages.strings:Open in Safari1"
         ],
-        "total": 6
+        "total": 6,
+        "total_w": 27
     }
 }',
     shell_exec("{$script_name} {$repo_folder}/repo3 *.xliff en-US it")
@@ -137,7 +141,8 @@ $compare_results[] = compare_json(
             "status_error"
         ],
         "obsolete": 0,
-        "obsolete_strings": []
+        "obsolete_strings": [],
+        "total_w": 17
      }
 }',
     shell_exec("{$script_name} {$repo_folder} *.properties en fr")
@@ -164,7 +169,8 @@ $compare_results[] = compare_json(
                 "emailOptInInputExtra.placeholder",
                 "emailOptInButton"
             ],
-            "obsolete": 1
+            "obsolete": 1,
+            "total_w": 25
         }
 }',
     shell_exec("{$script_name} {$repo_folder} *.ftl en-US it")
