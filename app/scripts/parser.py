@@ -198,6 +198,8 @@ class PropertiesFTLParser(Parser):
                         if isinstance(entity, comparelocales_parser.Junk):
                             errors.append(u'Unparsed content: {0}, {1}'.format(entity, entity.val))
                         else:
+                            # Use original count_words from compare_locales
+                            total_w += entity.count_words()
                             if file_type == '.ftl':
                                 if entity.raw_val != '':
                                     locale_strings[unicode(entity)] = entity.raw_val
@@ -207,7 +209,6 @@ class PropertiesFTLParser(Parser):
                             else:
                                 locale_strings[unicode(entity)] = entity.raw_val
                     for entity, original in self.reference_strings[file_index].iteritems():
-                        total_w += self.count_words(original)
                         if entity in locale_strings:
                             translated += 1
                             if locale_strings[entity] == original:
