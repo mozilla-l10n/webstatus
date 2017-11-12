@@ -51,6 +51,7 @@ class Parser():
         text = re_sgml.sub(u'', text)
         return len(text.split())
 
+
 class GettextParser(Parser):
     ''' Class to parse gettext files (.po) '''
 
@@ -162,12 +163,15 @@ class PropertiesFTLParser(Parser):
                     else:
                         if file_type == '.ftl':
                             if entity.raw_val != '':
-                                self.reference_strings[file_index][unicode(entity)] = entity.raw_val
+                                self.reference_strings[file_index][unicode(
+                                    entity)] = entity.raw_val
                             for attribute in entity.attributes:
-                                entity_name = u'{0}.{1}'.format(entity, attribute)
+                                entity_name = u'{0}.{1}'.format(
+                                    entity, attribute)
                                 self.reference_strings[file_index][entity_name] = attribute.raw_val
                         else:
-                            self.reference_strings[file_index][unicode(entity)] = entity.raw_val
+                            self.reference_strings[file_index][unicode(
+                                entity)] = entity.raw_val
 
         for reference_file in self.reference_files:
             file_index = os.path.basename(reference_file)
@@ -196,18 +200,23 @@ class PropertiesFTLParser(Parser):
                     # Store translations
                     for entity in locale_entities:
                         if isinstance(entity, comparelocales_parser.Junk):
-                            errors.append(u'Unparsed content: {0}, {1}'.format(entity, entity.val))
+                            errors.append(
+                                u'Unparsed content: {0}, {1}'.format(entity, entity.val))
                         else:
+                            # Use original count_words from compare_locales
+                            total_w += entity.count_words()
                             if file_type == '.ftl':
                                 if entity.raw_val != '':
-                                    locale_strings[unicode(entity)] = entity.raw_val
+                                    locale_strings[unicode(
+                                        entity)] = entity.raw_val
                                 for attribute in entity.attributes:
-                                    entity_name = u'{0}.{1}'.format(entity, attribute)
+                                    entity_name = u'{0}.{1}'.format(
+                                        entity, attribute)
                                     locale_strings[entity_name] = attribute.raw_val
                             else:
-                                locale_strings[unicode(entity)] = entity.raw_val
+                                locale_strings[unicode(
+                                    entity)] = entity.raw_val
                     for entity, original in self.reference_strings[file_index].iteritems():
-                        total_w += self.count_words(original)
                         if entity in locale_strings:
                             translated += 1
                             if locale_strings[entity] == original:

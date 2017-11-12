@@ -170,7 +170,7 @@ $compare_results[] = compare_json(
                 "emailOptInButton"
             ],
             "obsolete": 1,
-            "total_w": 25
+            "total_w": 20
         }
 }',
     shell_exec("{$script_name} {$repo_folder} *.ftl en-US it")
