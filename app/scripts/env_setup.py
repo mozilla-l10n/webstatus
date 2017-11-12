@@ -48,7 +48,7 @@ libraries_path = os.path.abspath(os.path.join(
 # Import Fluent Python library
 import_library(
     libraries_path, 'git', 'python-fluent',
-    'https://github.com/projectfluent/python-fluent', '0.4.1')
+    'https://github.com/projectfluent/python-fluent', '0.4.3')
 try:
     import fluent.syntax
 except ImportError:
@@ -58,7 +58,7 @@ except ImportError:
 # Import compare-locales
 import_library(
     libraries_path, 'hg', 'compare-locales',
-    'https://hg.mozilla.org/l10n/compare-locales', 'RELEASE_2_0')
+    'https://hg.mozilla.org/l10n/compare-locales', 'RELEASE_2_1')
 try:
     from compare_locales import parser
 except ImportError:
