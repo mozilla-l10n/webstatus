@@ -156,16 +156,17 @@ echo "\nTesting .ftl file...\n";
 $compare_results[] = compare_json(
     '{
         "test.ftl": {
-            "identical": 4,
-            "errors": "Unparsed content: _junk_1_234-269, \/\/ This is a broken section\n[email]",
+            "identical": 5,
+            "errors": "Unparsed content: _junk_1_224-266, ## This is broken since 0.6 syntax\n[email]",
             "missing_file": false,
-            "missing": 2,
-            "translated": 5,
+            "missing": 3,
+            "translated": 6,
             "obsolete_strings": [
                 "siteNameOld"
             ],
-            "total": 7,
+            "total": 9,
             "missing_strings": [
+                "emailOptInInputExtra",
                 "emailOptInInputExtra.placeholder",
                 "emailOptInButton"
             ],
