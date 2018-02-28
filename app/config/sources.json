@@ -46,21 +46,6 @@
         ],
         "source_type": "gettext"
     },
-    "advocacy": {
-        "displayed_name": "Mozilla Advocacy",
-        "excluded_folders": [],
-        "locale_folder": "locales",
-        "product_id": "advocacy",
-        "reference_locale": "en-US",
-        "repository_name": "advocacy.mozilla.org",
-        "repository_type": "git",
-        "repository_url": "https://github.com/mozilla/advocacy.mozilla.org",
-        "repository_branch": "master",
-        "source_files": [
-            "*.properties"
-        ],
-        "source_type": "properties"
-    },
     "copyright": {
         "displayed_name": "EU Copyright campaign",
         "excluded_folders": [],
@@ -185,21 +170,6 @@
             "LC_MESSAGES/*.po"
         ],
         "source_type": "gettext"
-    },
-    "mozilla-learning-network": {
-        "displayed_name": "Mozilla Learning Network",
-        "excluded_folders": [],
-        "locale_folder": "locales",
-        "product_id": "mozilla-learning-network",
-        "reference_locale": "en-US",
-        "repository_name": "learning.mozilla.org",
-        "repository_type": "git",
-        "repository_url": "https://github.com/mozilla/learning.mozilla.org",
-        "repository_branch": "master",
-        "source_files": [
-            "*.properties"
-        ],
-        "source_type": "properties"
     },
     "mozillians": {
         "displayed_name": "Mozillians",
