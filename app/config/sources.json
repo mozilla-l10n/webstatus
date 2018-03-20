@@ -351,5 +351,20 @@
             "*.properties"
         ],
         "source_type": "properties"
+    },
+    "thunderbird.net": {
+        "displayed_name": "Thunderbird.net",
+        "excluded_folders": [],
+        "locale_folder": "",
+        "product_id": "thunderbird.net",
+        "reference_locale": "templates",
+        "repository_name": "thunderbird.net-l10n",
+        "repository_type": "git",
+        "repository_url": "https://github.com/thundernest/thunderbird.net-l10n",
+        "repository_branch": "master",
+        "source_files": [
+            "LC_MESSAGES/*.po"
+        ],
+        "source_type": "gettext"
     }
 }
