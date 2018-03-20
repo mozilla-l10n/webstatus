@@ -43,35 +43,31 @@ def import_library(libraries_path, type, name, url, version):
     else:
         # Update existing library
         try:
-            print('Updating {} to {}...'.format(name, version))
             if type == 'hg':
-                commands = ['hg', '--cwd', library_path, 'pull']
+                commands = ['hg', '-q', '--cwd', library_path, 'pull']
                 cmd_status = subprocess.check_output(commands,
                                                      stderr=subprocess.STDOUT,
                                                      shell=False)
                 commands = [
-                    'hg', '--cwd', library_path, 'update', '-r',
+                    'hg', '-q', '--cwd', library_path, 'update', '-r',
                     'default' if version == '' else version]
                 cmd_status = subprocess.check_output(commands,
                                                      stderr=subprocess.STDOUT,
                                                      shell=False)
-                print(cmd_status)
             elif type == 'git':
-                commands = ['git', '-C', library_path, 'checkout', 'master']
+                commands = ['git', '-C', library_path, 'checkout', 'master', '-q']
                 cmd_status = subprocess.check_output(commands,
                                                      stderr=subprocess.STDOUT,
                                                      shell=False)
-                commands = ['git', '-C', library_path, 'pull']
+                commands = ['git', '-C', library_path, 'pull', '-q']
                 cmd_status = subprocess.check_output(commands,
                                                      stderr=subprocess.STDOUT,
                                                      shell=False)
-                print(cmd_status)
                 if version != '':
-                    commands = ['git', '-C', library_path, 'checkout', version]
+                    commands = ['git', '-C', library_path, 'checkout', version, '-q']
                     cmd_status = subprocess.check_output(commands,
                                                          stderr=subprocess.STDOUT,
                                                          shell=False)
-                    print(cmd_status)
         except Exception as e:
             print(e)
     sys.path.insert(0, library_path)
