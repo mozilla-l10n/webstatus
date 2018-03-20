@@ -40,36 +40,6 @@ def import_library(libraries_path, type, name, url, version):
                     print(cmd_status)
         except Exception as e:
             print(e)
-    else:
-        # Update existing library
-        try:
-            if type == 'hg':
-                commands = ['hg', '-q', '--cwd', library_path, 'pull']
-                cmd_status = subprocess.check_output(commands,
-                                                     stderr=subprocess.STDOUT,
-                                                     shell=False)
-                commands = [
-                    'hg', '-q', '--cwd', library_path, 'update', '-r',
-                    'default' if version == '' else version]
-                cmd_status = subprocess.check_output(commands,
-                                                     stderr=subprocess.STDOUT,
-                                                     shell=False)
-            elif type == 'git':
-                commands = ['git', '-C', library_path, 'checkout', 'master', '-q']
-                cmd_status = subprocess.check_output(commands,
-                                                     stderr=subprocess.STDOUT,
-                                                     shell=False)
-                commands = ['git', '-C', library_path, 'pull', '-q']
-                cmd_status = subprocess.check_output(commands,
-                                                     stderr=subprocess.STDOUT,
-                                                     shell=False)
-                if version != '':
-                    commands = ['git', '-C', library_path, 'checkout', version, '-q']
-                    cmd_status = subprocess.check_output(commands,
-                                                         stderr=subprocess.STDOUT,
-                                                         shell=False)
-        except Exception as e:
-            print(e)
     sys.path.insert(0, library_path)
 
 
