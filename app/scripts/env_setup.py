@@ -10,13 +10,14 @@ def import_library(libraries_path, type, name, url, version):
     library_path = os.path.join(libraries_path, name)
 
     if os.path.isdir(library_path) and not os.path.isdir(os.path.join(library_path, '.{0}'.format(type))):
-        print('Folder {0} is not the expected type of repository. Removing...'.format(
+        print('Folder {} is not the expected type of repository. Removing...'.format(
             library_path))
         shutil.rmtree(library_path)
 
     if not os.path.isdir(library_path):
+        # Clone library from scratch
         try:
-            print('Cloning {0}...'.format(name))
+            print('Cloning {}...'.format(name))
             if type == 'hg':
                 commands = [
                     'hg', 'clone', url, library_path,
@@ -48,7 +49,7 @@ libraries_path = os.path.abspath(os.path.join(
 # Import Fluent Python library
 import_library(
     libraries_path, 'git', 'python-fluent',
-    'https://github.com/projectfluent/python-fluent', '0.6.2')
+    'https://github.com/projectfluent/python-fluent', '0.6.4')
 try:
     import fluent.syntax
 except ImportError:
@@ -58,7 +59,7 @@ except ImportError:
 # Import compare-locales
 import_library(
     libraries_path, 'hg', 'compare-locales',
-    'https://hg.mozilla.org/l10n/compare-locales', 'RELEASE_2_7_0')
+    'https://hg.mozilla.org/l10n/compare-locales', 'RELEASE_2_8_1')
 try:
     from compare_locales import parser
 except ImportError:
@@ -66,9 +67,10 @@ except ImportError:
     sys.exit(1)
 
 # Import polib
+# Release 1.1.0: 6c246f4
 import_library(
     libraries_path, 'hg', 'polib',
-    'https://bitbucket.org/izi/polib', '1.0.7')
+    'https://bitbucket.org/izi/polib', '6c246f4')
 try:
     import polib
 except ImportError:
