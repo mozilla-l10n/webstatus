@@ -10,7 +10,6 @@ import sys
 from xml.dom import minidom
 
 # Import external libraries
-import env_setup
 import polib
 from compare_locales import parser as comparelocales_parser
 

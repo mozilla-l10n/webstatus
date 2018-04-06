@@ -17,8 +17,8 @@ install:
   - flags="--ansi --prefer-dist --no-interaction --optimize-autoloader --no-suggest --no-progress"    
   - composer self-update
   - composer install $flags
-  ## Clone libraries
-  - python app/scripts/env_setup.py
+  ## Install requirements
+  - pip install --user -r requirements.txt
   ## Copy config to avoid warning
   - cp app/config/config.ini-dist app/config/config.ini
   ## Install ESLint
