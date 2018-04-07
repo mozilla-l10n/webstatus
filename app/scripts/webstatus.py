@@ -7,13 +7,17 @@ import os
 import shutil
 import subprocess
 import sys
-from ConfigParser import SafeConfigParser
-from StringIO import StringIO
 from datetime import datetime
 
 # Import local libraries
 import parser
 
+# Python 2/3 compatibility
+from six import iteritems
+try:
+    from ConfigParser import SafeConfigParser
+except ImportError:
+    from configparser import SafeConfigParser
 
 class FileAnalysis():
     '''Class used to analyze a source file pattern'''
@@ -77,7 +81,7 @@ class FileAnalysis():
 
         try:
             string_stats_json = self.file_parser.analyze_files()
-            for file_name, file_data in string_stats_json.iteritems():
+            for file_name, file_data in iteritems(string_stats_json):
                 self.string_count['fuzzy'] += file_data['fuzzy']
                 self.string_count['translated'] += file_data['translated']
                 self.string_count[
@@ -103,7 +107,7 @@ class FileAnalysis():
 
         try:
             string_stats_json = self.file_parser.analyze_files()
-            for file_name, file_data in string_stats_json.iteritems():
+            for file_name, file_data in iteritems(string_stats_json):
                 self.string_count['identical'] += file_data['identical']
                 self.string_count['missing'] += file_data['missing']
                 self.string_count['translated'] += file_data['translated']
@@ -129,7 +133,7 @@ class FileAnalysis():
 
         try:
             string_stats_json = self.file_parser.analyze_files()
-            for file_name, file_data in string_stats_json.iteritems():
+            for file_name, file_data in iteritems(string_stats_json):
                 self.string_count['identical'] += file_data['identical']
                 self.string_count['missing'] += file_data['missing']
                 self.string_count['translated'] += file_data['translated']
@@ -435,13 +439,13 @@ def main():
 
     # Clone/update repositories
     repository = Repositories(storage_path, args.noupdate)
-    for key, product in products.iteritems():
+    for key, product in iteritems(products):
         repository.check_repo(product)
 
     ignored_folders = ['.svn', '.git', '.g(config_file)it', 'dbg',
                        'db_LB', 'ja_JP_mac', 'templates',
                        'zh_Hans_CN', 'zh_Hant_TW']
-    for key, product in products.iteritems():
+    for key, product in iteritems(products):
         product_folder = os.path.join(
             storage_path,
             product['repository_name'],
@@ -502,7 +506,7 @@ def main():
         'products': {}
     }
 
-    for key, product in all_products.iteritems():
+    for key, product in iteritems(all_products):
         json_data['metadata']['products'][key] = {
             'name': product['displayed_name'],
             'repository_url': product['repository_url'],

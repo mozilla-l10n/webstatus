@@ -13,6 +13,9 @@ from xml.dom import minidom
 import polib
 from compare_locales import parser as comparelocales_parser
 
+# Python 2/3 compatibility
+import six
+from six import iteritems
 
 class Parser():
     '''Generic class used to analyze a source file pattern'''
@@ -162,14 +165,14 @@ class PropertiesFTLParser(Parser):
                     else:
                         if file_type == '.ftl':
                             if entity.raw_val != '':
-                                self.reference_strings[file_index][unicode(
+                                self.reference_strings[file_index][six.text_type(
                                     entity)] = entity.raw_val
                             for attribute in entity.attributes:
                                 entity_name = u'{0}.{1}'.format(
                                     entity, attribute)
                                 self.reference_strings[file_index][entity_name] = attribute.raw_val
                         else:
-                            self.reference_strings[file_index][unicode(
+                            self.reference_strings[file_index][six.text_type(
                                 entity)] = entity.raw_val
 
         for reference_file in self.reference_files:
@@ -206,16 +209,16 @@ class PropertiesFTLParser(Parser):
                             total_w += entity.count_words()
                             if file_type == '.ftl':
                                 if entity.raw_val != '':
-                                    locale_strings[unicode(
+                                    locale_strings[six.text_type(
                                         entity)] = entity.raw_val
                                 for attribute in entity.attributes:
                                     entity_name = u'{0}.{1}'.format(
                                         entity, attribute)
                                     locale_strings[entity_name] = attribute.raw_val
                             else:
-                                locale_strings[unicode(
+                                locale_strings[six.text_type(
                                     entity)] = entity.raw_val
-                    for entity, original in self.reference_strings[file_index].iteritems():
+                    for entity, original in iteritems(self.reference_strings[file_index]):
                         if entity in locale_strings:
                             translated += 1
                             if locale_strings[entity] == original:
