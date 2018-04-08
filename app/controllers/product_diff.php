@@ -43,9 +43,9 @@ if (empty($error_messages)) {
                 'xliff'      => 'xliff_stats.py',
             ];
 
-            $script_path = __DIR__ . '/../scripts/' . $scripts_mapping[$source_type];
+            $script_path = __DIR__ . '/../scripts/run_diff.sh';
             $reference_locale = $webstatus->getReferenceLocale($requested_product);
-            $command = "python {$script_path} {$base_path} {$source_file} {$reference_locale} {$requested_locale}";
+            $command = "bash {$script_path} $scripts_mapping[$source_type] {$base_path} {$source_file} {$reference_locale} {$requested_locale}";
             $comparison_data += json_decode(shell_exec($command), true);
         }
     }
