@@ -1,12 +1,9 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import codecs
 import glob
-import json
 import os
 import re
-import sys
 from xml.dom import minidom
 
 # Import external libraries
@@ -16,6 +13,7 @@ from compare_locales import parser as comparelocales_parser
 # Python 2/3 compatibility
 import six
 from six import iteritems
+
 
 class Parser():
     '''Generic class used to analyze a source file pattern'''
@@ -158,22 +156,22 @@ class PropertiesFTLParser(Parser):
                 file_parser.readFile(reference_file)
                 reference_entities, map = file_parser.parse()
                 file_index = os.path.basename(reference_file)
-                self.reference_strings[file_index] = {}
+
+                translations = {}
                 for entity in reference_entities:
                     if isinstance(entity, comparelocales_parser.Junk):
                         continue
+
+                    if file_type == '.ftl':
+                        if entity.raw_val != '':
+                            entity_name = six.text_type(entity)
+                            translations[entity_name] = entity.raw_val
+                        for attribute in entity.attributes:
+                            entity_name = u'{0}.{1}'.format(entity, attribute)
+                            translations[entity_name] = attribute.raw_val
                     else:
-                        if file_type == '.ftl':
-                            if entity.raw_val != '':
-                                self.reference_strings[file_index][six.text_type(
-                                    entity)] = entity.raw_val
-                            for attribute in entity.attributes:
-                                entity_name = u'{0}.{1}'.format(
-                                    entity, attribute)
-                                self.reference_strings[file_index][entity_name] = attribute.raw_val
-                        else:
-                            self.reference_strings[file_index][six.text_type(
-                                entity)] = entity.raw_val
+                        translations[six.text_type(entity)] = entity.raw_val
+                self.reference_strings[file_index] = translations.copy()
 
         for reference_file in self.reference_files:
             file_index = os.path.basename(reference_file)
@@ -203,7 +201,8 @@ class PropertiesFTLParser(Parser):
                     for entity in locale_entities:
                         if isinstance(entity, comparelocales_parser.Junk):
                             errors.append(
-                                u'Unparsed content: {0}, {1}'.format(entity, entity.val))
+                                u'Unparsed content: {0}, {1}'.format(
+                                    entity, entity.val))
                         else:
                             # Use original count_words from compare_locales
                             total_w += entity.count_words()
@@ -214,11 +213,13 @@ class PropertiesFTLParser(Parser):
                                 for attribute in entity.attributes:
                                     entity_name = u'{0}.{1}'.format(
                                         entity, attribute)
-                                    locale_strings[entity_name] = attribute.raw_val
+                                    locale_strings[entity_name] = \
+                                        attribute.raw_val
                             else:
                                 locale_strings[six.text_type(
                                     entity)] = entity.raw_val
-                    for entity, original in iteritems(self.reference_strings[file_index]):
+                    for entity, original in \
+                            iteritems(self.reference_strings[file_index]):
                         if entity in locale_strings:
                             translated += 1
                             if locale_strings[entity] == original:
@@ -303,7 +304,7 @@ class XliffParser(Parser):
             for reference_file in self.reference_files:
                 file_index = os.path.basename(reference_file)
                 self.reference_strings[file_index] = []
-                reference_stats = self.parse_xliff(
+                self.parse_xliff(
                     reference_file,
                     self.reference_strings[file_index],
                     []
@@ -367,7 +368,6 @@ class XliffParser(Parser):
         #
 
         identical = 0
-        missing = 0
         total = 0
         total_w = 0
         translated = 0
@@ -381,8 +381,9 @@ class XliffParser(Parser):
                 source = trans_unit.getElementsByTagName('source')
                 target = trans_unit.getElementsByTagName('target')
 
-                file_element_name = trans_unit.parentNode.parentNode.attributes[
-                    'original'].value
+                file_element_name = \
+                    trans_unit.parentNode.parentNode.attributes[
+                        'original'].value
                 # Store the string ID
                 string_id = u'{0}:{1}'.format(
                     file_element_name, trans_unit.attributes['id'].value)
@@ -390,8 +391,11 @@ class XliffParser(Parser):
 
                 # Check if we have at least one source
                 if not source:
-                    error_msg = u'Trans unit “{0}” in file ”{1}” is missing a <source> element'.format(
-                        trans_unit.attributes['id'].value, file_element_name)
+                    error_msg = (
+                        u'Trans unit “{0}” in file ”{1}”'
+                        ' is missing a <source> element'.format(
+                            trans_unit.attributes['id'].value,
+                            file_element_name))
                     errors.append(error_msg)
                     continue
 
@@ -403,8 +407,11 @@ class XliffParser(Parser):
                         if source_element.parentNode.tagName != 'alt-trans':
                             source_count += 1
                     if source_count > 1:
-                        error_msg = u'Trans unit “{0}” in file ”{1}” has multiple <source> elements'.format(
-                            trans_unit.attributes['id'].value, file_element_name)
+                        error_msg = (
+                            u'Trans unit “{0}” in file ”{1}”'
+                            ' has multiple <source> elements'.format(
+                                trans_unit.attributes['id'].value,
+                                file_element_name))
                         errors.append(error_msg)
                 if len(target) > 1:
                     target_count = 0
@@ -412,23 +419,29 @@ class XliffParser(Parser):
                         if target_element.parentNode.tagName != 'alt-trans':
                             target_count += 1
                     if target_count > 1:
-                        error_msg = u'Trans unit “{0}” in file ”{1}” has multiple <target> elements'.format(
-                            trans_unit.attributes['id'].value, file_element_name)
+                        error_msg = (
+                            u'Trans unit “{0}” in file ”{1}”'
+                            ' has multiple <target> elements'.format(
+                                trans_unit.attributes['id'].value,
+                                file_element_name))
                         errors.append(error_msg)
 
                 # Compare strings
                 try:
                     source_string = source[0].firstChild.data
                     total_w += self.count_words(source_string)
-                except:
-                    error_msg = u'Trans unit “{0}” in file ”{1}” has a malformed or empty <source> element'.format(
-                        trans_unit.attributes['id'].value, file_element_name)
+                except Exception as e:
+                    error_msg = (
+                        u'Trans unit “{0}” in file ”{1}”'
+                        ' has a malformed or empty <source> element'.format(
+                            trans_unit.attributes['id'].value,
+                            file_element_name))
                     errors.append(error_msg)
                     continue
                 if target:
                     try:
                         target_string = target[0].firstChild.data
-                    except:
+                    except Exception as e:
                         target_string = ''
                     translated += 1
                     if source_string == target_string:
@@ -444,8 +457,10 @@ class XliffParser(Parser):
                 if len(file_elements) > 0:
                     file_element = file_elements[0]
                     if 'target-language' not in file_element.attributes.keys():
-                        error_msg = u'File “{0}” is missing target-language attribute'.format(
-                            file_element.attributes['original'].value)
+                        error_msg = (
+                            u'File “{0}” is missing target-language'
+                            ' attribute'.format(
+                                file_element.attributes['original'].value))
                         errors.append(error_msg)
         except Exception as e:
             errors.append(str(e))

@@ -18,6 +18,7 @@ install:
   - composer self-update
   - composer install $flags
   ## Install requirements
+  - pip install --user flake8
   - pip install --user -r requirements.txt
   ## Copy config to avoid warning
   - cp app/config/config.ini-dist app/config/config.ini
@@ -30,6 +31,7 @@ script:
   - php tests/integrity/source_integrity.php
   - vendor/bin/php-cs-fixer --diff --dry-run -v fix
   - eslint web/assets/js
+  - flake8 .
 notifications:
   irc:
     channels:
