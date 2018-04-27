@@ -2,7 +2,6 @@
 
 import argparse
 import json
-import os
 
 # Import Parser class
 import parser
@@ -12,7 +11,8 @@ def main():
     cl_parser = argparse.ArgumentParser()
     cl_parser.add_argument('repo_folder', help='Path to repository')
     cl_parser.add_argument(
-        'search_pattern', help='Search pattern for files to analyze (wildcards are supported)')
+        'search_pattern',
+        help='Search pattern for files to analyze (wildcards are supported)')
     cl_parser.add_argument('reference', help='Reference locale code')
     cl_parser.add_argument('locale', help='Locale code to analyze')
     cl_parser.add_argument('--pretty', action='store_true',

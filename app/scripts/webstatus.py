@@ -1,7 +1,6 @@
 #! /usr/bin/env python
 
 import argparse
-import glob
 import json
 import os
 import shutil
@@ -19,11 +18,15 @@ try:
 except ImportError:
     from configparser import SafeConfigParser
 
+
 class FileAnalysis():
     '''Class used to analyze a source file pattern'''
 
     def __init__(self, source_type, storage_path):
-        '''Initialize object with only source type, make sure file_parse is not defined'''
+        '''
+        Initialize object with only source type, make sure file_parse is
+        not defined
+        '''
 
         self.file_parser = None
         self.source_type = source_type
@@ -50,7 +53,10 @@ class FileAnalysis():
         self.search_patterns = search_patterns
 
     def analyze_pattern(self):
-        '''Initialize internal stats and call the specific method to perform the actual analysis'''
+        '''
+        Initialize internal stats and call the specific method to perform
+        the actual analysis
+        '''
 
         # Initialize stats
         self.__initialize_stats()
@@ -92,8 +98,8 @@ class FileAnalysis():
                     # Hide storage path from polib error messages
                     error_msg = file_data['errors'].replace(
                         self.storage_path, '')
-                    self.error_record[
-                        'messages'] = u'Error extracting stats: {0!s}\n'.format(error_msg)
+                    self.error_record['messages'] = (
+                        u'Error extracting stats: {0!s}\n'.format(error_msg))
         except Exception as e:
             print(e)
             self.error_record[
@@ -114,16 +120,16 @@ class FileAnalysis():
                 self.string_count['total'] += file_data['total']
                 self.string_count['total_w'] += file_data['total_w']
                 if file_data['errors'] != '':
-                    self.error_record[
-                        'messages'] = u'Error extracting stats: {0!s}\n'.format(file_data['errors'])
+                    self.error_record['messages'] = (
+                        u'Error extracting stats: {0!s}\n'.format(
+                            file_data['errors']))
         except subprocess.CalledProcessError as e:
             print(e)
-            self.error_record[
-                'messages'] = 'Error extracting stats: {0!s}\n'.format(e.output)
+            self.error_record['messages'] = (
+                'Error extracting stats: {0!s}\n'.format(e.output))
         except Exception as e:
             print(e)
-            self.error_record[
-                'messages'] = 'Generic error extracting stats.\n'
+            self.error_record['messages'] = 'Generic error extracting stats.\n'
 
         if self.error_record['messages']:
             self.error_record['status'] = True
@@ -142,8 +148,9 @@ class FileAnalysis():
                 self.string_count['total'] += file_data['total']
                 self.string_count['total_w'] += file_data['total_w']
                 if file_data['errors'] != '':
-                    self.error_record[
-                        'messages'] = u'Error extracting stats: {0!s}\n'.format(file_data['errors'])
+                    self.error_record['messages'] = (
+                        u'Error extracting stats: {0!s}\n'.format(
+                            file_data['errors']))
         except Exception as e:
             print(e)
             self.error_record[
@@ -158,7 +165,8 @@ class FileAnalysis():
         percentage = 0
 
         # Calculate stats
-        if (self.string_count['total'] == 0 and not self.error_record['status']):
+        if (self.string_count['total'] == 0
+                and not self.error_record['status']):
             # This locale has 0 strings (it might happen for a project with
             # .properties files and an empty folder)
             complete = False
@@ -171,13 +179,16 @@ class FileAnalysis():
             percentage = 100
         elif self.string_count['missing'] > 0:
             complete = False
-            percentage = round((float(self.string_count['translated']) / (
-                self.string_count['total'] + self.string_count['missing'])) * 100, 1)
+            count = self.string_count['total'] \
+                + self.string_count['missing']
+            translated = float(self.string_count['translated'])
+            percentage = round((translated / count) * 100, 1)
         else:
             # Need to calculate the level of completeness
             complete = False
             percentage = round(
-                (float(self.string_count['translated']) / self.string_count['total']) * 100, 1)
+                (float(self.string_count['translated'])
+                    / self.string_count['total']) * 100, 1)
 
         return {
             'complete': complete,
@@ -242,7 +253,8 @@ class Repositories():
             else:
                 # It's not a repository: delete folder and re-clone
                 print(
-                    'Removing folder (not a valid repository): {0}'.format(self.path))
+                    'Removing folder (not a valid repository): {0}'.format(
+                        self.path))
                 shutil.rmtree(self.path)
                 self.__clone_repo()
         else:
@@ -354,8 +366,9 @@ def check_environment(main_path, settings):
             ini_parser.readfp(open(config_file))
             settings['storage_path'] = ini_parser.get('config', 'storage_path')
             if not os.path.isdir(settings['storage_path']):
-                print('Folder specified in config.ini is missing ({0}).'.format(
-                    settings['storage_path']))
+                print(
+                    'Folder specified in config.ini is missing ({0}).'.format(
+                        settings['storage_path']))
                 print('Script will try to create it.')
                 try:
                     os.makedirs(settings['storage_path'])
@@ -408,13 +421,14 @@ def main():
                            help='Code of the single product to update')
     cl_parser.add_argument('--pretty', action='store_true',
                            help='export indented and more readable JSON')
-    cl_parser.add_argument('--noupdate', action='store_true',
-                           help='don\'t update local repositories (but clone them if missing)')
+    cl_parser.add_argument(
+        '--noupdate', action='store_true',
+        help='don\'t update local repositories (but clone them if missing)')
     args = cl_parser.parse_args()
 
     if (args.product_code):
         product_code = args.product_code
-        if not product_code in all_products:
+        if product_code not in all_products:
             print('The requested product code ({0}) is not available.'.format(
                 product_code))
             sys.exit(1)
@@ -422,8 +436,9 @@ def main():
         products[product_code] = all_products[product_code]
         # Load the existing JSON data
         if not os.path.isfile(json_filename):
-            print('{0} is not available, you need to run an update for all products first.'.format(
-                json_filename))
+            print(
+                '{0} is not available, you need to run an update'
+                ' for all products first.'.format(json_filename))
             sys.exit(1)
         json_data = json.load(open(json_filename))
         # Remove all existing data for this product. This way, if a locale is
