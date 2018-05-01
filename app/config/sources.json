@@ -322,21 +322,6 @@
         ],
         "source_type": "properties"
     },
-    "testpilot-tabcenter": {
-        "displayed_name": "TP Tab Center",
-        "excluded_folders": [],
-        "locale_folder": "locales",
-        "product_id": "testpilot-tabcenter",
-        "reference_locale": "en-US",
-        "repository_name": "testpilot-tabcenter",
-        "repository_type": "git",
-        "repository_url": "https://github.com/bwinton/TabCenter-l10n",
-        "repository_branch": "master",
-        "source_files": [
-            "*.properties"
-        ],
-        "source_type": "properties"
-    },
     "thimble": {
         "displayed_name": "Thimble",
         "excluded_folders": [],
