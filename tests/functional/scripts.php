@@ -157,7 +157,7 @@ $compare_results[] = compare_json(
     '{
         "test.ftl": {
             "identical": 5,
-            "errors": "Unparsed content: _junk_1_224-266, ## This is broken since 0.6 syntax\n[email]",
+            "errors": "Unparsed content: _junk_1_259-266, [email]",
             "missing_file": false,
             "missing": 3,
             "translated": 6,
