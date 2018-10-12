@@ -154,7 +154,7 @@ class PropertiesFTLParser(Parser):
                 file_type = os.path.splitext(reference_file)[1]
                 file_parser = comparelocales_parser.getParser(file_type)
                 file_parser.readFile(reference_file)
-                reference_entities, map = file_parser.parse()
+                reference_entities = file_parser.parse()
                 file_index = os.path.basename(reference_file)
 
                 translations = {}
@@ -195,7 +195,7 @@ class PropertiesFTLParser(Parser):
                     missing_file = False
                     file_parser = comparelocales_parser.getParser(file_type)
                     file_parser.readFile(locale_file)
-                    locale_entities, map = file_parser.parse()
+                    locale_entities = file_parser.parse()
 
                     # Store translations
                     for entity in locale_entities:
