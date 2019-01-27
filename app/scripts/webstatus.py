@@ -327,7 +327,7 @@ class Repositories():
                 # Checkout branch if different than master
                 if self.branch != 'master':
                     cmd_status = subprocess.check_output(
-                        ['git', 'checkout', self.branch],
+                        ['git', 'checkout', self.branch, '--quiet'],
                         stderr=subprocess.STDOUT,
                         shell=False)
                     print(cmd_status)
@@ -338,6 +338,26 @@ class Repositories():
                     stderr=subprocess.STDOUT,
                     shell=False)
                 print(cmd_status)
+
+                # Reset to avoid issues in case the repository was force-pushed
+                cmd_status = subprocess.check_output(
+                    [
+                        'git', 'reset', '--hard',
+                        'origin/{}'.format(self.branch),
+                        '--quiet',
+                    ],
+                    stderr=subprocess.STDOUT,
+                    shell=False)
+                print(cmd_status)
+
+                # Rebase if using a different branch
+                if self.branch != 'master':
+                    cmd_status = subprocess.check_output(
+                        ['git', 'rebase', '--quiet'],
+                        stderr=subprocess.STDOUT,
+                        shell=False)
+                    print(cmd_status)
+
             except Exception as e:
                 print(e)
         else:

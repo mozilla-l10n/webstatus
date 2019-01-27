@@ -44,8 +44,8 @@ class Parser():
 
     def count_words(self, text):
         '''Taken from compare-locales'''
-        re_br = re.compile('<br\s*/?>', re.U)
-        re_sgml = re.compile('</?\w+.*?>', re.U | re.M)
+        re_br = re.compile('<br[ \t\r\n]*/?>', re.U)
+        re_sgml = re.compile(r'</?\w+.*?>', re.U | re.M)
 
         text = re_br.sub(u'\n', text)
         text = re_sgml.sub(u'', text)

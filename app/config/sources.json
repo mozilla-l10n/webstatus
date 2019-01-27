@@ -170,50 +170,6 @@
         ],
         "source_type": "gettext"
     },
-    "outofdate-notifications-system-addon": {
-        "displayed_name": "Firefox Out-of-date Add-on",
-        "excluded_folders": [],
-        "locale_folder": "addon/outofdate-notifications@mozilla.org/locales",
-        "product_id": "outofdate-notifications-system-addon",
-        "reference_locale": "en-US",
-        "repository_name": "outofdate-notifications-system-addon",
-        "repository_type": "git",
-        "repository_url": "https://github.com/mozilla/outofdate-notifications-system-addon",
-        "repository_branch": "master",
-        "source_files": [
-            "*.properties"
-        ],
-        "source_type": "properties"
-    },
-    "pocket": {
-        "displayed_name": "Pocket",
-        "excluded_folders": [],
-        "locale_folder": "locales",
-        "product_id": "pocket",
-        "reference_locale": "en-US",
-        "repository_name": "pocket",
-        "repository_type": "git",
-        "repository_url": "https://github.com/mozilla-l10n/pocket-l10n",
-        "repository_branch": "master",
-        "source_files": [
-            "*.properties"
-        ],
-        "source_type": "properties"
-    },
-    "socialapi-directory": {
-        "displayed_name": "Social API Directory",
-        "excluded_folders": [],
-        "locale_folder": "translations",
-        "product_id": "socialapi-directory",
-        "repository_name": "socialapi-directory",
-        "repository_type": "git",
-        "repository_url": "https://github.com/mixedpuppy/socialapi-directory",
-        "repository_branch": "master",
-        "source_files": [
-            "LC_MESSAGES/*.po"
-        ],
-        "source_type": "gettext"
-    },
     "sumo": {
         "displayed_name": "SUMO",
         "excluded_folders": [
@@ -272,21 +228,6 @@
         "repository_type": "git",
         "repository_url": "https://github.com/mozilla/notes",
         "repository_branch": "master",
-        "source_files": [
-            "*.properties"
-        ],
-        "source_type": "properties"
-    },
-    "testpilot-snoozetabs": {
-        "displayed_name": "TP SnoozeTabs",
-        "excluded_folders": [],
-        "locale_folder": "locales",
-        "product_id": "testpilot-snoozetabs",
-        "reference_locale": "en-US",
-        "repository_name": "testpilot-snoozetabs",
-        "repository_type": "git",
-        "repository_url": "https://github.com/bwinton/SnoozeTabs",
-        "repository_branch": "l10n",
         "source_files": [
             "*.properties"
         ],
