@@ -327,7 +327,7 @@ class Repositories():
                 # Checkout branch if different than master
                 if self.branch != 'master':
                     cmd_status = subprocess.check_output(
-                        [ 'git', 'checkout', self.branch, '--quiet'],
+                        ['git', 'checkout', self.branch, '--quiet'],
                         stderr=subprocess.STDOUT,
                         shell=False)
                     print(cmd_status)
